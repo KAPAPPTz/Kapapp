@@ -3,63 +3,67 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAPAPP - Biashara Tanzania</title>
+<title>KAPAPP - Social Tanzania</title>
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#f2f2f2;padding-bottom:80px}
-.header{background:#16a34a;color:#fff;padding:20px;text-align:center}
-.header h1{margin:0;font-size:28px}
-.header p{margin:5px 0 0;opacity:.9}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:15px}
-.card{background:#fff;border-radius:15px;padding:15px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.card h3{margin:0;font-size:14px;color:#666}
-.card b{font-size:22px;display:block;margin-top:5px}
-.green{color:#16a34a}.orange{color:#ea580c}.blue{color:#2563eb}
-.box{background:#fff;margin:0 15px 15px;border-radius:15px;padding:15px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.box h2{margin:0 0 10px;font-size:18px}
-input,select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font-size:16px}
-button{width:100%;padding:14px;border:none;border-radius:10px;background:#16a34a;color:#fff;font-size:17px;font-weight:bold}
-.list{list-style:none;padding:0;margin:0}
-.list li{background:#f8fafc;padding:12px;border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}
-.nav b{color:#16a34a}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f0f2f5}
+.header{background:#1877f2;color:#fff;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.header b{font-size:24px}
+.header button{background:#fff;color:#1877f2;border:0;padding:7px 12px;border-radius:20px;font-weight:bold;cursor:pointer}
+.card{background:#fff;margin:10px;border-radius:12px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+input,textarea,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
+.btn{width:100%;background:#1877f2;color:#fff;border:0;padding:13px;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer}
+.btn-green{background:#42b72a}
+.btn-gray{background:#e4e6eb;color:#111}
+.avatar{width:44px;height:44px;border-radius:50%;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold;flex-shrink:0}
+.row{display:flex;gap:10px;align-items:center}
+.actions{display:flex;justify-content:space-around;border-top:1px solid #eee;margin-top:10px;padding-top:8px}
+.actions button{border:0;background:none;font-size:15px;cursor:pointer;padding:6px 10px}
+.comment{background:#f0f2f5;padding:8px 10px;border-radius:12px;margin-top:7px;font-size:14px}
+.tabs{display:flex;background:#fff;margin:10px;border-radius:12px;overflow:hidden}
+.tabs button{flex:1;padding:12px;border:0;background:#fff;font-weight:bold;cursor:pointer}
+.tabs button.active{background:#1877f2;color:#fff}
+.hidden{display:none}
+.small{color:#65676b;font-size:13px}
+.center{text-align:center;padding:20px}
 </style>
 </head>
 <body>
-<div class="header"><h1>🐔 KAPAPP</h1><p>App ya Biashara Tanzania</p></div>
-<div class="cards">
-<div class="card"><h3>MAUZO LEO</h3><b class="green" id="mauzo">Tsh 0</b></div>
-<div class="card"><h3>KUKU WALIOBAKI</h3><b class="orange" id="stock">0</b></div>
-<div class="card"><h3>WATEJA</h3><b class="blue" id="wateja">0</b></div>
-<div class="card"><h3>FAIDA</h3><b class="green" id="faida">Tsh 0</b></div>
+<div id="authPage">
+<div class="center" style="padding-top:30px"><div style="font-size:48px">🌍</div><h1 style="color:#1877f2;font-size:42px">KAPAPP</h1><p style="color:#555;margin:5px 0 15px">Unganisha na Watu wa Tanzania</p></div>
+<div class="card" id="loginBox"><h3>Ingia - Log In</h3><input id="loginPhone" placeholder="Namba ya Simu / Email"><input id="loginPass" type="password" placeholder="Password"><button class="btn" onclick="login()">INGIA 🔓</button><p class="center small">Huna account?</p><button class="btn btn-green" onclick="showRegister()">JISAJILI BURE</button></div>
+<div class="card hidden" id="registerBox"><h3>Jisajili - Account Mpya</h3><input id="regName" placeholder="Jina Kamili - mfano Juma Mushi"><input id="regPhone" placeholder="Namba ya Simu / Email"><input id="regPass" type="password" placeholder="Tengeneza Password"><select id="regCity"><option>Dar es Salaam</option><option>Arusha</option><option>Mwanza</option><option>Dodoma</option><option>Mbeya</option><option>Morogoro</option><option>Tanga</option><option>Zanzibar</option><option>Mwingine</option></select><button class="btn btn-green" onclick="register()">JISAJILI SASA ✅</button><button class="btn btn-gray" onclick="showLogin()">Rudi Kuingia</button></div>
 </div>
-<div class="box"><h2>➕ Rekodi Mauzo Mpya</h2>
-<select id="bidhaa"><option value="Kuku wa Nyama">Kuku wa Nyama</option><option value="Kuku wa Mayai">Kuku wa Mayai</option><option value="Mayai Trey">Mayai Trey</option><option value="Chakula cha Kuku">Chakula cha Kuku</option></select>
-<input id="idadi" type="number" placeholder="Idadi - mfano 5">
-<input id="bei" type="number" placeholder="Bei kwa moja - mfano 15000">
-<button onclick="uza()">REKODI MAUZO ✅</button>
+<div id="mainPage" class="hidden">
+<div class="header"><b>KAPAPP</b><span id="headerName" style="font-size:14px"></span><button onclick="logout()">Toka</button></div>
+<div class="tabs"><button id="tabHome" class="active" onclick="showTab('home')">🏠 Nyumbani</button><button id="tabPeople" onclick="showTab('people')">👥 Watu</button><button id="tabProfile" onclick="showTab('profile')">👤 Mimi</button></div>
+<div id="tab-home"><div class="card"><div class="row"><div class="avatar" id="myAvatar">?</div><div><b id="myName2">Mgeni</b><div class="small" id="myCity2"></div></div></div><textarea id="postText" rows="2" placeholder="Unafikiria nini leo? Andika hapa..."></textarea><input id="postImage" placeholder="Link ya Picha (hiari)"><button class="btn" onclick="addPost()">POST 📤</button></div><div id="feed"></div></div>
+<div id="tab-people" class="hidden"><div class="card"><h3>👥 Watu Wapo KAPAPP</h3></div><div id="peopleList"></div></div>
+<div id="tab-profile" class="hidden"><div class="card center"><div class="avatar" id="profileAvatar" style="width:80px;height:80px;font-size:36px;margin:0 auto">?</div><h2 id="profileName" style="margin-top:10px"></h2><p class="small" id="profileInfo"></p><p style="margin-top:8px"><b id="myPostCount">0</b> Posts • <b id="myLikeCount">0</b> Likes</p></div><div id="myPosts"></div></div>
 </div>
-<div class="box"><h2>📋 Mauzo ya Leo</h2><ul class="list" id="orodha"><li>Hakuna mauzo bado</li></ul></div>
-<div class="nav"><span><b>🏠 Nyumbani</b></span><span>📦 Stock</span><span>👥 Wateja</span><span>⚙️ Mipangilio</span></div>
 <script>
-let jumla=0, wateja=0, kuku=120;
-function uza(){
-let b=document.getElementById('bidhaa').value;
-let id=+document.getElementById('idadi').value;
-let bei=+document.getElementById('bei').value;
-if(!id||!bei){alert('Jaza Idadi na Bei kwanza!');return;}
-let t=id*bei; jumla+=t; wateja++; kuku-=id;
-document.getElementById('mauzo').innerText='Tsh '+jumla.toLocaleString();
-document.getElementById('wateja').innerText=wateja;
-document.getElementById('stock').innerText=kuku;
-document.getElementById('faida').innerText='Tsh '+(jumla*0.3).toLocaleString();
-let l=document.getElementById('orodha');
-if(wateja==1) l.innerHTML='';
-l.innerHTML+='<li><span>'+b+' x '+id+'</span><b>Tsh '+t.toLocaleString()+'</b></li>';
-document.getElementById('idadi').value='';document.getElementById('bei').value='';
-alert('Mauzo yamerekodiwa! ✅');
-}
-document.getElementById('stock').innerText=kuku;
+let users=JSON.parse(localStorage.getItem('kapapp_users')||'[]');
+let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+let currentUser=JSON.parse(localStorage.getItem('kapapp_current')||'null');
+if(posts.length===0){posts=[{id:1,name:"Kapapp Team",city:"Dar es Salaam",text:"Karibu KAPAPP! 🎉 Hii ni App mpya ya Tanzania kama Facebook. Jisajili, post, like na comment!",image:"",likes:12,comments:[{name:"Admin",text:"Karibu sana!"}],time:"Sasa hivi"},{id:2,name:"Juma Mushi",city:"Arusha",text:"Nimeipenda hii App! Mnaonaje wadau? 🔥",image:"",likes:5,comments:[{name:"Neema",text:"Safi sana!"}],time:"Dakika 5 zilizopita"}];savePosts();}
+function saveUsers(){localStorage.setItem('kapapp_users',JSON.stringify(users))}
+function savePosts(){localStorage.setItem('kapapp_posts',JSON.stringify(posts))}
+function showRegister(){document.getElementById('loginBox').classList.add('hidden');document.getElementById('registerBox').classList.remove('hidden')}
+function showLogin(){document.getElementById('registerBox').classList.add('hidden');document.getElementById('loginBox').classList.remove('hidden')}
+function register(){let n=document.getElementById('regName').value.trim(),p=document.getElementById('regPhone').value.trim(),pw=document.getElementById('regPass').value.trim(),c=document.getElementById('regCity').value;if(!n||!p||!pw){alert('Jaza Jina, Namba na Password');return}if(users.find(u=>u.phone===p)){alert('Namba hii ishatumika. Ingia badala yake.');return}let u={name:n,phone:p,pass:pw,city:c};users.push(u);saveUsers();alert('Hongera '+n+'! Umejisajili! Sasa ingia.');showLogin();document.getElementById('loginPhone').value=p;}
+function login(){let p=document.getElementById('loginPhone').value.trim(),pw=document.getElementById('loginPass').value.trim();let u=users.find(x=>x.phone===p && x.pass===pw);if(!u){alert('Namba au Password si sahihi. Jisajili kwanza.');return}currentUser=u;localStorage.setItem('kapapp_current',JSON.stringify(u));startApp();}
+function logout(){localStorage.removeItem('kapapp_current');location.reload()}
+function startApp(){document.getElementById('authPage').classList.add('hidden');document.getElementById('mainPage').classList.remove('hidden');document.getElementById('headerName').innerText='👋 '+currentUser.name;document.getElementById('myName2').innerText=currentUser.name;document.getElementById('myCity2').innerText=currentUser.city;document.getElementById('myAvatar').innerText=currentUser.name[0].toUpperCase();renderFeed();renderPeople();renderProfile();}
+function showTab(t){['home','people','profile'].forEach(x=>document.getElementById('tab-'+x).classList.add('hidden'));document.getElementById('tab-'+t).classList.remove('hidden');['Home','People','Profile'].forEach(x=>document.getElementById('tab'+x).classList.remove('active'));document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');if(t==='profile')renderProfile();if(t==='people')renderPeople();}
+function addPost(){let t=document.getElementById('postText').value.trim(),img=document.getElementById('postImage').value.trim();if(!t){alert('Andika kitu kwanza');return}posts.unshift({id:Date.now(),name:currentUser.name,city:currentUser.city,text:t,image:img,likes:0,comments:[],time:'Sasa hivi'});savePosts();document.getElementById('postText').value='';document.getElementById('postImage').value='';renderFeed();renderProfile();alert('Post imetumwa! ✅');}
+function renderFeed(){let f=document.getElementById('feed');f.innerHTML='';posts.forEach(p=>{let div=document.createElement('div');div.className='card';div.innerHTML=`<div class="row"><div class="avatar">${p.name[0].toUpperCase()}</div><div><b>${p.name}</b><div class="small">${p.city} • ${p.time}</div></div></div><p style="margin:10px 0;line-height:1.5">${p.text}</p>${p.image?`<img src="${p.image}" style="width:100%;border-radius:10px;margin-top:10px" onerror="this.style.display='none'">`:''}<div class="small">❤️ ${p.likes} Likes • 💬 ${p.comments.length} Comments</div><div class="actions"><button onclick="likePost(${p.id})">❤️ Like</button><button onclick="focusComment(${p.id})">💬 Comment</button><button onclick="sharePost('${p.name}')">↗️ Share</button></div><div>${p.comments.map(c=>`<div class="comment"><b>${c.name}:</b> ${c.text}</div>`).join('')}</div><div class="row" style="margin-top:8px"><input id="input-${p.id}" placeholder="Andika comment..."><button class="btn" style="width:90px" onclick="addComment(${p.id})">Tuma</button></div>`;f.appendChild(div);});}
+function likePost(id){let p=posts.find(x=>x.id===id);p.likes++;savePosts();renderFeed()}
+function addComment(id){let inp=document.getElementById('input-'+id);let t=inp.value.trim();if(!t)return;let p=posts.find(x=>x.id===id);p.comments.push({name:currentUser.name,text:t});savePosts();renderFeed()}
+function focusComment(id){document.getElementById('input-'+id).focus()}
+function sharePost(name){alert('Ume-share post ya '+name+'!')}
+function renderPeople(){let l=document.getElementById('peopleList');l.innerHTML='';if(users.length===0){l.innerHTML='<div class="card">Hakuna watu bado.</div>';return}users.forEach(u=>{let d=document.createElement('div');d.className='card';d.innerHTML=`<div class="row"><div class="avatar">${u.name[0].toUpperCase()}</div><div style="flex:1"><b>${u.name}</b><div class="small">${u.city} • ${u.phone}</div></div><button class="btn" style="width:90px" onclick="alert('Umemtumia ombi ${u.name} ✅')">+ Add</button></div>`;l.appendChild(d);});}
+function renderProfile(){if(!currentUser)return;document.getElementById('profileAvatar').innerText=currentUser.name[0].toUpperCase();document.getElementById('profileName').innerText=currentUser.name;document.getElementById('profileInfo').innerText=currentUser.city+' • '+currentUser.phone;let mine=posts.filter(p=>p.name===currentUser.name);document.getElementById('myPostCount').innerText=mine.length;document.getElementById('myLikeCount').innerText=mine.reduce((a,b)=>a+b.likes,0);let m=document.getElementById('myPosts');m.innerHTML='';mine.forEach(p=>{let d=document.createElement('div');d.className='card';d.innerHTML=`<b>${p.name}</b><div class="small">${p.time}</div><p style="margin:8px 0">${p.text}</p><div class="small">❤️ ${p.likes} • 💬 ${p.comments.length}</div>`;m.appendChild(d)});if(mine.length===0)m.innerHTML='<div class="card">Huna post bado. Andika post ya kwanza!</div>';}
+if(currentUser)startApp();
 </script>
 </body>
 </html>

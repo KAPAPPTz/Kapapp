@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jiunge - Kapapp</title>
+<style>body{font-family:sans-serif;background:#f2f2f2;padding:20px}.box{background:white;padding:20px;border-radius:10px;max-width:400px;margin:auto}input{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:8px}button{width:100%;padding:13px;background:#007bff;color:white;border:none;border-radius:8px;font-weight:bold}a{display:block;text-align:center;margin-top:10px}</style>
+</head>
+<body>
+<div class="box">
+<h2>Jiunge na Kapapp</h2>
+<input id="jina" placeholder="Jina lako kamili">
+<input id="simu" placeholder="Namba ya simu 07xx...">
+<input id="pass" type="password" placeholder="Tengeneza Password">
+<button onclick="jiunge()">JIUNGE SASA</button>
+<p id="msg"></p>
+<a href="login.html">Umeshajiunga? Ingia hapa</a>
+</div>
+<script>
+function jiunge(){
+var j=document.getElementById('jina').value;
+var s=document.getElementById('simu').value;
+var p=document.getElementById('pass').value;
+if(j=="" || s=="" || p==""){document.getElementById('msg').innerHTML="Jaza sehemu zote!";return;}
+localStorage.setItem("kapapp_jina",j);
+localStorage.setItem("kapapp_pass",p);
+localStorage.setItem("kapapp_simu",s);
+alert("Hongera "+j+"! Umejiunga! Sasa ingia.");
+window.location.href="login.html";
+}
+</script>
+</body>
+</html>

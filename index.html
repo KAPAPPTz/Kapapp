@@ -1,57 +1,40 @@
 <!DOCTYPE html>
-<html lang="sw">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kapapp</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapapp - App ya Biashara Tanzania</title>
 <style>
-body{font-family:sans-serif;background:#f0f2f5;margin:0;padding:0}
-.header{background:#1877f2;color:#fff;padding:20px;text-align:center;font-size:24px;font-weight:bold}
-.header button{background:#fff;color:#1877f2;border:0;padding:8px 15px;border-radius:20px;font-weight:bold}
-.card{background:#fff;margin:10px;padding:15px;border-radius:12px;box-shadow:0 2px 5px #ddd}
-input,textarea,select{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
-.btn{width:100%;background:#1877f2;color:#fff;border:0;padding:13px;border-radius:8px;font-size:16px;font-weight:bold}
-.btn2{background:#42b72a}
-h3{margin:5px 0}
-.small{color:#666;font-size:13px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+.header{background:#000;color:#fff;padding:15px;display:flex;justify-content:space-between;align-items:center}
+.header a{color:#fff;text-decoration:none;margin-left:10px;font-size:14px}
+.hero{background:linear-gradient(135deg,#000,#007bff);color:#fff;text-align:center;padding:50px 20px}
+.hero h1{font-size:32px;margin-bottom:10px}
+.hero p{margin-bottom:20px}
+.btn{display:inline-block;background:#25D366;color:#fff;padding:13px 25px;border-radius:30px;text-decoration:none;font-weight:bold}
+.btn2{background:#fff;color:#000;padding:13px 25px;border-radius:30px;text-decoration:none;font-weight:bold;margin-left:5px}
+.section{padding:25px 15px;max-width:800px;margin:auto}
+.card{background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.card h3{margin-bottom:8px}
+.price{color:#007bff;font-weight:bold;font-size:18px}
+.testi{background:#f8f9fa;border-radius:12px;padding:15px;margin-bottom:10px}
+.footer{background:#000;color:#fff;text-align:center;padding:20px;font-size:13px}
+.wa{position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;text-decoration:none}
 </style>
 </head>
 <body>
-<div class="header">KAPAPP <br><button onclick="alert('Karibu Kapapp!')">Nyumbani</button></div>
-
-<div class="card">
-<h3>Karibu Kapapp 👋</h3>
-<p class="small">Weka taarifa hapa chini ili kujiunga / kuomba huduma.</p>
-<input type="text" id="jina" placeholder="Jina lako kamili">
-<input type="tel" id="simu" placeholder="Namba ya simu 07xx...">
-<select id="huduma">
-<option value="">Chagua Huduma</option>
-<option>Mkopo</option>
-<option>Akiba</option>
-<option>Biashara</option>
-<option>Msaada</option>
-</select>
-<textarea id="ujumbe" placeholder="Andika ujumbe wako hapa..."></textarea>
-<button class="btn" onclick="tuma()">TUMA SASA</button>
-<p id="matokeo" class="small" style="text-align:center;color:green"></p>
+<div class="header"><b>🌟 KAPAPP</b><div><a href="index.html">Nyumbani</a><a href="login.html">Ingia</a><a href="register.html">Jiunge</a></div></div>
+<div class="hero"><h1>Karibu Kapapp 🇹🇿</h1><p>App ya Biashara Tanzania - Jiunge, Uza, Nunua, Wasiliana Haraka!</p><a class="btn" href="register.html">JIUNGE BURE</a><a class="btn2" href="login.html">INGIA</a><p style="margin-top:15px;font-size:13px">✅ Watu 100+ Wamesha Jiunga ✅ Bure Kujiunga</p></div>
+<div class="section"><h2>🔥 Huduma Zetu</h2><br>
+<div class="card"><h3>🛒 1. Kuuza Bidhaa</h3><p>Weka bidhaa zako, watu wazione na wakununue moja kwa moja.</p><p class="price">Bure Kuanza</p></div>
+<div class="card"><h3>📢 2. Kutangaza Biashara</h3><p>Tangaza biashara yako kwa maelfu ya Watanzania.</p><p class="price">Tsh 5,000 / Wiki</p></div>
+<div class="card"><h3>💬 3. Kuwasiliana Haraka</h3><p>Wateja wakutumie WhatsApp moja kwa moja bila shida.</p><p class="price">Bure</p></div>
 </div>
-
-<div class="card">
-<h3>Huduma Zetu</h3>
-<p>✅ Mkopo wa haraka</p>
-<p>✅ Akiba salama</p>
-<p>✅ Msaada wa biashara</p>
-<button class="btn btn2" onclick="alert('Asante kwa kutumia Kapapp! Tutakujibu hivi karibuni.')">Wasiliana Nasi</button>
+<div class="section"><h2>⭐ Wateja Wanasema</h2><br>
+<div class="testi"><b>Juma - Dar es Salaam</b><p>"Kapapp imenisaidia kupata wateja wengi sana! Asante Said!"</p>⭐⭐⭐⭐⭐</div>
+<div class="testi"><b>Neema - Arusha</b><p>"App nzuri sana, rahisi kutumia. Nimejiunga na nimeanza kuuza."</p>⭐⭐⭐⭐⭐</div>
 </div>
-
-<script>
-function tuma(){
-var j=document.getElementById('jina').value;
-var s=document.getElementById('simu').value;
-if(j==''||s==''){alert('Tafadhali jaza Jina na Simu');return;}
-document.getElementById('matokeo').innerHTML='Asante '+j+'! Tumepokea ombi lako. Tutakupigia '+s;
-alert('Asante '+j+'! Ombi lako limepokelewa.');
-}
-</script>
+<div class="section" style="text-align:center"><h2>Uko Tayari Kuanza?</h2><br><a class="btn" href="register.html">JIUNGE SASA - NI BURE</a></div>
+<div class="footer"><p><b>KAPAPP</b> - Imetengenezwa na Said Kapwile</p><p>Dar es Salaam, Tanzania | © 2026 Kapapp</p></div>
+<a class="wa" href="https://wa.me/255000000000?text=Nahabari%20Kapapp,%20nataka%20kujiunga">💬</a>
 </body>
 </html>

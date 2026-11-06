@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAPAPP - Biashara Tanzania</title>
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f2f2f2;padding-bottom:80px}
+.header{background:#16a34a;color:#fff;padding:20px;text-align:center}
+.header h1{margin:0;font-size:28px}
+.header p{margin:5px 0 0;opacity:.9}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:15px}
+.card{background:#fff;border-radius:15px;padding:15px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card h3{margin:0;font-size:14px;color:#666}
+.card b{font-size:22px;display:block;margin-top:5px}
+.green{color:#16a34a}.orange{color:#ea580c}.blue{color:#2563eb}
+.box{background:#fff;margin:0 15px 15px;border-radius:15px;padding:15px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.box h2{margin:0 0 10px;font-size:18px}
+input,select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font-size:16px}
+button{width:100%;padding:14px;border:none;border-radius:10px;background:#16a34a;color:#fff;font-size:17px;font-weight:bold}
+.list{list-style:none;padding:0;margin:0}
+.list li{background:#f8fafc;padding:12px;border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}
+.nav b{color:#16a34a}
+</style>
+</head>
+<body>
+<div class="header"><h1>🐔 KAPAPP</h1><p>App ya Biashara Tanzania</p></div>
+<div class="cards">
+<div class="card"><h3>MAUZO LEO</h3><b class="green" id="mauzo">Tsh 0</b></div>
+<div class="card"><h3>KUKU WALIOBAKI</h3><b class="orange" id="stock">0</b></div>
+<div class="card"><h3>WATEJA</h3><b class="blue" id="wateja">0</b></div>
+<div class="card"><h3>FAIDA</h3><b class="green" id="faida">Tsh 0</b></div>
+</div>
+<div class="box"><h2>➕ Rekodi Mauzo Mpya</h2>
+<select id="bidhaa"><option value="Kuku wa Nyama">Kuku wa Nyama</option><option value="Kuku wa Mayai">Kuku wa Mayai</option><option value="Mayai Trey">Mayai Trey</option><option value="Chakula cha Kuku">Chakula cha Kuku</option></select>
+<input id="idadi" type="number" placeholder="Idadi - mfano 5">
+<input id="bei" type="number" placeholder="Bei kwa moja - mfano 15000">
+<button onclick="uza()">REKODI MAUZO ✅</button>
+</div>
+<div class="box"><h2>📋 Mauzo ya Leo</h2><ul class="list" id="orodha"><li>Hakuna mauzo bado</li></ul></div>
+<div class="nav"><span><b>🏠 Nyumbani</b></span><span>📦 Stock</span><span>👥 Wateja</span><span>⚙️ Mipangilio</span></div>
+<script>
+let jumla=0, wateja=0, kuku=120;
+function uza(){
+let b=document.getElementById('bidhaa').value;
+let id=+document.getElementById('idadi').value;
+let bei=+document.getElementById('bei').value;
+if(!id||!bei){alert('Jaza Idadi na Bei kwanza!');return;}
+let t=id*bei; jumla+=t; wateja++; kuku-=id;
+document.getElementById('mauzo').innerText='Tsh '+jumla.toLocaleString();
+document.getElementById('wateja').innerText=wateja;
+document.getElementById('stock').innerText=kuku;
+document.getElementById('faida').innerText='Tsh '+(jumla*0.3).toLocaleString();
+let l=document.getElementById('orodha');
+if(wateja==1) l.innerHTML='';
+l.innerHTML+='<li><span>'+b+' x '+id+'</span><b>Tsh '+t.toLocaleString()+'</b></li>';
+document.getElementById('idadi').value='';document.getElementById('bei').value='';
+alert('Mauzo yamerekodiwa! ✅');
+}
+document.getElementById('stock').innerText=kuku;
+</script>
+</body>
+</html>

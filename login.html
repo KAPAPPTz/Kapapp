@@ -2,26 +2,30 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Login - Kapapp</title>
-<style>body{font-family:sans-serif;background:#f2f2f2;padding:20px}.box{background:white;padding:20px;border-radius:10px;max-width:400px;margin:auto}input{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:8px}button{width:100%;padding:13px;background:#000;color:white;border:none;border-radius:8px;font-weight:bold}</style>
+<title>Ingia - Kapapp</title>
+<style>body{font-family:sans-serif;background:#f2f2f2;padding:20px}.box{background:white;padding:20px;border-radius:10px;max-width:400px;margin:auto}input{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:8px}button{width:100%;padding:13px;background:#000;color:white;border:none;border-radius:8px;font-weight:bold}a{display:block;text-align:center;margin-top:10px}</style>
 </head>
 <body>
 <div class="box">
 <h2>Ingia Kapapp</h2>
-<input id="jina" placeholder="Jina: Said Kapwile">
+<input id="jina" placeholder="Jina lako">
 <input id="pass" type="password" placeholder="Password">
 <button onclick="ingia()">INGIA</button>
-<p id="msg"></p>
+<p id="msg" style="color:red"></p>
+<a href="register.html">Huna akaunti? Jiunge hapa</a><br>
+<a href="index.html">Rudi Nyumbani</a>
 </div>
 <script>
 function ingia(){
 var j=document.getElementById('jina').value;
 var p=document.getElementById('pass').value;
-if(j.trim().toLowerCase()=="said kapwile" && p=="Soja12"){
-alert("Karibu Said Kapwile!");
+var mjina=localStorage.getItem("kapapp_jina");
+var mpass=localStorage.getItem("kapapp_pass");
+if((j=="Said Kapwile" && p=="Soja12") || (j==mjina && p==mpass && j!="")){
+alert("Karibu "+j+"!");
 window.location.href="index.html";
 }else{
-document.getElementById('msg').innerHTML="Jina au Password si sahihi!";
+document.getElementById('msg').innerHTML="Jina au Password sio sahihi! Jiunge kwanza.";
 }
 }
 </script>

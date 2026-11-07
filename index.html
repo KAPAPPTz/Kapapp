@@ -91,7 +91,7 @@ current=u.jina;localStorage.setItem('kapapp_current',current);funguaApp();
 }
 }
 function funguaApp(){document.getElementById('authBox').style.display='none';document.getElementById('appBox').style.display='block';document.getElementById('userTop').innerText='Karibu, '+current;onyesha();}
-function toka(){localStorage.removeItem('kapapp_current');location.reload();}
+function toka(){try{let n=JSON.parse(current);current=n.name||current;}catch(e){}.removeItem('kapapp_current');location.reload();}
 function hifadhi(){localStorage.setItem('kapapp_posts',JSON.stringify(posts));}
 function formatText(txt){
 return txt.replace(/#(\w+)/g,'<span class="hash" onclick="tafutaTag(\'#$1\')">#$1</span>').replace(/@(\w+)/g,'<span class="tag" onclick="tafutaTag(\'@$1\')">@$1</span>');

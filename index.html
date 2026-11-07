@@ -21,7 +21,6 @@ button{background:#1877f2;color:white;border:0;padding:12px;border-radius:8px;fo
 </head>
 <body>
 <div class="top">KAPAPP<small id="userTop"></small></div>
-
 <div id="authBox" class="box">
 <h2 style="text-align:center;margin:0">Karibu KAPAPP</h2>
 <p style="text-align:center;color:#555">Jisajili ili uanze kupost, kulike na kucomment.</p>
@@ -31,7 +30,6 @@ button{background:#1877f2;color:white;border:0;padding:12px;border-radius:8px;fo
 <button onclick="authAction()">JISAJILI / INGIA</button>
 <span class="link" onclick="badiliMode()" id="modeLink">Una akaunti? Bonyeza hapa kuingia</span>
 </div>
-
 <div id="appBox" style="display:none">
 <div class="box">
 <textarea id="wazo" rows="3" placeholder="Una wazo gani leo?"></textarea>
@@ -40,29 +38,23 @@ button{background:#1877f2;color:white;border:0;padding:12px;border-radius:8px;fo
 </div>
 <div id="feed"></div>
 </div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, updateDoc, doc, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// *** WEKA CONFIG YAKO HAPA CHINI - BADILISHA HIZI 6 ***
 const firebaseConfig = {
-  apiKey: "WEKA_APIKEY_HAPA",
-  authDomain: "WEKA_AUTHDOMAIN_HAPA",
-  projectId: "WEKA_PROJECTID_HAPA",
-  storageBucket: "WEKA_STORAGEBUCKET_HAPA",
-  messagingSenderId: "WEKA_SENDERID_HAPA",
-  appId: "WEKA_APPID_HAPA"
+  apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wElVXS9mBZKyw",
+  authDomain: "kapapp-97bed.firebaseapp.com",
+  projectId: "kapapp-97bed",
+  storageBucket: "kapapp-97bed.firebasestorage.app",
+  messagingSenderId: "497811742831",
+  appId: "1:497811742831:web:9cf03078065ceb0805ed9a"
 };
-// *** MWISHO WA CONFIG ***
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 let mode = 'sajili';
 let currentName = localStorage.getItem('kapapp_name') || 'Mgeni';
-
 window.badiliMode = () => {
   mode = mode === 'sajili' ? 'ingia' : 'sajili';
   document.getElementById('modeLink').innerText = mode === 'sajili' ? 'Una akaunti? Bonyeza hapa kuingia' : 'Huna akaunti? Bonyeza hapa kujisajili';
@@ -97,7 +89,6 @@ window.comment = async (id, input) => {
   await updateDoc(doc(db, 'posts', id), { comments: arrayUnion({ jina: currentName, txt: input.value.trim() }) });
   input.value = '';
 }
-
 onAuthStateChanged(auth, (user) => {
   if(user){
     document.getElementById('authBox').style.display = 'none';
@@ -105,7 +96,6 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById('userTop').innerText = 'Karibu, ' + currentName;
   }
 });
-
 const q = query(collection(db, 'posts'), orderBy('time', 'desc'));
 onSnapshot(q, (snap) => {
   let feed = document.getElementById('feed');

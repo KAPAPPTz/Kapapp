@@ -5,43 +5,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KAPAPP</title>
 <style>
-body{margin:0;font-family:Arial;background:#f0f2f5}
-.top{background:#1877f2;color:white;padding:12px;text-align:center;font-size:22px;font-weight:bold;position:sticky;top:0;z-index:10}
+body{margin:0;font-family:Arial;background:#f0f2f5;padding-bottom:70px}
+.top{background:#1877f2;color:white;padding:12px;text-align:center;font-size:24px;font-weight:bold;position:sticky;top:0;z-index:20}
 .top small{font-size:12px;font-weight:normal;display:block}
+.tabs{display:flex;background:white;position:sticky;top:52px;z-index:15}
+.tabs div{flex:1;text-align:center;padding:12px;font-weight:bold;cursor:pointer;border-bottom:3px solid transparent}
+.tabs div.active{border-color:#1877f2;color:#1877f2}
 .box,.post{background:white;margin:10px;padding:14px;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 input,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radius:8px;margin:6px 0;box-sizing:border-box;font-size:15px}
 button{background:#1877f2;color:white;border:0;padding:12px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;font-size:16px}
-.post img{width:100%;border-radius:10px;margin-top:8px}
+.post img,.post video{width:100%;border-radius:10px;margin-top:8px}
 .actions{display:flex;justify-content:space-between;margin-top:10px;border-top:1px solid #eee;padding-top:8px}
 .actions span{cursor:pointer;font-size:14px}
 .del{color:red;float:right;cursor:pointer}
 .comments{margin-top:10px;background:#f0f2f5;padding:8px;border-radius:8px;font-size:14px}
 .link{color:#1877f2;cursor:pointer;text-align:center;display:block;margin-top:10px}
+.uploadBtn{background:#e4e6eb;color:#333;padding:10px;border-radius:8px;text-align:center;display:block;cursor:pointer;margin:6px 0;font-weight:bold}
+.emojiRow{display:flex;justify-content:space-between;font-size:22px;margin:5px 0}
+.emojiRow span{cursor:pointer}
+.hashtag{color:#1877f2;font-weight:bold;cursor:pointer}
+.tag{color:#e91e63;font-weight:bold}
+.reelCard{background:black;color:white;border-radius:12px;margin:10px;overflow:hidden}
+.reelCard video{width:100%;max-height:500px}
+.reelInfo{padding:10px}
+.bottomNav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;border-top:1px solid #ddd;z-index:20}
+.bottomNav div{flex:1;text-align:center;padding:12px;font-size:22px;cursor:pointer}
+.bottomNav div.active{color:#1877f2}
+#preview img,#preview video{width:100%;border-radius:10px}
 </style>
 </head>
 <body>
 <div class="top">KAPAPP<small id="userTop"></small></div>
+
 <div id="authBox" class="box">
-<h2 style="text-align:center;margin:0">Karibu KAPAPP</h2>
-<p style="text-align:center;color:#555">Jisajili ili uanze kupost, kulike na kucomment.</p>
+<h2 style="text-align:center;margin:0">Karibu KAPAPP 🇹🇿</h2>
+<p style="text-align:center;color:#555">Picha, Video, Reels, Hashtag, Tag, Emoji - Vyote hapa!</p>
 <input id="aJina" placeholder="Jina kamili...">
 <input id="aEmail" placeholder="Email...">
 <input id="aPass" type="password" placeholder="Password...">
 <button onclick="authAction()">JISAJILI / INGIA</button>
 <span class="link" onclick="badiliMode()" id="modeLink">Una akaunti? Bonyeza hapa kuingia</span>
 </div>
+
 <div id="appBox" style="display:none">
+<div class="tabs">
+<div id="tabPost" class="active" onclick="showTab('post')">📝 Posts</div>
+<div id="tabReel" onclick="showTab('reel')">🎬 Reels</div>
+<div id="tabHash" onclick="showTab('hash')">🔥 Trending</div>
+</div>
+
+<div id="postSection">
 <div class="box">
-<textarea id="wazo" rows="3" placeholder="Una wazo gani leo?"></textarea>
-<button onclick="tuma()">Post</button>
-<button onclick="toka()" style="background:#e4e6eb;color:#333;margin-top:8px">Toka</button>
+<textarea id="wazo" rows="3" placeholder="Una wazo gani leo? Andika #hashtag na @rafiki..."></textarea>
+<div class="emojiRow">
+<span onclick="addEmoji('😂')">😂</span><span onclick="addEmoji('❤️')">❤️</span><span onclick="addEmoji('🔥')">🔥</span><span onclick="addEmoji('😍')">😍</span><span onclick="addEmoji('👏')">👏</span><span onclick="addEmoji('🇹🇿')">🇹🇿</span><span onclick="addEmoji('😭')">😭</span><span onclick="addEmoji('🙏')">🙏</span>
+</div>
+<input id="tagInput" placeholder="🏷️ Tag rafiki: andika jina... (mf: Said, Neema)">
+<input id="hashInput" placeholder="#️⃣ Hashtag: (mf: #Kapapp #Tanzania #Michezo)">
+<label class="uploadBtn">📸 Chagua Picha au Video
+<input type="file" id="fileInput" accept="image/*,video/*" style="display:none" onchange="previewFile()">
+</label>
+<div id="preview"></div>
+<button onclick="tuma('post')" id="postBtn">Post Sasa 🚀</button>
 </div>
 <div id="feed"></div>
 </div>
+
+<div id="reelSection" style="display:none">
+<div class="box">
+<h3 style="margin:0">🎬 Tengeneza Reel Mpya</h3>
+<textarea id="reelCaption" rows="2" placeholder="Caption ya Reel yako... #Kapapp"></textarea>
+<label class="uploadBtn">🎥 Chagua Video ya Reel
+<input type="file" id="reelFile" accept="video/*,image/*" style="display:none" onchange="previewReel()">
+</label>
+<div id="reelPreview"></div>
+<button onclick="tuma('reel')" id="reelBtn">Chapisha Reel 🎬</button>
+</div>
+<div id="reelFeed"></div>
+</div>
+
+<div id="hashSection" style="display:none">
+<div class="box"><h3 style="margin:0">🔥 Trending Hashtags</h3><p>Bonyeza hashtag kuona posts zake</p><div id="hashList"></div></div>
+<div id="hashFeed"></div>
+</div>
+</div>
+
+<div class="bottomNav">
+<div onclick="showTab('post')" id="navPost" class="active">🏠<br><small>Nyumbani</small></div>
+<div onclick="showTab('reel')" id="navReel">🎬<br><small>Reels</small></div>
+<div onclick="showTab('hash')" id="navHash">🔥<br><small>Trending</small></div>
+<div onclick="toka()">🚪<br><small>Toka</small></div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, updateDoc, doc, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 const firebaseConfig = {
   apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wElVXS9mBZKyw",
   authDomain: "kapapp-97bed.firebaseapp.com",
@@ -53,8 +113,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 let mode = 'sajili';
 let currentName = localStorage.getItem('kapapp_name') || 'Mgeni';
+let selectedFile = null; let selectedReel = null; let allPosts = [];
+window.showTab = (t) => {
+  document.getElementById('postSection').style.display = t==='post'?'block':'none';
+  document.getElementById('reelSection').style.display = t==='reel'?'block':'none';
+  document.getElementById('hashSection').style.display = t==='hash'?'block':'none';
+  document.getElementById('tabPost').className = t==='post'?'active':'';
+  document.getElementById('tabReel').className = t==='reel'?'active':'';
+  document.getElementById('tabHash').className = t==='hash'?'active':'';
+}
+window.addEmoji = (e) => { document.getElementById('wazo').value += e; }
 window.badiliMode = () => {
   mode = mode === 'sajili' ? 'ingia' : 'sajili';
   document.getElementById('modeLink').innerText = mode === 'sajili' ? 'Una akaunti? Bonyeza hapa kuingia' : 'Huna akaunti? Bonyeza hapa kujisajili';
@@ -68,26 +139,79 @@ window.authAction = async () => {
     if(mode === 'sajili'){
       if(!jina){ alert('Jaza jina!'); return; }
       await createUserWithEmailAndPassword(auth, email, pass);
-      localStorage.setItem('kapapp_name', jina);
-      alert('Hongera '+jina+'! Umesajiliwa!');
-    } else {
-      await signInWithEmailAndPassword(auth, email, pass);
-    }
+      localStorage.setItem('kapapp_name', jina); currentName = jina;
+      alert('Hongera '+jina+'! Karibu KAPAPP!');
+    } else { await signInWithEmailAndPassword(auth, email, pass); }
   } catch(e){ alert(e.message); }
 }
 window.toka = async () => { await signOut(auth); location.reload(); }
-window.tuma = async () => {
-  let wazo = document.getElementById('wazo').value.trim();
-  if(!wazo){ alert('Andika kitu kwanza!'); return; }
-  await addDoc(collection(db, 'posts'), { jina: currentName, wazo: wazo, likes: 0, comments: [], time: new Date().toLocaleString('sw-TZ') });
-  document.getElementById('wazo').value = '';
+window.previewFile = () => {
+  let f = document.getElementById('fileInput').files[0]; selectedFile = f;
+  if(!f) return; let url = URL.createObjectURL(f);
+  document.getElementById('preview').innerHTML = f.type.startsWith('video') ? '<video src="'+url+'" controls></video>' : '<img src="'+url+'">';
+}
+window.previewReel = () => {
+  let f = document.getElementById('reelFile').files[0]; selectedReel = f;
+  if(!f) return; let url = URL.createObjectURL(f);
+  document.getElementById('reelPreview').innerHTML = f.type.startsWith('video') ? '<video src="'+url+'" controls></video>' : '<img src="'+url+'">';
+}
+function formatText(txt){
+  if(!txt) return '';
+  return txt.replace(/#(\w+)/g, '<span class="hashtag" onclick="filterHash(\'$1\')">#$1</span>').replace(/@(\w+)/g, '<span class="tag">@$1</span>');
+}
+window.filterHash = (h) => {
+  showTab('hash');
+  let filtered = allPosts.filter(p => (p.wazo||'').toLowerCase().includes('#'+h.toLowerCase()) || (p.hashtags||'').toLowerCase().includes(h.toLowerCase()));
+  renderHash(filtered, '#'+h);
+}
+window.tuma = async (type) => {
+  let isReel = type === 'reel';
+  let wazo = isReel ? document.getElementById('reelCaption').value.trim() : document.getElementById('wazo').value.trim();
+  let file = isReel ? selectedReel : selectedFile;
+  let tag = isReel ? '' : document.getElementById('tagInput').value.trim();
+  let hashtags = isReel ? '' : document.getElementById('hashInput').value.trim();
+  if(!wazo && !file){ alert('Andika kitu au chagua picha/video!'); return; }
+  let btn = isReel ? document.getElementById('reelBtn') : document.getElementById('postBtn');
+  btn.innerText = 'Inapakiwa... ⏳';
+  let mediaUrl = ''; let mediaType = '';
+  try{
+    if(file){
+      let sRef = ref(storage, 'posts/' + Date.now() + '_' + file.name);
+      await uploadBytes(sRef, file);
+      mediaUrl = await getDownloadURL(sRef);
+      mediaType = file.type.startsWith('video') ? 'video' : 'image';
+    }
+    await addDoc(collection(db, 'posts'), { jina: currentName, wazo: wazo, tag: tag, hashtags: hashtags, mediaUrl, mediaType, type: isReel ? 'reel' : 'post', likes: 0, comments: [], time: new Date().toLocaleString('sw-TZ') });
+    if(isReel){ document.getElementById('reelCaption').value=''; document.getElementById('reelPreview').innerHTML=''; document.getElementById('reelFile').value=''; selectedReel=null; alert('Reel imechapishwa! 🎬'); }
+    else { document.getElementById('wazo').value=''; document.getElementById('tagInput').value=''; document.getElementById('hashInput').value=''; document.getElementById('preview').innerHTML=''; document.getElementById('fileInput').value=''; selectedFile=null; }
+  } catch(e){ alert('Tatizo: '+e.message); }
+  btn.innerText = isReel ? 'Chapisha Reel 🎬' : 'Post Sasa 🚀';
 }
 window.like = async (id, likes) => { await updateDoc(doc(db, 'posts', id), { likes: likes + 1 }); }
-window.futa = async (id) => { if(confirm('Ufute hii post?')) await deleteDoc(doc(db, 'posts', id)); }
+window.futa = async (id) => { if(confirm('Ufute?')) await deleteDoc(doc(db, 'posts', id)); }
 window.comment = async (id, input) => {
   if(!input.value.trim()) return;
   await updateDoc(doc(db, 'posts', id), { comments: arrayUnion({ jina: currentName, txt: input.value.trim() }) });
   input.value = '';
+}
+window.sharePost = (txt) => {
+  let link = location.href;
+  if(navigator.share){ navigator.share({title:'KAPAPP', text: txt, url: link}); }
+  else { navigator.clipboard.writeText(link); alert('Link imekopiwa! Tuma kwa rafiki 📲'); }
+}
+function postHTML(p, id){
+  let cmt = (p.comments||[]).map(c => '<div><b>'+c.jina+':</b> '+c.txt+'</div>').join('');
+  let media = '';
+  if(p.mediaUrl && p.mediaType==='video') media = '<video src="'+p.mediaUrl+'" controls></video>';
+  else if(p.mediaUrl) media = '<img src="'+p.mediaUrl+'">';
+  let tagHtml = p.tag ? '<div class="tag">🏷️ Na: '+p.tag+'</div>' : '';
+  let hashHtml = p.hashtags ? '<div class="hashtag">'+p.hashtags+'</div>' : '';
+  return '<span class="del" onclick="futa(\''+id+'\')">✖</span><b>'+p.jina+'</b> <small style="color:#888">• '+p.time+'</small><p>'+formatText(p.wazo)+'</p>'+tagHtml+hashHtml+media+'<div class="actions"><span onclick="like(\''+id+'\','+p.likes+')">👍 Like (<b>'+p.likes+'</b>)</span><span>💬 '+(p.comments||[]).length+'</span><span onclick="sharePost(\''+p.wazo.replace(/'/g,'')+'\')">↗️ Share</span></div><div class="comments">'+cmt+'<input placeholder="Andika comment... 😀" onkeydown="if(event.key===\'Enter\') comment(\''+id+'\',this)"></div>';
+}
+function renderHash(list, title){
+  let h = document.getElementById('hashFeed'); h.innerHTML = '<div class="box"><b>'+(title||'Trending')+'</b></div>';
+  if(!list.length) h.innerHTML += '<p style="text-align:center">Hakuna post kwa hashtag hii bado.</p>';
+  list.forEach(p => { let d=document.createElement('div'); d.className='post'; d.innerHTML=postHTML(p,p.id); h.appendChild(d); });
 }
 onAuthStateChanged(auth, (user) => {
   if(user){
@@ -98,15 +222,23 @@ onAuthStateChanged(auth, (user) => {
 });
 const q = query(collection(db, 'posts'), orderBy('time', 'desc'));
 onSnapshot(q, (snap) => {
-  let feed = document.getElementById('feed');
-  feed.innerHTML = '';
-  if(snap.empty){ feed.innerHTML = '<p style="text-align:center;color:#888">Hakuna post bado. Kuwa wa kwanza kupost!</p>'; return; }
-  snap.forEach((d) => {
-    let p = d.data(); let id = d.id;
-    let div = document.createElement('div'); div.className = 'post';
-    let cmt = (p.comments || []).map(c => '<div><b>'+c.jina+':</b> '+c.txt+'</div>').join('');
-    div.innerHTML = '<span class="del" onclick="futa(\''+id+'\')">✖</span><b>'+p.jina+'</b> <small style="color:#888">• '+p.time+'</small><p>'+p.wazo+'</p><div class="actions"><span onclick="like(\''+id+'\','+p.likes+')">👍 Like (<b>'+p.likes+'</b>)</span><span>💬 Comment ('+(p.comments||[]).length+')</span><span onclick="alert(\'Link imekopiwa! Tuma kwa rafiki.\')">↗️ Share</span></div><div class="comments">'+cmt+'<input placeholder="Andika comment..." onkeydown="if(event.key===\'Enter\') comment(\''+id+'\',this)"></div>';
-    feed.appendChild(div);
+  allPosts = [];
+  snap.forEach(d => allPosts.push({id:d.id, ...d.data()}));
+  let feed = document.getElementById('feed'); feed.innerHTML = '';
+  let reels = document.getElementById('reelFeed'); reels.innerHTML = '';
+  let hashSet = new Set();
+  allPosts.forEach(p => { (p.hashtags||'').split(' ').forEach(h => { if(h.startsWith('#')) hashSet.add(h); }); (p.wazo||'').split(' ').forEach(h => { if(h.startsWith('#')) hashSet.add(h); }); });
+  document.getElementById('hashList').innerHTML = [...hashSet].map(h => '<span class="hashtag" style="font-size:18px;margin-right:10px" onclick="filterHash(\''+h.replace('#','')+'\')">'+h+'</span>').join(' ') || 'Bado hakuna hashtag. Kuwa wa kwanza!';
+  let posts = allPosts.filter(p => p.type !== 'reel');
+  let reelPosts = allPosts.filter(p => p.type === 'reel');
+  if(!posts.length) feed.innerHTML = '<p style="text-align:center;color:#888">Hakuna post bado. Kuwa wa kwanza!</p>';
+  posts.forEach(p => { let d=document.createElement('div'); d.className='post'; d.innerHTML=postHTML(p,p.id); feed.appendChild(d); });
+  if(!reelPosts.length) reels.innerHTML = '<p style="text-align:center;color:#888">Hakuna Reels bado. Tengeneza ya kwanza! 🎬</p>';
+  reelPosts.forEach(p => {
+    let d=document.createElement('div'); d.className='reelCard';
+    let media = p.mediaType==='video' ? '<video src="'+p.mediaUrl+'" controls loop></video>' : '<img src="'+p.mediaUrl+'" style="width:100%">';
+    d.innerHTML = media + '<div class="reelInfo"><b>@'+p.jina+'</b><p>'+formatText(p.wazo)+'</p><div style="display:flex;justify-content:space-between"><span onclick="like(\''+p.id+'\','+p.likes+')">❤️ '+p.likes+'</span><span>💬 '+(p.comments||[]).length+'</span><span onclick="sharePost(\''+p.wazo.replace(/'/g,'')+'\')">↗️ Share</span></div><div style="margin-top:8px"><input placeholder="Comment..." onkeydown="if(event.key===\'Enter\') comment(\''+p.id+'\',this)"></div></div>';
+    reels.appendChild(d);
   });
 });
 </script>

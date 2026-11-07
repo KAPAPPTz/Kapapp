@@ -6,43 +6,137 @@
 <title>KAPAPP</title>
 <style>
 body{margin:0;font-family:Arial;background:#f0f2f5}
-.top{background:#1877f2;color:white;padding:12px;text-align:center;font-size:22px;font-weight:bold;position:sticky;top:0}
-.box,.post{background:white;margin:10px;padding:12px;border-radius:10px}
-input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:5px 0;box-sizing:border-box}
-button{background:#1877f2;color:white;border:0;padding:10px 20px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer}
-.post img{width:100%;border-radius:10px;margin-top:8px}
+.top{background:#1877f2;color:white;padding:12px;text-align:center;font-size:22px;font-weight:bold;position:sticky;top:0;z-index:10}
+.top small{font-size:12px;font-weight:normal;display:block}
+.box,.post{background:white;margin:10px;padding:14px;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+input,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radius:8px;margin:6px 0;box-sizing:border-box;font-size:15px}
+button{background:#1877f2;color:white;border:0;padding:12px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;font-size:16px}
+.emoji-bar{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.emoji-bar span{font-size:22px;cursor:pointer;background:#f0f2f5;padding:4px 8px;border-radius:20px}
+.post img,.post video{width:100%;border-radius:10px;margin-top:8px}
+.post video{max-height:400px}
 .actions{display:flex;justify-content:space-between;margin-top:10px;border-top:1px solid #eee;padding-top:8px}
-.actions span{cursor:pointer}
+.actions span{cursor:pointer;font-size:14px}
+.del{color:red;float:right;cursor:pointer}
+.comments{margin-top:10px;background:#f0f2f5;padding:8px;border-radius:8px;font-size:14px}
+.tag{color:#1877f2;font-weight:bold;cursor:pointer}
+.hash{color:#1877f2;font-weight:bold;cursor:pointer}
+.search-bar{display:flex;gap:6px;margin:10px}
+.search-bar input{flex:1}
+.chip{display:inline-block;background:#e7f3ff;color:#1877f2;padding:4px 10px;border-radius:20px;font-size:13px;margin:3px;cursor:pointer}
+.welcome{text-align:center;color:#555}
+.link{color:#1877f2;cursor:pointer;text-align:center;display:block;margin-top:10px}
 </style>
 </head>
 <body>
-<div class="top">KAPAPP</div>
-<div class="box">
-<input id="jina" placeholder="Jina lako...">
-<textarea id="wazo" rows="3" placeholder="Una wazo gani leo?"></textarea>
-<input type="file" id="picha" accept="image/*">
-<button onclick="tuma()">Post</button>
+<div class="top">KAPAPP<small id="userTop"></small></div>
+
+<div id="authBox" class="box">
+<h2 style="text-align:center;margin:0">Karibu KAPAPP 🔥</h2>
+<p class="welcome">Jisajili uanze kupost video, picha, hashtag na kutag marafiki!</p>
+<input id="aJina" placeholder="Jina kamili...">
+<input id="aSimu" placeholder="Namba ya simu...">
+<input id="aPass" type="password" placeholder="Password...">
+<button onclick="authAction()" id="authBtn">JISAJILI</button>
+<span class="link" onclick="badiliMode()" id="modeLink">Una akaunti? Bonyeza hapa kuingia</span>
 </div>
+
+<div id="appBox" style="display:none">
+<div class="box">
+<textarea id="wazo" rows="3" placeholder="Una wazo gani leo? Tumia #hashtag na @kutag rafiki..."></textarea>
+<div class="emoji-bar">
+<span onclick="wekaEmoji('😂')">😂</span><span onclick="wekaEmoji('❤️')">❤️</span><span onclick="wekaEmoji('🔥')">🔥</span><span onclick="wekaEmoji('😍')">😍</span><span onclick="wekaEmoji('👏')">👏</span><span onclick="wekaEmoji('😭')">😭</span><span onclick="wekaEmoji('💪')">💪</span><span onclick="wekaEmoji('🙏')">🙏</span><span onclick="wekaEmoji('🎉')">🎉</span><span onclick="wekaEmoji('😎')">😎</span>
+</div>
+<input type="file" id="picha" accept="image/*,video/*">
+<button onclick="tuma()">Post 🚀</button>
+<p style="font-size:12px;color:#888;text-align:center;margin:6px 0 0">Mfano: Leo nimefurahi sana! #KAPAPP @Said ❤️🔥</p>
+<button onclick="toka()" style="background:#e4e6eb;color:#333;margin-top:8px">Toka / Badilisha Akaunti</button>
+</div>
+
+<div class="search-bar">
+<input id="tafuta" placeholder="🔍 Tafuta post, #hashtag, @mtu..." oninput="onyesha()">
+</div>
+<div style="padding:0 10px" id="hashList"></div>
 <div id="feed"></div>
+</div>
+
 <script>
+let mode='sajili';
+let users=JSON.parse(localStorage.getItem('kapapp_users')||'[]');
+let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+let current=localStorage.getItem('kapapp_current')||'';
+let filterTag='';
+
+function wekaEmoji(e){let t=document.getElementById('wazo');t.value+=e;t.focus();}
+function badiliMode(){
+mode=mode==='sajili'?'ingia':'sajili';
+document.getElementById('authBtn').innerText=mode==='sajili'?'JISAJILI':'INGIA';
+document.getElementById('modeLink').innerText=mode==='sajili'?'Una akaunti? Bonyeza hapa kuingia':'Huna akaunti? Bonyeza hapa kujisajili';
+}
+function authAction(){
+let jina=document.getElementById('aJina').value.trim();
+let simu=document.getElementById('aSimu').value.trim();
+let pass=document.getElementById('aPass').value.trim();
+if(!jina||!simu||!pass){alert('Jaza jina, simu na password!');return;}
+if(mode==='sajili'){
+if(users.find(u=>u.simu===simu)){alert('Namba hii imeshasajiliwa! Ingia.');badiliMode();return;}
+users.push({jina:jina,simu:simu,pass:pass});
+localStorage.setItem('kapapp_users',JSON.stringify(users));
+alert('Hongera '+jina+'! Umesajiliwa! Sasa ingia.');
+badiliMode();
+}else{
+let u=users.find(u=>u.simu===simu&&u.pass===pass);
+if(!u){alert('Simu au password si sahihi!');return;}
+current=u.jina;localStorage.setItem('kapapp_current',current);funguaApp();
+}
+}
+function funguaApp(){document.getElementById('authBox').style.display='none';document.getElementById('appBox').style.display='block';document.getElementById('userTop').innerText='Karibu, '+current;onyesha();}
+function toka(){localStorage.removeItem('kapapp_current');location.reload();}
+function hifadhi(){localStorage.setItem('kapapp_posts',JSON.stringify(posts));}
+function formatText(txt){
+return txt.replace(/#(\w+)/g,'<span class="hash" onclick="tafutaTag(\'#$1\')">#$1</span>').replace(/@(\w+)/g,'<span class="tag" onclick="tafutaTag(\'@$1\')">@$1</span>');
+}
+function tafutaTag(t){document.getElementById('tafuta').value=t;onyesha();}
+function onyesha(){
+let q=document.getElementById('tafuta').value.toLowerCase();
+let feed=document.getElementById('feed');feed.innerHTML='';
+let hashes={};posts.forEach(p=>{let m=p.wazo.match(/#\w+/g);if(m)m.forEach(h=>hashes[h]=(hashes[h]||0)+1);});
+let hl=document.getElementById('hashList');hl.innerHTML=Object.keys(hashes).map(h=>'<span class="chip" onclick="tafutaTag(\''+h+'\')">'+h+' ('+hashes[h]+')</span>').join('')+(Object.keys(hashes).length?'<span class="chip" style="background:#ddd;color:#333" onclick="document.getElementById(\'tafuta\').value=\'\';onyesha()">✖ Ondoa Filter</span>':'');
+let filtered=posts.filter(p=>!q||p.wazo.toLowerCase().includes(q)||p.jina.toLowerCase().includes(q));
+if(filtered.length===0){feed.innerHTML='<p style="text-align:center;color:#888">Hakuna post. Kuwa wa kwanza! 🔥</p>';return;}
+filtered.forEach((p)=>{
+let i=posts.indexOf(p);
+let div=document.createElement('div');div.className='post';
+let media='';
+if(p.img){if(p.img.startsWith('data:video')){media='<video src="'+p.img+'" controls></video>';}else{media='<img src="'+p.img+'">';}}
+let cmt=p.comments.map(c=>'<div><b>'+c.jina+':</b> '+formatText(c.txt)+'</div>').join('');
+div.innerHTML='<span class="del" onclick="futa('+i+')">✖</span><b>'+p.jina+'</b> <small style="color:#888">• '+p.time+'</small><p>'+formatText(p.wazo)+'</p>'+media+'<div class="actions"><span onclick="like('+i+')">👍 Like (<b>'+p.likes+'</b>)</span><span onclick="document.getElementById(\'c'+i+'\').focus()">💬 Comment ('+p.comments.length+')</span><span onclick="sharePost('+i+')">↗️ Share</span></div><div class="comments">'+cmt+'<input id="c'+i+'" placeholder="Andika comment... 😂❤️" onkeydown="if(event.key===\'Enter\') comment('+i+',this)"></div>';
+feed.appendChild(div);
+});
+}
 function tuma(){
-let jina=document.getElementById('jina').value || 'KAPAPP';
-let wazo=document.getElementById('wazo').value;
+let wazo=document.getElementById('wazo').value.trim();
 let file=document.getElementById('picha').files[0];
-if(!wazo && !file){alert('Andika kitu kwanza!');return;}
-let div=document.createElement('div');
-div.className='post';
-let imgTag='';
-if(file){imgTag='<img src="'+URL.createObjectURL(file)+'">';}
-div.innerHTML='<b>'+jina+'</b><p>'+wazo+'</p>'+imgTag+'<div class="actions"><span onclick="like(this)">👍 Like (<b>0</b>)</span><span>💬 Comment</span><span>↗️ Share</span></div>';
-document.getElementById('feed').prepend(div);
-document.getElementById('wazo').value='';
-document.getElementById('picha').value='';
+if(!wazo&&!file){alert('Andika kitu kwanza!');return;}
+let time=new Date().toLocaleString('sw-TZ',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
+let savePost=(img)=>{
+posts.unshift({jina:current,wazo:wazo,img:img,likes:0,comments:[],time:time});
+hifadhi();onyesha();
+document.getElementById('wazo').value='';document.getElementById('picha').value='';
+};
+if(file){
+if(file.size>8000000){alert('Video/picha ni kubwa sana! Chagua fupi/chini ya 8MB.');return;}
+let r=new FileReader();r.onload=e=>savePost(e.target.result);r.readAsDataURL(file);
+}else savePost('');
 }
-function like(el){
-let b=el.querySelector('b');
-b.innerText=parseInt(b.innerText)+1;
+function like(i){posts[i].likes++;hifadhi();onyesha();}
+function comment(i,input){if(!input.value.trim())return;posts[i].comments.push({jina:current,txt:input.value.trim()});hifadhi();onyesha();}
+function sharePost(i){
+let txt=posts[i].jina+': '+posts[i].wazo+'\n\nAngalia KAPAPP: https://kapapptz.github.io/Kapapp/';
+if(navigator.share){navigator.share({text:txt});}else{navigator.clipboard.writeText(txt);alert('Link imekopiwa!');}
 }
+function futa(i){if(confirm('Ufute hii post?')){posts.splice(i,1);hifadhi();onyesha();}}
+if(current){funguaApp();}
 </script>
 </body>
 </html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAPAPP - Kama FB</title>
+<style>
+body{margin:0;font-family:Arial;background:#f0f2f5}
+.top{background:#1877f2;color:white;padding:12px;text-align:center;font-weight:bold;font-size:22px}
+.box,.post{background:white;margin:10px;padding:12px;border-radius:10px}
+input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:20px;box-sizing:border-box;margin-top:8px}
+button{background:#1877f2;color:white;border:0;padding:10px 18px;border-radius:20px;font-weight:bold;margin-top:8px}
+.post img{width:100%;border-radius:10px;margin-top:8px}
+.actions{display:flex;justify-content:space-between;margin-top:10px;border-top:1px solid #eee;padding-top:8px}
+.actions span{cursor:pointer}
+.comment{font-size:13px;background:#f0f2f5;padding:6px 10px;border-radius:15px;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="top">KAPAPP</div>
+<div class="box">
+<input id="jina" placeholder="Jina lako...">
+<textarea id="maandishi" placeholder="Una wazo gani leo?"></textarea>
+<input type="file" id="picha" accept="image/*">
+<button onclick="post()">Post Kama FB</button>
+</div>
+<div id="feed"></div>
+<script>
+let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+function onyesha(){
+let f=document.getElementById('feed');f.innerHTML='';
+posts.slice().reverse().forEach((p,i)=>{
+let idx=posts.length-1-i;
+f.innerHTML+=`<div class="post"><b>${p.jina}</b><p>${p.text}</p>${p.img?`<img src="${p.img}">`:''}<div class="actions"><span onclick="like(${idx})">👍 Like (${p.likes})</span><span onclick="comment(${idx})">💬 Comment</span><span>↗️ Share</span></div><div>${p.comments.map(c=>`<div class="comment">${c}</div>`).join('')}</div></div>`
+});
+}
+function post(){
+let jina=document.getElementById('jina').value||'Mgeni';
+let text=document.getElementById('maandishi').value;
+if(!text) return alert('Andika kitu kwanza');
+let file=document.getElementById('picha').files[0];
+if(file){let r=new FileReader();r.onload=e=>{sawa(jina,text,e.target.result)};r.readAsDataURL(file);}
+else sawa(jina,text,'');
+}
+function sawa(jina,text,img){
+posts.push({jina,text,img,likes:0,comments:[]});
+localStorage.setItem('kapapp_posts',JSON.stringify(posts));
+document.getElementById('maandishi').value='';onyesha();
+}
+function like(i){posts[i].likes++;localStorage.setItem('kapapp_posts',JSON.stringify(posts));onyesha();}
+function comment(i){let c=prompt('Andika comment:');if(c){posts[i].comments.push(c);localStorage.setItem('kapapp_posts',JSON.stringify(posts));onyesha();}}
+onyesha();
+</script>
+</body>
+</html>

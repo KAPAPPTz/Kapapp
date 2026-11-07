@@ -3,154 +3,145 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kapapp</title>
+<title>Kapapp - Mtandao wa Wote</title>
 <style>
 *{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#f0f2f5;display:flex;justify-content:center;min-height:100vh}
-.box{width:100%;max-width:420px;background:white;min-height:100vh;padding:25px}
-.logo{text-align:center;font-size:32px;font-weight:900;color:#1877f2;margin:30px 0 5px}
-.sub{text-align:center;color:#777;margin-bottom:25px}
-h2{text-align:center;margin:10px 0}
-input{width:100%;padding:14px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:16px;outline:none}
-input:focus{border-color:#1877f2}
-button{width:100%;padding:14px;border:none;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:10px}
-.btn-blue{background:#1877f2;color:white}
-.btn-green{background:#42b72a;color:white}
-.btn-red{background:#ff3b30;color:white}
-.link{text-align:center;color:#1877f2;margin-top:15px;cursor:pointer;font-weight:bold}
-.msg{text-align:center;color:red;font-weight:bold;min-height:20px}
-.card{background:#e7f3ff;padding:20px;border-radius:15px;text-align:center;margin-top:20px}
-.card h1{margin:0;color:#1877f2}
+body{margin:0;background:#f2f4f8;padding-bottom:80px}
+.header{background:#1877f2;color:white;text-align:center;padding:16px;font-size:28px;font-weight:900;position:sticky;top:0;z-index:10}
+.header small{display:block;font-size:13px;font-weight:400}
+.box{background:white;margin:12px;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+input,textarea,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
+button{width:100%;padding:13px;border:none;border-radius:10px;background:#1877f2;color:white;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px}
+button.red{background:#ff2d2d} button.green{background:#00a651} button.gray{background:#eef1f5;color:#333}
+.menu{display:flex;gap:6px;margin:12px;flex-wrap:wrap}
+.menu button{flex:1;margin:0;padding:11px;font-size:13px}
+.menu button.active{background:#0d5fd6}
+.cats{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.cats button{width:auto;padding:8px 12px;font-size:13px;background:#eef1f5;color:#333;margin:0}
+.cats button.active{background:#1877f2;color:white}
+.post{border-bottom:1px solid #eee;padding:14px 0}
+.post b{font-size:16px}
+.post small{color:#777}
+.badge{display:inline-block;background:#1877f2;color:white;padding:3px 9px;border-radius:20px;font-size:12px;margin:4px 0}
+.hashtag{color:#1877f2;font-weight:700;cursor:pointer}
+.tag{color:#00a651;font-weight:700}
+.actions{display:flex;gap:6px;margin-top:8px}
+.actions button{padding:8px;font-size:13px}
+.welcome{background:#dbeafe;text-align:center}
+.welcome h2{color:#1877f2;margin:5px 0;font-size:26px}
 .hidden{display:none}
-.menu{margin-top:20px}
-.item{background:#f5f5f5;padding:15px;border-radius:12px;margin:8px 0;font-weight:bold}
+.tip{background:#fff7e6;border:1px solid #ffdf8e;padding:10px;border-radius:10px;font-size:13px;color:#555;margin-top:8px}
+img.postImg,video{width:100%;border-radius:12px;margin-top:8px;max-height:320px;object-fit:cover}
 </style>
 </head>
 <body>
-<div class="box">
+<div class="header">Kapapp<small>Habari • Michezo • Burudani • Mziki • Dini</small></div>
 
-<div id="authPage">
-<div class="logo">Kapapp</div>
-<div class="sub">Karibu kwenye Kapapp</div>
-
-<!-- Kujisajili -->
-<div id="registerBox">
-<h2>Jisajili</h2>
-<div class="msg" id="regMsg"></div>
-<input id="regName" type="text" placeholder="Jina kamili">
-<input id="regPhone" type="tel" placeholder="Namba ya simu - mf 0712345678">
+<div id="authBox" class="box">
+<h2 style="text-align:center">Karibu Kapapp</h2>
+<input id="regName" placeholder="Jina kamili - Said Kapwile">
+<input id="regEmail" placeholder="Email">
 <input id="regPass" type="password" placeholder="Password">
-<button class="btn-green" onclick="jisajili()">JISAJILI</button>
-<div class="link" onclick="onyeshaLogin()">Una akaunti? Bonyeza hapa kuingia</div>
+<button onclick="jisajili()">JISAJILI</button>
+<button class="gray" onclick="ingia()">INGIA</button>
+<p id="authMsg" style="text-align:center;color:red"></p>
 </div>
 
-<!-- Kuingia -->
-<div id="loginBox" class="hidden">
-<h2>Ingia</h2>
-<div class="msg" id="loginMsg"></div>
-<input id="loginPhone" type="tel" placeholder="Namba ya simu">
-<input id="loginPass" type="password" placeholder="Password">
-<button class="btn-blue" onclick="ingia()">INGIA</button>
-<div class="link" onclick="onyeshaRegister()">Huna akaunti? Jisajili hapa</div>
-</div>
-</div>
+<div id="appBox" class="hidden">
+<div class="box welcome"><p style="margin:0">Karibu,</p><h2 id="showName"></h2><p id="showEmail" style="color:#555"></p></div>
 
-<!-- Ndani ya App -->
-<div id="appPage" class="hidden">
-<div class="logo" style="font-size:24px">Kapapp</div>
-<div class="card">
-<p style="margin:0;color:#555">Karibu,</p>
-<h1 id="userName">Said</h1>
-<p id="userPhone" style="color:#555"></p>
-</div>
 <div class="menu">
-<div class="item">🏠 Nyumbani</div>
-<div class="item">👤 Akaunti Yangu</div>
-<div class="item">⚙️ Mipangilio</div>
-</div>
-<button class="btn-red" onclick="toka()">TOKA / LOGOUT</button>
+<button id="btnNyumbani" class="active" onclick="onyesha('nyumbani')">🏠 Nyumbani</button>
+<button id="btnPost" onclick="onyesha('post')">✍️ Post</button>
+<button id="btnAkaunti" onclick="onyesha('akaunti')">👤 Akaunti</button>
+<button id="btnMipangilio" onclick="onyesha('mipangilio')">⚙️ Mipangilio</button>
 </div>
 
+<div id="secNyumbani" class="box">
+<h3>🏠 Nyumbani</h3>
+<input id="tafuta" placeholder="🔍 Tafuta #hashtag, @mtu, maneno..." oninput="onyeshaPost()">
+<div class="cats">
+<button id="catYote" class="active" onclick="setCat('Yote')">Yote</button>
+<button onclick="setCat('Habari')">📰 Habari</button>
+<button onclick="setCat('Michezo')">⚽ Michezo</button>
+<button onclick="setCat('Burudani')">🎬 Burudani</button>
+<button onclick="setCat('Mziki')">🎵 Mziki</button>
+<button onclick="setCat('Dini')">🕌 Dini</button>
+</div>
+<div id="feed"></div>
+<p id="noPost" style="text-align:center;color:#777">Hakuna post bado. Kuwa wa kwanza!</p>
+</div>
+
+<div id="secPost" class="box hidden">
+<h3>✍️ Post Kitu Kipya</h3>
+<select id="postCat">
+<option value="Habari">📰 Habari</option>
+<option value="Michezo">⚽ Michezo</option>
+<option value="Burudani">🎬 Burudani</option>
+<option value="Mziki">🎵 Mziki</option>
+<option value="Dini">🕌 Dini</option>
+</select>
+<textarea id="postText" rows="4" placeholder="Andika hapa... Mf: Leo Simba kashinda! #Michezo @Said"></textarea>
+<input id="postImg" placeholder="🖼️ Link ya PICHA - mf: https://...jpg (si lazima)">
+<input id="postVideo" placeholder="🎥 Link ya VIDEO - YouTube au .mp4 (si lazima)">
+<input id="postTag" placeholder="👥 Tag watu - mf: @Said @Baraka (si lazima)">
+<div class="tip">💡 <b>Jinsi ya kutumia:</b><br>• Hashtag: andika <b>#Michezo</b> ndani ya ujumbe<br>• Tag: andika <b>@Jina</b> la mtu<br>• Video: weka link ya YouTube, itaonekana hapa<br>• Picha: weka link ya picha</div>
+<button class="green" onclick="tumaPost()">POST SASA 🚀</button>
+<p id="postMsg" style="text-align:center;color:green"></p>
+</div>
+
+<div id="secAkaunti" class="box hidden">
+<h3>👤 Akaunti Yangu</h3>
+<p><b>Jina:</b> <span id="accName"></span></p>
+<p><b>Email:</b> <span id="accEmail"></span></p>
+<p><b>Post zako:</b> <span id="accCount">0</span></p>
+<input id="editName" placeholder="Badilisha jina">
+<button onclick="badilishaJina()">BADILISHA JINA</button>
+</div>
+
+<div id="secMipangilio" class="box hidden">
+<h3>⚙️ Mipangilio</h3>
+<input id="newPass" type="password" placeholder="Password mpya">
+<button onclick="badilishaPass()">BADILISHA PASSWORD</button>
+<button class="gray" onclick="shareApp()">SHARE APP 📤</button>
+<button class="red" onclick="futaAkaunti()">FUTA AKAUNTI</button>
+</div>
+
+<div class="box"><button class="red" onclick="toka()">TOKA / LOGOUT</button></div>
 </div>
 
 <script>
-function getUsers(){
-  try{ return JSON.parse(localStorage.getItem('kapapp_users')||'[]'); }catch(e){ return []; }
-}
-function saveUsers(u){ localStorage.setItem('kapapp_users', JSON.stringify(u)); }
-
-function onyeshaLogin(){
-  document.getElementById('registerBox').classList.add('hidden');
-  document.getElementById('loginBox').classList.remove('hidden');
-}
-function onyeshaRegister(){
-  document.getElementById('loginBox').classList.add('hidden');
-  document.getElementById('registerBox').classList.remove('hidden');
-}
-
-function jisajili(){
-  var jina = document.getElementById('regName').value.trim();
-  var simu = document.getElementById('regPhone').value.trim();
-  var pass = document.getElementById('regPass').value.trim();
-  var msg = document.getElementById('regMsg');
-
-  if(!jina || !simu || !pass){ msg.textContent = 'Tafadhali jaza vyote!'; return; }
-  if(pass.length < 4){ msg.textContent = 'Password iwe na herufi 4 au zaidi!'; return; }
-
-  var users = getUsers();
-  var ipo = users.find(function(u){ return u.phone === simu; });
-  if(ipo){ msg.textContent = 'Namba hii imeshatumika! Ingia badala yake.'; return; }
-
-  var mtumiajiMpya = { name: jina, phone: simu, pass: pass };
-  users.push(mtumiajiMpya);
-  saveUsers(users);
-  localStorage.setItem('kapapp_current', JSON.stringify(mtumiajiMpya));
-  funguaApp();
-}
-
-function ingia(){
-  var simu = document.getElementById('loginPhone').value.trim();
-  var pass = document.getElementById('loginPass').value.trim();
-  var msg = document.getElementById('loginMsg');
-
-  if(!simu || !pass){ msg.textContent = 'Jaza namba na password!'; return; }
-
-  var users = getUsers();
-  var user = users.find(function(u){ return u.phone === simu && u.pass === pass; });
-  if(!user){ msg.textContent = 'Namba au Password si sahihi!'; return; }
-
-  localStorage.setItem('kapapp_current', JSON.stringify(user));
-  funguaApp();
-}
-
-function funguaApp(){
-  var data = localStorage.getItem('kapapp_current');
-  if(!data) return;
-  var user;
-  try{ user = JSON.parse(data); }catch(e){ user = { name: data, phone: '' }; }
-  // Kama user ni string bado, badilisha kuwa object
-  if(typeof user === 'string'){ user = { name: user, phone: '' }; }
-  // Kama jina ni [object Object], chukua jina sahihi
-  var jinaSahihi = user.name || 'Mgeni';
-  if(jinaSahihi === '[object Object]') jinaSahihi = 'Mgeni';
-
-  document.getElementById('userName').textContent = jinaSahihi;
-  document.getElementById('userPhone').textContent = user.phone || '';
-  document.getElementById('authPage').classList.add('hidden');
-  document.getElementById('appPage').classList.remove('hidden');
-}
-
-function toka(){
-  localStorage.removeItem('kapapp_current');
-  document.getElementById('appPage').classList.add('hidden');
-  document.getElementById('authPage').classList.remove('hidden');
-  onyeshaLogin();
-}
-
-// Ukifungua app na umeshaingia, ingia moja kwa moja
-window.onload = function(){
-  if(localStorage.getItem('kapapp_current')){ funguaApp(); }
-};
+let users=JSON.parse(localStorage.getItem('kapapp_users')||'[]');
+let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+let current=JSON.parse(localStorage.getItem('kapapp_current')||'null');
+let catSasa='Yote';
+if(typeof current==='string'){let u=users.find(x=>x.email===current); if(u) current=u;}
+function save(){localStorage.setItem('kapapp_users',JSON.stringify(users));localStorage.setItem('kapapp_posts',JSON.stringify(posts));localStorage.setItem('kapapp_current',JSON.stringify(current));}
+function jisajili(){let n=document.getElementById('regName').value.trim();let e=document.getElementById('regEmail').value.trim().toLowerCase();let p=document.getElementById('regPass').value;if(!n||!e||!p) return document.getElementById('authMsg').innerText='Jaza vyote!';if(users.find(x=>x.email===e)) return document.getElementById('authMsg').innerText='Email inatumika, ingia.';let u={name:n,email:e,pass:p};users.push(u);current=u;save();funguaApp();}
+function ingia(){let e=document.getElementById('regEmail').value.trim().toLowerCase();let p=document.getElementById('regPass').value;let u=users.find(x=>x.email===e&&x.pass===p);if(!u) return document.getElementById('authMsg').innerText='Email au password si sahihi!';current=u;save();funguaApp();}
+function funguaApp(){if(!current) return;document.getElementById('authBox').classList.add('hidden');document.getElementById('appBox').classList.remove('hidden');document.getElementById('showName').innerText=current.name;document.getElementById('showEmail').innerText=current.email;document.getElementById('accName').innerText=current.name;document.getElementById('accEmail').innerText=current.email;document.getElementById('editName').value=current.name;document.getElementById('accCount').innerText=posts.filter(p=>p.email===current.email).length;onyeshaPost();}
+function toka(){current=null;localStorage.removeItem('kapapp_current');location.reload();}
+function onyesha(sec){['nyumbani','post','akaunti','mipangilio'].forEach(s=>{document.getElementById('sec'+s.charAt(0).toUpperCase()+s.slice(1)).classList.add('hidden');document.getElementById('btn'+s.charAt(0).toUpperCase()+s.slice(1)).classList.remove('active');});document.getElementById('sec'+sec.charAt(0).toUpperCase()+sec.slice(1)).classList.remove('hidden');document.getElementById('btn'+sec.charAt(0).toUpperCase()+sec.slice(1)).classList.add('active');}
+function setCat(c){catSasa=c;document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');onyeshaPost();}
+function tumaPost(){let t=document.getElementById('postText').value.trim();let img=document.getElementById('postImg').value.trim();let vid=document.getElementById('postVideo').value.trim();let tag=document.getElementById('postTag').value.trim();let cat=document.getElementById('postCat').value;if(!t) return alert('Andika ujumbe kwanza!');let full=t+(tag?' '+tag:'');posts.unshift({name:current.name,email:current.email,text:full,img:img,video:vid,cat:cat,time:new Date().toLocaleString(),likes:0,comments:[]});save();document.getElementById('postText').value='';document.getElementById('postImg').value='';document.getElementById('postVideo').value='';document.getElementById('postTag').value='';document.getElementById('postMsg').innerText='Ume-post vizuri! ✅';onyesha('nyumbani');onyeshaPost();funguaApp();}
+function formatText(txt){return txt.replace(/#(\w+)/g,'<span class="hashtag" onclick="tafutaHashtag(\'#$1\')">#$1</span>').replace(/@(\w+)/g,'<span class="tag">@$1</span>');}
+function tafutaHashtag(h){document.getElementById('tafuta').value=h;onyeshaPost();}
+function videoHTML(v){if(!v) return '';if(v.includes('youtube.com')||v.includes('youtu.be')){let id='';if(v.includes('v=')) id=v.split('v=')[1].split('&')[0];else id=v.split('/').pop();return `<iframe width="100%" height="220" style="border-radius:12px;margin-top:8px" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;}return `<video controls src="${v}"></video>`;}
+function onyeshaPost(){let q=(document.getElementById('tafuta').value||'').toLowerCase();let f=document.getElementById('feed');f.innerHTML='';let list=posts.filter(p=>(catSasa==='Yote'||p.cat===catSasa)&&(p.text.toLowerCase().includes(q)||p.name.toLowerCase().includes(q)||(p.cat||'').toLowerCase().includes(q)));document.getElementById('noPost').style.display=list.length?'none':'block';list.forEach(p=>{let idx=posts.indexOf(p);let div=document.createElement('div');div.className='post';div.innerHTML=`<b>${p.name}</b> <span class="badge">${p.cat||'Habari'}</span><br><small>${p.time}</small><p>${formatText(p.text)}</p>${p.img?`<img class="postImg" src="${p.img}">`:''}${videoHTML(p.video)}<div class="actions"><button onclick="likePost(${idx})">❤️ Like (${p.likes})</button><button class="gray" onclick="commentPost(${idx})">💬 Comment (${p.comments.length})</button><button class="gray" onclick="sharePost(${idx})">📤 Share</button>${p.email===current.email?`<button class="red" onclick="futaPost(${idx})">🗑️ Futa</button>`:''}</div><div>${p.comments.map(c=>`<p style="background:#f0f0f0;padding:8px;border-radius:8px"><b>${c.name}:</b> ${c.text}</p>`).join('')}</div>`;f.appendChild(div);});}
+function likePost(i){posts[i].likes++;save();onyeshaPost();}
+function commentPost(i){let c=prompt('Andika comment:');if(c){posts[i].comments.push({name:current.name,text:c});save();onyeshaPost();}}
+function futaPost(i){if(confirm('Futa post hii?')){posts.splice(i,1);save();onyeshaPost();funguaApp();}}
+function sharePost(i){let t=posts[i].text+' - Kapapp https://kapapptz.github.io/Kapapp/';if(navigator.share) navigator.share({text:t});else{navigator.clipboard.writeText(t);alert('Imekopiwa!');}}
+function badilishaJina(){let n=document.getElementById('editName').value.trim();if(!n) return;current.name=n;let u=users.find(x=>x.email===current.email);if(u) u.name=n;save();funguaApp();alert('Jina limebadilika!');}
+function badilishaPass(){let p=document.getElementById('newPass').value;if(!p) return alert('Andika password mpya');current.pass=p;let u=users.find(x=>x.email===current.email);if(u) u.pass=p;save();alert('Password imebadilika!');}
+function futaAkaunti(){if(confirm('Una uhakika kufuta akaunti?')){users=users.filter(x=>x.email!==current.email);posts=posts.filter(p=>p.email!==current.email);current=null;save();location.reload();}}
+function shareApp(){let txt='Kapapp yangu iko tayari! 🔥 Habari, Michezo, Mziki, Dini - vyote hapa! Ingia 👉 https://kapapptz.github.io/Kapapp/';if(navigator.share) navigator.share({text:txt});else{navigator.clipboard.writeText(txt);alert('Link imekopiwa!');}}
+if(current) funguaApp();
+if(posts.length===0){posts=[
+{name:'Said Kapwile',email:'saidkapwile09@gmail.com',text:'🔥 KARIBU KAPAPP! Hapa utapata Habari, Michezo, Burudani, Mziki na Dini. Post yako hapa! #Kapapp @Said',img:'',video:'',cat:'Habari',time:new Date().toLocaleString(),likes:10,comments:[{name:'Kapapp',text:'Karibu sana!'}]},
+{name:'Said Kapwile',email:'saidkapwile09@gmail.com',text:'⚽ Leo ni mechi kubwa! Unafikiri nani atashinda? #Michezo #Mpira',img:'',video:'',cat:'Michezo',time:new Date().toLocaleString(),likes:7,comments:[]},
+{name:'Said Kapwile',email:'saidkapwile09@gmail.com',text:'🎵 Wimbo gani unakubamba wiki hii? Niambie kwenye comment! #Mziki',img:'',video:'',cat:'Mziki',time:new Date().toLocaleString(),likes:5,comments:[]}
+];save();if(current) onyeshaPost();}
 </script>
 </body>
 </html>

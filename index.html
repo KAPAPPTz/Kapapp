@@ -1,80 +1,124 @@
 <!DOCTYPE html>
-<html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kapapp Rahisi</title>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAPAPP</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f0f2f5}
-.top{background:#1877f2;color:#fff;padding:14px;text-align:center;position:sticky;top:0;z-index:10}
-.top h1{margin:0;font-size:34px}
-.lang{display:flex;justify-content:center;gap:8px;margin-top:8px}
-.lang button{padding:10px 22px;font-size:16px;background:#fff;color:#1877f2;border-radius:20px}
-.lang button.on{background:#FFD700;color:#000}
-.box{max-width:600px;margin:0 auto;padding:0 10px 90px}
-.card{background:#fff;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-input,textarea{width:100%;padding:15px;margin:8px 0;border:2px solid #ddd;border-radius:14px;font-size:17px}
-button{border:none;border-radius:14px;padding:16px;font-weight:bold;cursor:pointer;font-size:17px}
-.btn-blue{background:#1877f2;color:#fff;width:100%}
-.btn-green{background:#00a400;color:#fff;width:100%}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:2px solid #ddd;z-index:20}
-.nav button{flex:1;background:#fff;font-size:16px;padding:14px 2px;color:#666}
-.nav button.on{color:#1877f2;background:#e7f3ff}
-.bigbtn{display:flex;gap:10px}.bigbtn button{flex:1;padding:18px;font-size:18px}
-.post-img,.post-vid{width:100%;border-radius:14px;margin-top:10px}
-.filebox{background:#f0f8ff;padding:14px;border-radius:14px;margin:8px 0;border:2px dashed #1877f2;text-align:center;font-size:17px}
-.filebox label{font-weight:bold;color:#1877f2;font-size:18px}
-.actions{display:flex;gap:6px;margin-top:12px;border-top:1px solid #eee;padding-top:12px}
-.actions button{flex:1;background:#f0f2f5;color:#333;padding:13px;font-size:15px}
-.avatar{width:60px;height:60px;border-radius:50%;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:bold}
-</style></head><body>
-<div class="top"><h1>KAPAPP 👑</h1><p id="t_subtitle">✨ Rahisi • Picha • Video • Chat ✨</p>
-<div class="lang"><button id="btnSW" class="on" onclick="setLang('sw')">🇹🇿 Kiswahili</button><button id="btnEN" onclick="setLang('en')">🇬🇧 English</button></div></div>
-<div class="box">
-<div id="loginBox" class="card" style="text-align:center"><h2 style="font-size:28px" id="t_welcome">Karibu Kapapp 🏠</h2><p style="font-size:17px;color:#555" id="t_loginSub">Andika Jina lako tu, ingia!</p><input id="lJina" placeholder="👤 Jina lako / Your Name"><button class="btn-blue" onclick="ingia()" id="t_enter">INGIA 🏠</button></div>
-<div id="app" style="display:none">
-<div class="card"><div style="display:flex;gap:12px;align-items:center"><div class="avatar" id="myAvatar">S</div><div><b id="myName" style="font-size:20px">Said</b><br><small id="t_homeWelcome">Karibu Nyumbani 🏠</small></div></div></div>
-<div id="pageHome">
-<div class="card"><h3 style="font-size:22px;margin:5px 0" id="t_thinking">✍️ Unawaza nini?</h3><textarea id="txt" rows="2" placeholder="Andika hapa... / Write here..."></textarea>
-<div class="bigbtn">
-<div class="filebox" style="flex:1"><label>📸 <span class="t_photo">PICHA</span></label><br><input type="file" accept="image/*" onchange="somaPicha(this)"></div>
-<div class="filebox" style="flex:1;border-color:#00a400"><label>🎥 VIDEO</label><br><input type="file" accept="video/*" onchange="somaVideo(this)"></div>
+body{margin:0;font-family:Arial;background:#f0f2f5}
+.top{background:#1877f2;color:white;padding:12px;text-align:center;font-size:22px;font-weight:bold;position:sticky;top:0;z-index:10}
+.top small{font-size:12px;font-weight:normal;display:block}
+.box,.post{background:white;margin:10px;padding:14px;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+input,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radius:8px;margin:6px 0;box-sizing:border-box;font-size:15px}
+button{background:#1877f2;color:white;border:0;padding:12px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;font-size:16px}
+.post img{width:100%;border-radius:10px;margin-top:8px}
+.actions{display:flex;justify-content:space-between;margin-top:10px;border-top:1px solid #eee;padding-top:8px}
+.actions span{cursor:pointer;font-size:14px}
+.del{color:red;float:right;cursor:pointer}
+.comments{margin-top:10px;background:#f0f2f5;padding:8px;border-radius:8px;font-size:14px}
+.link{color:#1877f2;cursor:pointer;text-align:center;display:block;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="top">KAPAPP<small id="userTop"></small></div>
+
+<div id="authBox" class="box">
+<h2 style="text-align:center;margin:0">Karibu KAPAPP</h2>
+<p style="text-align:center;color:#555">Jisajili ili uanze kupost, kulike na kucomment.</p>
+<input id="aJina" placeholder="Jina kamili...">
+<input id="aEmail" placeholder="Email...">
+<input id="aPass" type="password" placeholder="Password...">
+<button onclick="authAction()">JISAJILI / INGIA</button>
+<span class="link" onclick="badiliMode()" id="modeLink">Una akaunti? Bonyeza hapa kuingia</span>
 </div>
-<img id="previewPicha" style="display:none;width:100%;border-radius:14px;margin-top:8px">
-<video id="previewVideo" controls style="display:none;width:100%;border-radius:14px;margin-top:8px"></video>
-<button class="btn-green" onclick="tumaPost()" id="t_postNow">POST SASA 🚀</button></div>
+
+<div id="appBox" style="display:none">
+<div class="box">
+<textarea id="wazo" rows="3" placeholder="Una wazo gani leo?"></textarea>
+<button onclick="tuma()">Post</button>
+<button onclick="toka()" style="background:#e4e6eb;color:#333;margin-top:8px">Toka</button>
+</div>
 <div id="feed"></div>
 </div>
-<div id="pageSoko" style="display:none"><div class="card"><h3 id="t_marketTitle">🛍️ Soko</h3><input id="bidhaaJina" placeholder="Jina la bidhaa / Product name"><input id="bidhaaBei" placeholder="Bei / Price - mf: 10,000"><button class="btn-green" onclick="wekaBidhaa()" id="t_addMarket">WEKA SOKONI</button><div id="marketList"></div></div></div>
-<div id="pageChat" style="display:none"><div class="card"><h3 id="t_chatTitle">💬 Chat</h3><div id="chatBox" style="height:280px;overflow:auto;background:#f0f2f5;padding:12px;border-radius:14px"></div><input id="chatMsg" placeholder="Andika ujumbe... / Type message..."><button class="btn-blue" onclick="tumaChat()" id="t_send">TUMA 💬</button></div></div>
-<button onclick="toka()" style="background:#ddd;width:100%;margin:10px 0" id="t_logout">🚪 Toka / Logout</button>
-</div>
-</div>
-<div class="nav" id="bottomNav" style="display:none"><button class="on" onclick="badiliPage('Home',this)"><span>🏠</span><br><span class="t_home">Nyumbani</span></button><button onclick="badiliPage('Soko',this)">🛍️<br><span class="t_market">Soko</span></button><button onclick="badiliPage('Chat',this)">💬<br>Chat</button></div>
-<script>
-let LANG=localStorage.getItem('kap_lang')||'sw';
-let T={
-sw:{subtitle:'✨ Rahisi • Picha • Video • Chat ✨',welcome:'Karibu Kapapp 🏠',loginSub:'Andika Jina lako tu, ingia!',enter:'INGIA 🏠',homeWelcome:'Karibu Nyumbani 🏠',thinking:'✍️ Unawaza nini?',postNow:'POST SASA 🚀',marketTitle:'🛍️ Soko',addMarket:'WEKA SOKONI',chatTitle:'💬 Chat',send:'TUMA 💬',logout:'🚪 Toka',home:'Nyumbani',market:'Soko',photo:'PICHA',noPost:'Hakuna post bado.<br>Kuwa wa kwanza kupost! 📸',noMarket:'Hakuna bidhaa bado',noChat:'Hakuna ujumbe bado',alertName:'Andika Jina lako kwanza',alertPost:'Andika kitu au chagua Picha/Video',posted:'Imepostiwa! 🎉',alertMarket:'Jaza jina na bei',marketAdded:'Imewekwa Sokoni! 🛍️',seller:'Muuzaji',like:'❤️ Like',share:'🔗 Share'},
-en:{subtitle:'✨ Easy • Photos • Videos • Chat ✨',welcome:'Welcome to Kapapp 🏠',loginSub:'Just type your name, enter!',enter:'ENTER 🏠',homeWelcome:'Welcome Home 🏠',thinking:'✍️ What are you thinking?',postNow:'POST NOW 🚀',marketTitle:'🛍️ Market',addMarket:'ADD TO MARKET',chatTitle:'💬 Chat',send:'SEND 💬',logout:'🚪 Logout',home:'Home',market:'Market',photo:'PHOTO',noPost:'No posts yet.<br>Be the first to post! 📸',noMarket:'No products yet',noChat:'No messages yet',alertName:'Type your name first',alertPost:'Write something or choose Photo/Video',posted:'Posted! 🎉',alertMarket:'Fill name and price',marketAdded:'Added to Market! 🛍️',seller:'Seller',like:'❤️ Like',share:'🔗 Share'}
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, updateDoc, doc, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// *** WEKA CONFIG YAKO HAPA CHINI - BADILISHA HIZI 6 ***
+const firebaseConfig = {
+  apiKey: "WEKA_APIKEY_HAPA",
+  authDomain: "WEKA_AUTHDOMAIN_HAPA",
+  projectId: "WEKA_PROJECTID_HAPA",
+  storageBucket: "WEKA_STORAGEBUCKET_HAPA",
+  messagingSenderId: "WEKA_SENDERID_HAPA",
+  appId: "WEKA_APPID_HAPA"
 };
-function setLang(l){LANG=l;localStorage.setItem('kap_lang',l);applyLang();document.getElementById('btnSW').classList.toggle('on',l=='sw');document.getElementById('btnEN').classList.toggle('on',l=='en');onyesha();onyeshaMarket();onyeshaChat()}
-function applyLang(){let t=T[LANG];document.getElementById('t_subtitle').innerText=t.subtitle;document.getElementById('t_welcome').innerText=t.welcome;document.getElementById('t_loginSub').innerText=t.loginSub;document.getElementById('t_enter').innerText=t.enter;document.getElementById('t_homeWelcome').innerText=t.homeWelcome;document.getElementById('t_thinking').innerText=t.thinking;document.getElementById('t_postNow').innerText=t.postNow;document.getElementById('t_marketTitle').innerText=t.marketTitle;document.getElementById('t_addMarket').innerText=t.addMarket;document.getElementById('t_chatTitle').innerText=t.chatTitle;document.getElementById('t_send').innerText=t.send;document.getElementById('t_logout').innerText=t.logout;document.querySelectorAll('.t_home').forEach(e=>e.innerText=t.home);document.querySelectorAll('.t_market').forEach(e=>e.innerText=t.market);document.querySelectorAll('.t_photo').forEach(e=>e.innerText=t.photo)}
-let posts=JSON.parse(localStorage.getItem('kap_posts2')||'[]');
-let market=JSON.parse(localStorage.getItem('kap_market2')||'[]');
-let chats=JSON.parse(localStorage.getItem('kap_chats2')||'[]');
-let me=localStorage.getItem('kap_me')||'';
-let pichaData='';let videoData='';
-function ingia(){let j=document.getElementById('lJina').value.trim();if(!j)return alert(T[LANG].alertName);me=j;localStorage.setItem('kap_me',me);funguaApp()}
-function funguaApp(){document.getElementById('loginBox').style.display='none';document.getElementById('app').style.display='block';document.getElementById('bottomNav').style.display='flex';document.getElementById('myName').innerText=me;document.getElementById('myAvatar').innerText=me[0].toUpperCase();onyesha();onyeshaMarket();onyeshaChat()}
-function toka(){localStorage.removeItem('kap_me');location.reload()}
-function badiliPage(p,btn){['Home','Soko','Chat'].forEach(x=>document.getElementById('page'+x).style.display=(x==p?'block':'none'));document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
-function somaPicha(inp){let f=inp.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{pichaData=e.target.result;let im=document.getElementById('previewPicha');im.src=pichaData;im.style.display='block'};r.readAsDataURL(f)}
-function somaVideo(inp){let f=inp.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{videoData=e.target.result;let v=document.getElementById('previewVideo');v.src=videoData;v.style.display='block'};r.readAsDataURL(f)}
-function tumaPost(){let t=document.getElementById('txt').value.trim();if(!t&&!pichaData&&!videoData)return alert(T[LANG].alertPost);posts.unshift({jina:me,text:t,pic:pichaData,vid:videoData,time:new Date().toLocaleString(),likes:[]});localStorage.setItem('kap_posts2',JSON.stringify(posts));document.getElementById('txt').value='';pichaData='';videoData='';document.getElementById('previewPicha').style.display='none';document.getElementById('previewVideo').style.display='none';onyesha();alert(T[LANG].posted)}
-function likePost(i){let p=posts[i];if(!p.likes)p.likes=[];if(p.likes.includes(me))p.likes=p.likes.filter(x=>x!=me);else p.likes.push(me);localStorage.setItem('kap_posts2',JSON.stringify(posts));onyesha()}
-function onyesha(){let h='';posts.forEach((p,idx)=>{h+='<div class="card"><b style="font-size:18px">'+p.jina+'</b> <small style="color:#888">'+p.time+'</small><p style="font-size:18px">'+p.text+'</p>'+(p.pic?'<img class="post-img" src="'+p.pic+'">':'')+(p.vid?'<video controls src="'+p.vid+'" class="post-vid"></video>':'')+'<div class="actions"><button onclick="likePost('+idx+')">'+T[LANG].like+' ('+(p.likes?p.likes.length:0)+')</button><button onclick="sharePost('+idx+')">'+T[LANG].share+'</button></div></div>'});document.getElementById('feed').innerHTML=h||'<div class="card" style="text-align:center;font-size:18px">'+T[LANG].noPost+'</div>'}
-function sharePost(i){let p=posts[i];window.open('https://wa.me/?text='+encodeURIComponent(p.jina+' kwenye Kapapp: '+p.text),'_blank')}
-function wekaBidhaa(){let j=document.getElementById('bidhaaJina').value.trim(),b=document.getElementById('bidhaaBei').value.trim();if(!j||!b)return alert(T[LANG].alertMarket);market.unshift({jina:j,bei:b,muuzaji:me});localStorage.setItem('kap_market2',JSON.stringify(market));onyeshaMarket();alert(T[LANG].marketAdded)}
-function onyeshaMarket(){let h='';market.forEach(m=>{h+='<div class="card"><b>'+m.jina+'</b><br><b style="color:#00a400">'+m.bei+'</b><br><small>'+T[LANG].seller+': '+m.muuzaji+'</small></div>'});document.getElementById('marketList').innerHTML=h||T[LANG].noMarket}
-function tumaChat(){let t=document.getElementById('chatMsg').value.trim();if(!t)return;chats.push({from:me,text:t});localStorage.setItem('kap_chats2',JSON.stringify(chats));document.getElementById('chatMsg').value='';onyeshaChat()}
-function onyeshaChat(){let h='';chats.forEach(c=>{h+='<div style="background:#fff;padding:10px;border-radius:12px;margin:6px 0"><b>'+c.from+':</b> '+c.text+'</div>'});document.getElementById('chatBox').innerHTML=h||T[LANG].noChat}
-applyLang();setLang(LANG);
-if(me)funguaApp();
-</script></body></html>
+// *** MWISHO WA CONFIG ***
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+let mode = 'sajili';
+let currentName = localStorage.getItem('kapapp_name') || 'Mgeni';
+
+window.badiliMode = () => {
+  mode = mode === 'sajili' ? 'ingia' : 'sajili';
+  document.getElementById('modeLink').innerText = mode === 'sajili' ? 'Una akaunti? Bonyeza hapa kuingia' : 'Huna akaunti? Bonyeza hapa kujisajili';
+}
+window.authAction = async () => {
+  let jina = document.getElementById('aJina').value.trim();
+  let email = document.getElementById('aEmail').value.trim();
+  let pass = document.getElementById('aPass').value.trim();
+  if(!email || !pass){ alert('Jaza email na password!'); return; }
+  try{
+    if(mode === 'sajili'){
+      if(!jina){ alert('Jaza jina!'); return; }
+      await createUserWithEmailAndPassword(auth, email, pass);
+      localStorage.setItem('kapapp_name', jina);
+      alert('Hongera '+jina+'! Umesajiliwa!');
+    } else {
+      await signInWithEmailAndPassword(auth, email, pass);
+    }
+  } catch(e){ alert(e.message); }
+}
+window.toka = async () => { await signOut(auth); location.reload(); }
+window.tuma = async () => {
+  let wazo = document.getElementById('wazo').value.trim();
+  if(!wazo){ alert('Andika kitu kwanza!'); return; }
+  await addDoc(collection(db, 'posts'), { jina: currentName, wazo: wazo, likes: 0, comments: [], time: new Date().toLocaleString('sw-TZ') });
+  document.getElementById('wazo').value = '';
+}
+window.like = async (id, likes) => { await updateDoc(doc(db, 'posts', id), { likes: likes + 1 }); }
+window.futa = async (id) => { if(confirm('Ufute hii post?')) await deleteDoc(doc(db, 'posts', id)); }
+window.comment = async (id, input) => {
+  if(!input.value.trim()) return;
+  await updateDoc(doc(db, 'posts', id), { comments: arrayUnion({ jina: currentName, txt: input.value.trim() }) });
+  input.value = '';
+}
+
+onAuthStateChanged(auth, (user) => {
+  if(user){
+    document.getElementById('authBox').style.display = 'none';
+    document.getElementById('appBox').style.display = 'block';
+    document.getElementById('userTop').innerText = 'Karibu, ' + currentName;
+  }
+});
+
+const q = query(collection(db, 'posts'), orderBy('time', 'desc'));
+onSnapshot(q, (snap) => {
+  let feed = document.getElementById('feed');
+  feed.innerHTML = '';
+  if(snap.empty){ feed.innerHTML = '<p style="text-align:center;color:#888">Hakuna post bado. Kuwa wa kwanza kupost!</p>'; return; }
+  snap.forEach((d) => {
+    let p = d.data(); let id = d.id;
+    let div = document.createElement('div'); div.className = 'post';
+    let cmt = (p.comments || []).map(c => '<div><b>'+c.jina+':</b> '+c.txt+'</div>').join('');
+    div.innerHTML = '<span class="del" onclick="futa(\''+id+'\')">✖</span><b>'+p.jina+'</b> <small style="color:#888">• '+p.time+'</small><p>'+p.wazo+'</p><div class="actions"><span onclick="like(\''+id+'\','+p.likes+')">👍 Like (<b>'+p.likes+'</b>)</span><span>💬 Comment ('+(p.comments||[]).length+')</span><span onclick="alert(\'Link imekopiwa! Tuma kwa rafiki.\')">↗️ Share</span></div><div class="comments">'+cmt+'<input placeholder="Andika comment..." onkeydown="if(event.key===\'Enter\') comment(\''+id+'\',this)"></div>';
+    feed.appendChild(div);
+  });
+});
+</script>
+</body>
+</html>

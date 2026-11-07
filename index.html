@@ -18,8 +18,18 @@ button{border:none;border-radius:10px;padding:12px;font-weight:bold;cursor:point
 .filebox{background:#f0f2f5;padding:10px;border-radius:10px;margin:6px 0;border:1px dashed #1877f2;text-align:center}
 .filebox label{font-weight:bold;color:#1877f2}
 .small{font-size:12px;color:#666;background:#fff9c4;padding:10px;border-radius:10px}
+.actions{display:flex;gap:6px;margin-top:10px;border-top:1px solid #eee;padding-top:10px}
+.actions button{flex:1;background:#f0f2f5;color:#333;padding:10px;font-size:13px}
+.actions button.liked{background:#ffe0e0;color:#e91e63}
+.comments{background:#f0f2f5;padding:10px;border-radius:10px;margin-top:10px}
+.comment{background:#fff;padding:8px;border-radius:8px;margin:5px 0;font-size:14px}
+.comment-input{display:flex;gap:6px;margin-top:8px}
+.comment-input input{flex:1}
+.comment-input button{background:#1877f2;color:#fff;padding:10px 14px}
+.rules{background:#fff3e0;border:1px solid #ff9800;padding:10px;border-radius:10px;font-size:13px;margin-bottom:12px}
+audio{width:100%;margin-top:8px}
 </style></head><body>
-<div class="top"><h1>Kapapp</h1><p>Habari • Michezo • Burudani • Mziki • Dini</p></div>
+<div class="top"><h1>Kapapp</h1><p>Habari • Michezo • Burudani • Mziki • Dini • Jamii</p></div>
 <div class="box">
 <div id="loginBox" class="card">
 <h2>Karibu Kapapp 👋</h2>
@@ -37,26 +47,32 @@ button{border:none;border-radius:10px;padding:12px;font-weight:bold;cursor:point
 <p style="text-align:center;font-size:13px"><a href="#" onclick="onyeshaLogin();return false">Nina akaunti tayari</a></p>
 </div>
 <div id="app" style="display:none">
+<div class="rules">📜 <b>SHERIA ZA KAPAPP:</b><br>✅ Post Habari, Mziki, Video, Picha, Kazi, Biashara ili jamii inufaike<br>🚫 HAKUNA MATUSI, KASHFA, CHUKI, PICHA CHAFU - Ukivunja, post yako itazuiwa!</div>
 <div class="card">
-<h3>✍️ Post Kitu Kipya</h3>
-<select id="catSasa"><option>Habari</option><option>Michezo</option><option>Burudani</option><option>Mziki</option><option>Dini</option></select>
-<textarea id="txt" rows="3" placeholder="Andika hapa... Mf: Leo Simba kashinda! #Michezo @Said"></textarea>
+<h3>✍️ Post Kitu Kipya - Jamii Inufaike</h3>
+<select id="catSasa"><option>Habari</option><option>Michezo</option><option>Burudani</option><option>Mziki</option><option>Dini</option><option>Biashara</option><option>Kazi</option><option>Elimu</option><option>Jamii</option></select>
+<textarea id="txt" rows="3" placeholder="Andika hapa... Mf: Nina wimbo mpya! #Mziki @Said"></textarea>
 <div class="filebox">
 <label>🖼️ PICHA Kutoka Simu</label><br>
 <input type="file" id="filePicha" accept="image/*" onchange="somaPicha(this)">
 <img id="previewPicha" style="display:none;width:100%;border-radius:10px;margin-top:8px">
-<small>Chagua poster / picha kutoka Gallery</small>
 </div>
-<input id="linkPicha" placeholder="🖼️ Au Link ya PICHA (si lazima)">
+<input id="linkPicha" placeholder="🖼️ Au Link ya PICHA">
 <div class="filebox">
 <label>🎥 VIDEO Kutoka Simu / YouTube</label><br>
 <input type="file" id="fileVideo" accept="video/*" onchange="somaVideo(this)">
 <video id="previewVideo" controls style="display:none;width:100%;border-radius:10px;margin-top:8px"></video>
-<small>Chagua video kutoka Gallery</small>
 </div>
-<input id="linkVideo" placeholder="🎥 Au Link ya VIDEO - YouTube (si lazima)">
-<input id="tagWatu" placeholder="👥 Tag watu - mf: @Said (si lazima)">
-<div class="small"><b>💡 Jinsi ya kutumia:</b><br>• Hashtag: #Michezo ndani ya ujumbe<br>• Tag: @Jina la mtu<br>• Picha: Gusa Chagua Picha Kutoka Simu, chagua poster ya Simba<br>• Video: Gusa Chagua Video Kutoka Simu</div>
+<input id="linkVideo" placeholder="🎥 Au Link ya VIDEO - YouTube">
+<div class="filebox" style="border-color:#00a400">
+<label>🎵 MZIKI / AUDIO Kutoka Simu</label><br>
+<input type="file" id="fileMziki" accept="audio/*" onchange="somaMziki(this)">
+<audio id="previewMziki" controls style="display:none"></audio>
+<small>Weka wimbo / sauti yako - watu wasikilize</small>
+</div>
+<input id="linkMziki" placeholder="🎵 Au Link ya MZIKI - YouTube / Audio">
+<input id="tagWatu" placeholder="👥 Tag watu - mf: @Said, @Juma">
+<div class="small"><b>💡 Jinsi:</b> #Hashtag ndani ya ujumbe • @Tag mtu • Chagua Picha/Video/Mziki kutoka Simu<br><b>🚫 MATUSI YAMEKATAZWA</b> - System itazuiwa moja kwa moja</div>
 <button class="btn-green" onclick="tumaPost()">POST SASA 🚀</button>
 </div>
 <div class="cat" id="filterCat">
@@ -66,8 +82,11 @@ button{border:none;border-radius:10px;padding:12px;font-weight:bold;cursor:point
 <button onclick="chaguaCat('Burudani',this)">Burudani</button>
 <button onclick="chaguaCat('Mziki',this)">Mziki</button>
 <button onclick="chaguaCat('Dini',this)">Dini</button>
+<button onclick="chaguaCat('Biashara',this)">Biashara</button>
+<button onclick="chaguaCat('Kazi',this)">Kazi</button>
+<button onclick="chaguaCat('Jamii',this)">Jamii</button>
 </div>
-<input id="tafuta" placeholder="🔍 Tafuta #Hashtag au @Mtu..." oninput="onyesha()">
+<input id="tafuta" placeholder="🔍 Tafuta #Hashtag, @Mtu, Mziki..." oninput="onyesha()">
 <div id="feed"></div>
 <button onclick="toka()" style="background:#ddd;width:100%;margin:10px 0">Toka / Logout</button>
 </div>
@@ -76,18 +95,28 @@ button{border:none;border-radius:10px;padding:12px;font-weight:bold;cursor:point
 let watumiaji=JSON.parse(localStorage.getItem('kap_watu')||'[]');
 let posts=JSON.parse(localStorage.getItem('kap_posts')||'[]');
 let me=localStorage.getItem('kap_me')||'';
-let catSasa='Yote'; let pichaData=''; let videoData='';
+let catSasa='Yote'; let pichaData=''; let videoData=''; let mzikiData='';
+let openComment=-1;
+// ORODHA YA MATUSI - IMEKATAZWA
+let matusi=['mjinga','mpumbavu','malaya','kuma','mboo','mkundu','nyoko','tombwa','kiburi','pumbavu','fala','chizi','bwege','mbwa','ngombe','punda','shenzi','takataka','kizungu','fuck','shit','bitch','dick','pussy','asshole','bastard','idiot','stupid','damn','hell','porn','sex','uchafu','mavi','kunya','boro','mshenzi','kipofu','kilema','mpuuzi','jinga','dumb','useless','hater','kill','ua','choma','danganya','mwizi','tapeli','tusi','matusi','kashfa','uchuki'];
+function kunaMatusi(t){let low=t.toLowerCase();for(let w of matusi){if(low.includes(w))return w}return null}
 function onyeshaLogin(){document.getElementById('regBox').style.display='none';document.getElementById('loginBox').style.display='block'}
 function onyeshaReg(){document.getElementById('loginBox').style.display='none';document.getElementById('regBox').style.display='block'}
-function sajili(){let j=document.getElementById('rJina').value.trim(),e=document.getElementById('rEmail').value.trim(),p=document.getElementById('rPass').value;if(!j||!e||!p)return alert('Jaza vyote');watumiaji.push({jina:j,email:e,pass:p});localStorage.setItem('kap_watu',JSON.stringify(watumiaji));alert('Umefanikiwa! Ingia sasa');onyeshaLogin()}
+function sajili(){let j=document.getElementById('rJina').value.trim(),e=document.getElementById('rEmail').value.trim(),p=document.getElementById('rPass').value;if(!j||!e||!p)return alert('Jaza vyote');if(kunaMatusi(j))return alert('🚫 Jina lina matusi! Badilisha.');watumiaji.push({jina:j,email:e,pass:p});localStorage.setItem('kap_watu',JSON.stringify(watumiaji));alert('Umefanikiwa! Ingia sasa');onyeshaLogin()}
 function ingia(){let e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPass').value;let u=watumiaji.find(x=>x.email==e&&x.pass==p);if(!u&&e=='saidkapwile09@gmail.com'){u={jina:'Said Kapwile',email:e,pass:p}}if(!u)return alert('Email au Password si sahihi');me=u.jina;localStorage.setItem('kap_me',me);funguaApp()}
 function funguaApp(){document.getElementById('loginBox').style.display='none';document.getElementById('regBox').style.display='none';document.getElementById('app').style.display='block';onyesha()}
 function toka(){localStorage.removeItem('kap_me');location.reload()}
 function somaPicha(inp){let f=inp.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{pichaData=e.target.result;let im=document.getElementById('previewPicha');im.src=pichaData;im.style.display='block'};r.readAsDataURL(f)}
 function somaVideo(inp){let f=inp.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{videoData=e.target.result;let v=document.getElementById('previewVideo');v.src=videoData;v.style.display='block'};r.readAsDataURL(f)}
-function tumaPost(){let t=document.getElementById('txt').value.trim();let c=document.getElementById('catSasa').value;let lp=document.getElementById('linkPicha').value.trim();let lv=document.getElementById('linkVideo').value.trim();let tag=document.getElementById('tagWatu').value.trim();if(!t)return alert('Andika kitu kwanza');let pic=pichaData||lp;let vid=videoData||lv;posts.unshift({jina:me||'Said',cat:c,text:t,pic:pic,vid:vid,tag:tag,time:new Date().toLocaleString()});localStorage.setItem('kap_posts',JSON.stringify(posts));document.getElementById('txt').value='';document.getElementById('linkPicha').value='';document.getElementById('linkVideo').value='';document.getElementById('tagWatu').value='';pichaData='';videoData='';document.getElementById('previewPicha').style.display='none';document.getElementById('previewVideo').style.display='none';onyesha();alert('Imepostiwa! 🎉')}
+function somaMziki(inp){let f=inp.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{mzikiData=e.target.result;let a=document.getElementById('previewMziki');a.src=mzikiData;a.style.display='block'};r.readAsDataURL(f)}
+function tumaPost(){let t=document.getElementById('txt').value.trim();let c=document.getElementById('catSasa').value;let lp=document.getElementById('linkPicha').value.trim();let lv=document.getElementById('linkVideo').value.trim();let lm=document.getElementById('linkMziki').value.trim();let tag=document.getElementById('tagWatu').value.trim();if(!t)return alert('Andika kitu kwanza');let m=kunaMatusi(t+' '+tag);if(m)return alert('🚫 POST IMEZUIWA! Umetumia neno chafu: \"'+m+'\". Tafadhali andika kwa heshima. Kapapp ni kwa jamii yote.');let pic=pichaData||lp;let vid=videoData||lv;let mz=mzikiData||lm;posts.unshift({jina:me||'Said',cat:c,text:t,pic:pic,vid:vid,mziki:mz,tag:tag,time:new Date().toLocaleString(),likes:[],comments:[]});localStorage.setItem('kap_posts',JSON.stringify(posts));document.getElementById('txt').value='';document.getElementById('linkPicha').value='';document.getElementById('linkVideo').value='';document.getElementById('linkMziki').value='';document.getElementById('tagWatu').value='';pichaData='';videoData='';mzikiData='';document.getElementById('previewPicha').style.display='none';document.getElementById('previewVideo').style.display='none';document.getElementById('previewMziki').style.display='none';onyesha();alert('Imepostiwa! Jamii itanufaika 🎉')}
 function chaguaCat(c,btn){catSasa=c;document.querySelectorAll('.cat button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');onyesha()}
 function videoHTML(v){if(!v)return'';if(v.includes('youtube')||v.includes('youtu.be')){let id='';if(v.includes('v='))id=v.split('v=')[1].split('&')[0];else id=v.split('/').pop();return '<iframe width="100%" height="220" src="https://www.youtube.com/embed/'+id+'" frameborder="0" allowfullscreen style="border-radius:10px;margin-top:8px"></iframe>'}return '<video controls src="'+v+'" style="width:100%;border-radius:10px;margin-top:8px"></video>'}
-function onyesha(){let q=(document.getElementById('tafuta').value||'').toLowerCase();let html='';posts.forEach(p=>{if(catSasa!='Yote'&&p.cat!=catSasa)return;if(q&&!(p.text.toLowerCase().includes(q)||p.jina.toLowerCase().includes(q)))return;let txt=p.text.replace(/#(\w+)/g,'<b style="color:#1877f2">#$1</b>').replace(/@(\w+)/g,'<b style="color:#e91e63">@$1</b>');html+='<div class="card"><b>'+p.jina+'</b> <span class="badge">'+p.cat+'</span><br><small style="color:#888">'+p.time+'</small><p>'+txt+'</p>'+(p.pic?'<img class="post-img" src="'+p.pic+'">':'')+videoHTML(p.vid)+(p.tag?'<p style="color:#1877f2">Tag: '+p.tag+'</p>':'')+'</div>'});document.getElementById('feed').innerHTML=html||'<div class="card">Hakuna post bado. Kuwa wa kwanza kupost!</div>'}
+function mzikiHTML(m){if(!m)return'';if(m.includes('youtube')||m.includes('youtu.be')){let id='';if(m.includes('v='))id=m.split('v=')[1].split('&')[0];else id=m.split('/').pop();return '<div style="background:#e8f5e9;padding:10px;border-radius:10px;margin-top:8px"><b>🎵 Mziki:</b><br><iframe width="100%" height="120" src="https://www.youtube.com/embed/'+id+'" frameborder="0" allowfullscreen style="border-radius:10px"></iframe></div>'}return '<div style="background:#e8f5e9;padding:10px;border-radius:10px;margin-top:8px"><b>🎵 Mziki / Audio:</b><audio controls src="'+m+'"></audio></div>'}
+function likePost(i){let p=posts[i];if(!p.likes)p.likes=[];let idx=p.likes.indexOf(me);if(idx>=0)p.likes.splice(idx,1);else p.likes.push(me);localStorage.setItem('kap_posts',JSON.stringify(posts));onyesha()}
+function toggleComment(i){openComment=(openComment==i?-1:i);onyesha();if(openComment>=0)setTimeout(()=>document.getElementById('cinput'+i).focus(),100)}
+function tumaComment(i){let inp=document.getElementById('cinput'+i);let t=inp.value.trim();if(!t)return;let m=kunaMatusi(t);if(m)return alert('🚫 COMMENT IMEZUIWA! Neno chafu: \"'+m+'\". Andika kwa heshima.');if(!posts[i].comments)posts[i].comments=[];posts[i].comments.push({jina:me||'Said',text:t});localStorage.setItem('kap_posts',JSON.stringify(posts));onyesha()}
+function sharePost(i){let p=posts[i];let txt='🔥 '+p.jina+' kwenye Kapapp: '+p.text+'\n\nAngalia Kapapp! https://kapapptz.github.io/Kapapp';let url='https://wa.me/?text='+encodeURIComponent(txt);window.open(url,'_blank')}
+function onyesha(){let q=(document.getElementById('tafuta').value||'').toLowerCase();let html='';posts.forEach((p,idx)=>{if(catSasa!='Yote'&&p.cat!=catSasa)return;if(q&&!(p.text.toLowerCase().includes(q)||p.jina.toLowerCase().includes(q)||(p.tag||'').toLowerCase().includes(q)))return;if(!p.likes)p.likes=[];if(!p.comments)p.comments=[];let liked=p.likes.includes(me);let txt=p.text.replace(/#(\w+)/g,'<b style="color:#1877f2">#$1</b>').replace(/@(\w+)/g,'<b style="color:#e91e63">@$1</b>');let comms='';p.comments.forEach(c=>{comms+='<div class="comment"><b>'+c.jina+':</b> '+c.text+'</div>'});let commBox='';if(openComment==idx){commBox='<div class="comments">'+comms+'<div class="comment-input"><input id="cinput'+idx+'" placeholder="Andika comment..."><button onclick="tumaComment('+idx+')">Tuma</button></div></div>'}else if(p.comments.length>0){commBox='<div class="comments">'+comms+'</div>'};html+='<div class="card"><b>'+p.jina+'</b> <span class="badge">'+p.cat+'</span><br><small style="color:#888">'+p.time+'</small><p>'+txt+'</p>'+(p.pic?'<img class="post-img" src="'+p.pic+'">':'')+videoHTML(p.vid)+mzikiHTML(p.mziki)+(p.tag?'<p style="color:#1877f2">👥 Tag: '+p.tag+'</p>':'')+'<div class="actions"><button class="'+(liked?'liked':'')+'" onclick="likePost('+idx+')">❤️ Like ('+p.likes.length+')</button><button onclick="toggleComment('+idx+')">💬 Comment ('+p.comments.length+')</button><button onclick="sharePost('+idx+')">🔗 Share</button></div>'+commBox+'</div>'});document.getElementById('feed').innerHTML=html||'<div class="card">Hakuna post bado. Kuwa wa kwanza kupost!</div>'}
 if(me)funguaApp();
 </script></body></html>

@@ -11,115 +11,147 @@
 <meta name="apple-mobile-web-app-title" content="KAPAPP">
 <link rel="manifest" href="manifest.json">
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f0f2f5}
-.top{background:#1877f2;color:white;padding:12px;text-align:center;font-size:22px;font-weight:bold;position:sticky;top:0;z-index:10}
-.top small{font-size:11px;font-weight:normal;display:block}
-.top input{width:90%;padding:8px;border:0;border-radius:20px;margin-top:8px}
-.downloadBar{background:#25D366;color:white;padding:10px;text-align:center;font-weight:bold}
-.downloadBar span{background:white;color:#25D366;padding:5px 12px;border-radius:20px;margin-left:8px;cursor:pointer}
-.box,.post{background:white;margin:10px;padding:14px;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
-input,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radius:8px;margin:6px 0;box-sizing:border-box;font-size:15px}
-button{background:#1877f2;color:white;border:0;padding:12px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;font-size:16px}
-.post img{width:100%;border-radius:10px;margin-top:8px}
-.actions{display:flex;justify-content:space-between;margin-top:10px;border-top:1px solid #eee;padding-top:8px}
-.actions span{cursor:pointer;font-size:14px}
-.del{color:red;float:right;cursor:pointer}
-.comments{margin-top:10px;background:#f0f2f5;padding:8px;border-radius:8px;font-size:14px}
-.welcome{text-align:center;color:#555}
-.link{color:#1877f2;cursor:pointer;text-align:center;display:block;margin-top:10px}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f0f2f5}
+.top{background:#1877f2;color:white;padding:12px;text-align:center;position:sticky;top:0;z-index:10}
+.top h1{margin:0;font-size:22px}
+.top small{font-size:11px;font-weight:normal;opacity:.9}
+.top input{width:90%;padding:8px;border:none;border-radius:20px;margin-top:8px;outline:none}
+.downloadBar{background:#25D366;color:white;padding:10px;text-align:center;font-size:14px}
+.downloadBar span{background:white;color:#25D366;padding:3px 8px;border-radius:10px;font-weight:bold}
+.card{background:white;margin:10px;border-radius:12px;padding:15px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.btn{background:#1877f2;color:white;border:none;padding:12px;width:100%;border-radius:8px;font-size:16px;font-weight:bold}
+.btn-green{background:#25D366}
+input[type=text],input[type=tel]{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;margin:8px 0;font-size:16px}
+.post{display:flex;gap:10px;margin-bottom:15px}
+.avatar{width:45px;height:45px;background:#1877f2;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;flex-shrink:0}
+.post-box{background:#f0f2f5;padding:10px;border-radius:12px;flex:1}
+.hidden{display:none}
+.top-btn{background:rgba(255,255,255,.2);border:none;color:white;padding:6px 12px;border-radius:20px;margin:2px}
 </style>
 </head>
 <body>
-<div class="top">KAPAPP<small id="userTop">Habari • Mziki • Soko • Vikundi • Chat</small><input placeholder="Tafuta..."></div>
-<div class="downloadBar">Pakua App ya KAPAPP <span onclick="alert('Sasa uko kwenye App!')">PAKUA</span></div>
 
-<div id="authBox" class="box">
-<h2 id="authTitle" style="text-align:center;margin:0">Karibu KAPAPP</h2>
-<p class="welcome" id="authDesc">Jisajili ili uanze kupost, kulike na kucomment.</p>
-<input id="aJina" placeholder="Jina kamili...">
-<input id="aSimu" placeholder="Namba ya simu...">
-<input id="aPass" type="password" placeholder="Password...">
-<button id="authBtn" onclick="authAction()">JISAJILI / INGIA</button>
-<span class="link" onclick="badiliMode()" id="modeLink">Una akaunti? Bonyeza hapa kuingia</span>
+<div class="top">
+  <h1>KAPAPP</h1>
+  <small>Ungana • Chapisha • Pata Marafiki</small><br>
+  <div id="topUser"></div>
+  <input type="text" id="searchInput" placeholder="🔍 Tafuta post..." oninput="tafuta()">
 </div>
 
-<div id="appBox" style="display:none">
-<div class="box">
-<textarea id="wazo" rows="3" placeholder="Una wazo gani leo?"></textarea>
-<input type="file" id="picha" accept="image/*">
-<button onclick="tuma()">Post</button>
-<button onclick="toka()" style="background:#e4e6eb;color:#333;margin-top:8px">Toka / Badilisha Akaunti</button>
+<div class="downloadBar" id="installBar">
+  📲 Pakua KAPAPP App <span onclick="installApp()">PAKUA</span>
 </div>
-<div id="feed"></div>
+
+<!-- LOGIN -->
+<div class="card" id="loginCard">
+  <h2 style="text-align:center;margin:0">Karibu KAPAPP 👋</h2>
+  <p style="text-align:center;color:#666;font-size:14px">Jaza jina lako ili uingie</p>
+  <label>Jina Lako:</label>
+  <input type="text" id="userName" placeholder="Mf: Juma Mushi">
+  <label>Namba ya Simu (hiari):</label>
+  <input type="tel" id="userPhone" placeholder="Mf: 0712345678">
+  <button class="btn" onclick="ingia()">INGIA KAPAPP →</button>
+</div>
+
+<!-- HOME -->
+<div id="homeCard" class="hidden">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <b id="karibuText"></b>
+      <button onclick="toka()" style="background:#ff3b30;color:white;border:none;padding:6px 12px;border-radius:20px">Toka</button>
+    </div>
+    <hr>
+    <div class="post">
+      <div class="avatar" id="myAvatar">K</div>
+      <div class="post-box">
+        <input type="text" id="postText" placeholder="Unafikiria nini leo?" style="border:none;background:transparent;margin:0;padding:5px">
+      </div>
+    </div>
+    <button class="btn btn-green" onclick="chapisha()">📝 CHAPISHA</button>
+  </div>
+
+  <div class="card">
+    <h3 style="margin:0 0 10px 0">📌 Posts za Leo</h3>
+    <div id="postsList"></div>
+  </div>
+
+  <div class="card" style="text-align:center">
+    <h3>👥 Marafiki Mtandaoni</h3>
+    <p>🟢 Neema - Dar es Salaam</p>
+    <p>🟢 Baraka - Arusha</p>
+    <p>🟢 Amina - Mwanza</p>
+    <button class="btn" onclick="alert('Karibu! Wasiliana na marafiki wako')">ONGEZA MARAFIKI</button>
+  </div>
 </div>
 
 <script>
-let mode='sajili';
-let users=JSON.parse(localStorage.getItem('kapapp_users')||'[]');
-let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
-let current=localStorage.getItem('kapapp_current')||'';
-function badiliMode(){
-mode=mode==='sajili'?'ingia':'sajili';
-document.getElementById('authTitle').innerText=mode==='sajili'?'Karibu KAPAPP':'Karibu Tena KAPAPP';
-document.getElementById('authBtn').innerText=mode==='sajili'?'JISAJILI':'INGIA';
-document.getElementById('modeLink').innerText=mode==='sajili'?'Una akaunti? Bonyeza hapa kuingia':'Huna akaunti? Bonyeza hapa kujisajili';
-document.getElementById('authDesc').innerText=mode==='sajili'?'Jisajili ili uanze kupost, kulike na kucomment.':'Ingia kuona post zako.';
-}
-function authAction(){
-let jina=document.getElementById('aJina').value.trim();
-let simu=document.getElementById('aSimu').value.trim();
-let pass=document.getElementById('aPass').value.trim();
-if(!jina||!simu||!pass){alert('Jaza jina, simu na password!');return;}
-if(mode==='sajili'){
-if(users.find(u=>u.simu===simu)){alert('Hii namba imeshasajiliwa! Ingia sasa.');badiliMode();return;}
-users.push({jina:jina,simu:simu,pass:pass});
-localStorage.setItem('kapapp_users',JSON.stringify(users));
-alert('Hongera '+jina+'! Umesajiliwa! Sasa ingia.');badiliMode();
-}else{
-let u=users.find(u=>u.simu===simu && u.pass===pass);
-if(!u){alert('Simu au password si sahihi!');return;}
-current=u.jina;localStorage.setItem('kapapp_current',current);funguaApp();
-}
-}
-function funguaApp(){
-document.getElementById('authBox').style.display='none';
-document.getElementById('appBox').style.display='block';
-document.getElementById('userTop').innerText='Karibu, '+current;
-onyesha();
-}
-function toka(){localStorage.removeItem('kapapp_current');location.reload();}
-function hifadhi(){localStorage.setItem('kapapp_posts',JSON.stringify(posts));}
+let posts = [
+  {jina:"Neema", herufi:"N", ujumbe:"Karibu sana KAPAPP! Hapa ni nyumbani 🔥"},
+  {jina:"Baraka", herufi:"B", ujumbe:"Leo Dar ni moto! Nani yupo Kariakoo?"},
+  {jina:"Amina", herufi:"A", ujumbe:"Nimeipenda hii App mpya, ni nzuri sana ❤️"}
+];
+let jinaLangu = localStorage.getItem("kapapp_name") || "";
+
 function onyesha(){
-let feed=document.getElementById('feed');feed.innerHTML='';
-if(posts.length===0){feed.innerHTML='<p style="text-align:center;color:#888">Hakuna post bado. Kuwa wa kwanza kupost!</p>';return;}
-posts.forEach((p,i)=>{
-let div=document.createElement('div');div.className='post';
-let imgTag=p.img?'<img src="'+p.img+'">':'';
-let cmt=p.comments.map(c=>'<div><b>'+c.jina+':</b> '+c.txt+'</div>').join('');
-div.innerHTML='<span class="del" onclick="futa('+i+')">✖</span><b>'+p.jina+'</b> <small style="color:#888">• '+p.time+'</small><p>'+p.wazo+'</p>'+imgTag+'<div class="actions"><span onclick="like('+i+',this)">👍 Like (<b>'+p.likes+'</b>)</span><span onclick="document.getElementById(\'c'+i+'\').focus()">💬 Comment ('+p.comments.length+')</span><span onclick="sharePost('+i+')">↗️ Share</span></div><div class="comments">'+cmt+'<input id="c'+i+'" placeholder="Andika comment..." onkeydown="if(event.key===\'Enter\') comment('+i+',this)"></div>';
-feed.appendChild(div);
-});
+  if(jinaLangu){
+    document.getElementById("loginCard").classList.add("hidden");
+    document.getElementById("homeCard").classList.remove("hidden");
+    document.getElementById("karibuText").innerText = "Karibu, " + jinaLangu + " 👋";
+    document.getElementById("myAvatar").innerText = jinaLangu.charAt(0).toUpperCase();
+    document.getElementById("topUser").innerHTML = '<button class="top-btn">👤 '+jinaLangu+'</button>';
+  } else {
+    document.getElementById("loginCard").classList.remove("hidden");
+    document.getElementById("homeCard").classList.add("hidden");
+    document.getElementById("topUser").innerHTML = "";
+  }
+  onyeshaPosts();
 }
-function tuma(){
-let wazo=document.getElementById('wazo').value.trim();
-let file=document.getElementById('picha').files[0];
-if(!wazo && !file){alert('Andika kitu kwanza!');return;}
-let time=new Date().toLocaleString('sw-TZ',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
-let savePost=(img)=>{
-posts.unshift({jina:current,wazo:wazo,img:img,likes:0,comments:[],time:time});
-hifadhi();onyesha();
-document.getElementById('wazo').value='';document.getElementById('picha').value='';
-};
-if(file){let r=new FileReader();r.onload=e=>savePost(e.target.result);r.readAsDataURL(file);}else savePost('');
+
+function ingia(){
+  let jina = document.getElementById("userName").value.trim();
+  if(!jina){ alert("Tafadhali andika jina lako kwanza!"); return; }
+  localStorage.setItem("kapapp_name", jina);
+  jinaLangu = jina;
+  onyesha();
 }
-function like(i,el){posts[i].likes++;hifadhi();onyesha();}
-function comment(i,input){if(!input.value.trim())return;posts[i].comments.push({jina:current,txt:input.value.trim()});hifadhi();onyesha();}
-function sharePost(i){
-let txt=posts[i].jina+': '+posts[i].wazo+'\n\nAngalia kwenye KAPAPP: https://kapapptz.github.io/Kapapp/';
-if(navigator.share){navigator.share({text:txt});}else{navigator.clipboard.writeText(txt);alert('Link imekopiwa!');}
+
+function toka(){
+  localStorage.removeItem("kapapp_name");
+  jinaLangu = "";
+  document.getElementById("userName").value = "";
+  onyesha();
 }
-function futa(i){if(confirm('Ufute hii post?')){posts.splice(i,1);hifadhi();onyesha();}}
-if(current){funguaApp();}
+
+function chapisha(){
+  let txt = document.getElementById("postText").value.trim();
+  if(!txt){ alert("Andika kitu kwanza!"); return; }
+  posts.unshift({jina:jinaLangu, herufi:jinaLangu.charAt(0).toUpperCase(), ujumbe:txt});
+  document.getElementById("postText").value = "";
+  onyeshaPosts();
+  alert("Imechapishwa! ✅");
+}
+
+function onyeshaPosts(){
+  let html = "";
+  posts.forEach(p=>{
+    html += '<div class="post"><div class="avatar">'+p.herufi+'</div><div class="post-box"><b>'+p.jina+'</b><br>'+p.ujumbe+'</div></div>';
+  });
+  document.getElementById("postsList").innerHTML = html;
+}
+
+function tafuta(){
+  let s = document.getElementById("searchInput").value.toLowerCase();
+  let filtered = posts.filter(p=>p.ujumbe.toLowerCase().includes(s) || p.jina.toLowerCase().includes(s));
+  let html = "";
+  filtered.forEach(p=>{
+    html += '<div class="post"><div class="avatar">'+p.herufi+'</div><div class="post-box"><b>'+p.jina+'</b><br>'+p.ujumbe+'</div></div>';
+  });
+  document.getElementById("postsList").innerHTML = html || "<p>Hakuna kilichopatikana</p>";
+}
+
+function installApp(){ alert("Asante! Bonyeza ⋮ juu kulia > Add to Home screen ili kupakua App"); }
+
+onyesha();
 </script>
 </body>
 </html>

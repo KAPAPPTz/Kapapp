@@ -11,9 +11,12 @@ button{border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointe
 .btn-green{background:#00a859;color:white}
 .btn-blue{background:#1877f2;color:white}
 .btn-gold{background:gold}
-input,select{width:100%;padding:12px;margin:5px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
-.video-box video{width:100%;border-radius:10px;background:black}
-.badge{background:#e7f3ff;padding:5px 10px;border-radius:20px;font-size:13px}
+.btn-dark{background:#111;color:white}
+input,select,textarea{width:100%;padding:12px;margin:5px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
+video,iframe{width:100%;border-radius:10px;background:black;min-height:200px}
+.tab{display:flex;gap:5px}
+.tab button{flex:1;background:#eee;color:#111}
+.tab button.active{background:#111;color:white}
 </style>
 </head>
 <body>
@@ -21,38 +24,55 @@ input,select{width:100%;padding:12px;margin:5px 0;border:1px solid #ddd;border-r
 <h2 style="text-align:center">🇹🇿 KAPAPP</h2>
 
 <div class="card">
-  <b>👤 Jina:</b> <span id="jinaShow">-</span><br>
-  <b>💰 Salio Lako (70%):</b> <span id="salio">0</span> TZS<br>
-  <b>👑 Salio la CEO (30% - Wewe):</b> <span id="ceoSalio">0</span> TZS<br>
-  <small>Mfumo: Kila 100 TZS unayopata, 70 kwako, 30 kwa CEO - AUTOMATIC</small>
+<b>👤 Jina:</b> <span id="jinaShow">-</span><br>
+<b>💰 Salio Lako (70%):</b> <span id="salio">0</span> TZS<br>
+<b>👑 Salio la CEO (30%):</b> <span id="ceoSalio">0</span> TZS<br>
+<small>Video ndefu sasa zinakubalika - hadi dakika 3!</small>
 </div>
 
 <div class="card">
-  <h3>📝 Post Video Mpya</h3>
-  <input id="jinaVideo" placeholder="Jina la video - mfano App mpya hii">
-  <input type="file" id="videoInput" accept="video/*">
-  <button class="btn-green" onclick="wekaReel()">🎬 WEKA REEL +100 TZS</button>
-  <small>Ukibonyeza, unapata 70 TZS, CEO anapata 30 TZS automatic!</small>
+<h3>📝 Post Mpya - Biashara / Muziki / Burudani</h3>
+
+<div class="tab">
+<button id="tabFile" class="active" onclick="chaguaTab('file')">📁 Pakia Video</button>
+<button id="tabLink" onclick="chaguaTab('link')">🔗 Weka Link</button>
+</div>
+
+<input id="jinaVideo" placeholder="Jina - mfano: Viatu vya Kike Bei Poa">
+<textarea id="maelezo" placeholder="Maelezo ya biashara / wimbo - mfano: Viatu original, size 36-42, Dar es Salaam"></textarea>
+<input id="bei" placeholder="Bei - mfano: 25000 (achia wazi kama sio biashara)">
+<input id="nambaBiashara" placeholder="Namba ya Biashara - mfano 075xxxxxxx">
+
+<div id="boxFile">
+<input type="file" id="videoInput" accept="video/*">
+<small>✅ Inakubali video ndefu - hadi dakika 3, hadi 100MB. Chagua video ya biashara / wimbo.</small>
+</div>
+
+<div id="boxLink" style="display:none">
+<input id="videoLink" placeholder="Weka Link ya YouTube / TikTok / Facebook - mfano https://youtube.com/...">
+<small>✅ Kwa video ndefu sana (zaidi ya dakika 3), weka link tu!</small>
+</div>
+
+<button class="btn-green" onclick="wekaReel()">🎬 WEKA POST +100 TZS</button>
+<small>Unapata 70 TZS, CEO 30 TZS automatic!</small>
 </div>
 
 <div class="card">
-  <h3>💸 TOA PESA - Chagua Njia</h3>
-  <select id="njiaMalipo">
-    <option value="M-Pesa">M-Pesa - Vodacom</option>
-    <option value="Tigo Pesa">Tigo Pesa</option>
-    <option value="Airtel Money">Airtel Money</option>
-    <option value="HaloPesa">HaloPesa</option>
-  </select>
-  <input id="nambaMalipo" placeholder="Namba ya kupokelea - mfano 075xxxxxxx">
-  <input id="kiasi" type="number" placeholder="Kiasi - chini 1000 TZS">
-  <button class="btn-blue" onclick="ombaPesa()">📤 OMBAA MALIPO</button>
-  <small>Utaingia kwenye foleni. CEO atakulipa kwa zamu.</small>
+<h3>💸 TOA PESA - Chagua Njia</h3>
+<select id="njiaMalipo">
+<option value="M-Pesa">M-Pesa - Vodacom</option>
+<option value="Tigo Pesa">Tigo Pesa</option>
+<option value="Airtel Money">Airtel Money</option>
+<option value="HaloPesa">HaloPesa</option>
+</select>
+<input id="nambaMalipo" placeholder="Namba ya kupokelea - 075xxxxxxx">
+<input id="kiasi" type="number" placeholder="Kiasi - chini 1000 TZS">
+<button class="btn-blue" onclick="ombaPesa()">📤 OMBA MALIPO</button>
 </div>
 
 <div class="card">
-  <h3>📋 Foleni ya Wanaodai Pesa (Kwa CEO)</h3>
-  <div id="foleniList">Hakuna ombi bado...</div>
-  <button class="btn-gold" onclick="onyeshaFoleni()">🔄 ANGALIA FOLENI</button>
+<h3>📋 Foleni ya Wanaodai Pesa</h3>
+<div id="foleniList">Hakuna ombi bado...</div>
 </div>
 
 <div id="feed"></div>
@@ -61,88 +81,114 @@ input,select{width:100%;padding:12px;margin:5px 0;border:1px solid #ddd;border-r
 let salio = Number(localStorage.getItem('kapapp_salio')||0);
 let ceoSalio = Number(localStorage.getItem('kapapp_ceo')||0);
 let foleni = JSON.parse(localStorage.getItem('kapapp_foleni')||'[]');
-let posts = JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+let posts = JSON.parse(localStorage.getItem('kapapp_posts_v2')||'[]');
+let mode = 'file';
 
-function updateUI(){
-  document.getElementById('salio').innerText = salio;
-  document.getElementById('ceoSalio').innerText = ceoSalio;
-  // Onyesha foleni
-  let h = '';
-  if(foleni.length==0) h='Hakuna ombi bado...';
-  else foleni.forEach((f,i)=>{
-    h += `<div style="border-bottom:1px solid #eee;padding:8px">`+
-    `<b>#${i+1} ${f.namba}</b> - ${f.kiasi} TZS via ${f.njia}<br>`+
-    `<small>${f.tarehe}</small><br>`+
-    `<button onclick="nimemlipa(${i})" style="background:green;color:white;width:auto;padding:6px 12px">✅ NIMEMLIPA</button></div>`;
-  });
-  document.getElementById('foleniList').innerHTML = h;
-  // Feed
-  let fh='';
-  posts.slice().reverse().forEach(p=>{
-    fh+=`<div class="card"><b>${p.jina}</b><div class="video-box"><video src="${p.video}" controls></video></div><br><button class="btn-blue" onclick="likePost()">❤️ LIKE +10 TZS</button></div>`;
-  });
-  document.getElementById('feed').innerHTML = fh;
+// === INDEXEDDB - Godown Kubwa kwa Video Ndefu ===
+let db;
+let dbReq = indexedDB.open('KapappDB',1);
+dbReq.onupgradeneeded = e=>{ db=e.target.result; if(!db.objectStoreNames.contains('videos')) db.createObjectStore('videos',{keyPath:'id'}); };
+dbReq.onsuccess = e=>{ db=e.target.result; updateUI(); };
+dbReq.onerror = ()=>{ alert('Browser hii haikubali video ndefu, tumia Chrome'); };
+
+function chaguaTab(t){
+  mode=t;
+  document.getElementById('tabFile').className = t=='file'?'active':'';
+  document.getElementById('tabLink').className = t=='link'?'active':'';
+  document.getElementById('boxFile').style.display = t=='file'?'block':'none';
+  document.getElementById('boxLink').style.display = t=='link'?'block':'none';
 }
 
 function saveAll(){
-  localStorage.setItem('kapapp_salio', salio);
-  localStorage.setItem('kapapp_ceo', ceoSalio);
-  localStorage.setItem('kapapp_foleni', JSON.stringify(foleni));
-  localStorage.setItem('kapapp_posts', JSON.stringify(posts));
+  localStorage.setItem('kapapp_salio',salio);
+  localStorage.setItem('kapapp_ceo',ceoSalio);
+  localStorage.setItem('kapapp_foleni',JSON.stringify(foleni));
+  localStorage.setItem('kapapp_posts_v2',JSON.stringify(posts));
 }
 
 function wekaReel(){
-  let jina = document.getElementById('jinaVideo').value.trim();
-  let file = document.getElementById('videoInput').files[0];
-  if(!jina){ alert('Andika jina la video kwanza!'); return; }
-  if(!file){ alert('Chagua video kwanza!'); return; }
-  let reader = new FileReader();
-  reader.onload = function(e){
-    try{
-      posts.push({jina:jina, video:e.target.result});
-      // MGAWANYO AUTOMATIC: 100 = 70 kwake + 30 CEO
-      salio += 70;
-      ceoSalio += 30;
-      saveAll(); updateUI();
-      alert('Hongera! Umepata 70 TZS, CEO amepata 30 TZS automatic!');
-      document.getElementById('jinaVideo').value='';
-    }catch(err){ alert('Video kubwa sana! Chagua video fupi (chini ya sekunde 10)'); }
-  };
-  reader.readAsDataURL(file);
-}
+  let jina=document.getElementById('jinaVideo').value.trim();
+  let maelezo=document.getElementById('maelezo').value.trim();
+  let bei=document.getElementById('bei').value.trim();
+  let nambaB=document.getElementById('nambaBiashara').value.trim();
+  if(!jina){ alert('Andika jina la video / biashara kwanza!'); return; }
 
-function likePost(){
-  salio += 7; // 10 TZS inagawanywa 70/30
-  ceoSalio += 3;
-  saveAll(); updateUI();
-  alert('Umepata 7 TZS, CEO 3 TZS');
-}
-
-function ombaPesa(){
-  let njia = document.getElementById('njiaMalipo').value;
-  let namba = document.getElementById('nambaMalipo').value.trim();
-  let kiasi = Number(document.getElementById('kiasi').value);
-  if(!namba || namba.length < 10){ alert('Weka namba sahihi ya simu!'); return; }
-  if(!kiasi || kiasi < 1000){ alert('Kiasi cha chini ni 1000 TZS'); return; }
-  if(kiasi > salio){ alert('Salio lako halitoshi! Una '+salio+' TZS'); return; }
-  salio -= kiasi;
-  foleni.push({njia: njia, namba: namba, kiasi: kiasi, tarehe: new Date().toLocaleString()});
-  saveAll(); updateUI();
-  alert('Ombi lako limepokelewa! Uko namba '+foleni.length+' kwenye foleni. Utalipwa via '+njia+' kwenda '+namba);
-  document.getElementById('kiasi').value='';
-}
-
-function nimemlipa(i){
-  if(confirm('Umemlipa kweli '+foleni[i].namba+' '+foleni[i].kiasi+' TZS via '+foleni[i].njia+'?')){
-    foleni.splice(i,1);
+  let finish = (videoId, link)=>{
+    posts.push({jina:jina, maelezo:maelezo, bei:bei, nambaB:nambaB, videoId:videoId||null, link:link||null, tarehe:new Date().toLocaleString()});
+    salio+=70; ceoSalio+=30;
     saveAll(); updateUI();
-    alert('Sawa! Ameondolewa kwenye foleni.');
+    alert('Hongera! Post yako imewekwa! Umepata 70 TZS, CEO 30 TZS');
+    document.getElementById('jinaVideo').value=''; document.getElementById('maelezo').value=''; document.getElementById('bei').value='';
+  };
+
+  if(mode=='link'){
+    let link=document.getElementById('videoLink').value.trim();
+    if(!link){ alert('Weka Link ya YouTube / TikTok kwanza!'); return; }
+    // Badilisha YouTube link kuwa embed
+    if(link.includes('youtube.com/watch?v=')) link=link.replace('watch?v=','embed/');
+    if(link.includes('youtu.be/')) link=link.replace('youtu.be/','youtube.com/embed/');
+    finish(null,link);
+  } else {
+    let file=document.getElementById('videoInput').files[0];
+    if(!file){ alert('Chagua video kwanza au tumia Link!'); return; }
+    if(file.size > 100*1024*1024){ alert('Video kubwa sana! Tumia chini ya 100MB au weka Link ya YouTube.'); return; }
+    let id='v_'+Date.now();
+    let tx=db.transaction('videos','readwrite');
+    tx.objectStore('videos').put({id:id, blob:file});
+    tx.oncomplete=()=>finish(id,null);
+    tx.onerror=()=>alert('Imeshindwa kuhifadhi video. Jaribu video fupi kidogo au tumia Link.');
   }
 }
 
-function onyeshaFoleni(){ updateUI(); alert('Watu kwenye foleni: '+foleni.length); }
+function getVideoUrl(id, cb){
+  let tx=db.transaction('videos','readonly');
+  let req=tx.objectStore('videos').get(id);
+  req.onsuccess=()=>{ if(req.result) cb(URL.createObjectURL(req.result.blob)); else cb(null); };
+}
 
-updateUI();
+function updateUI(){
+  document.getElementById('salio').innerText=salio;
+  document.getElementById('ceoSalio').innerText=ceoSalio;
+  let h='';
+  if(foleni.length==0) h='Hakuna ombi bado...';
+  else foleni.forEach((f,i)=>{
+    h+=`<div style="border-bottom:1px solid #eee;padding:8px"><b>#${i+1} ${f.namba}</b> - ${f.kiasi} TZS via ${f.njia}<br><small>${f.tarehe}</small><br><button onclick="nimemlipa(${i})" style="background:green;color:white;width:auto;padding:6px 12px">✅ NIMEMLIPA</button></div>`;
+  });
+  document.getElementById('foleniList').innerHTML=h;
+
+  let feed=document.getElementById('feed');
+  feed.innerHTML='';
+  posts.slice().reverse().forEach((p)=>{
+    let div=document.createElement('div'); div.className='card';
+    let mediaHtml = p.link ? `<iframe src="${p.link}" allowfullscreen></iframe>` : `<video controls id="vid_${p.videoId}"></video>`;
+    div.innerHTML=`<b>${p.jina}</b><br><small>${p.tarehe||''}</small><p>${p.maelezo||''}</p>${p.bei?`<b style="color:green">💰 Bei: ${p.bei} TZS</b><br>`:''}${p.nambaB?`<b>📞 Wasiliana: ${p.nambaB}</b><br><a href="https://wa.me/255${p.nambaB.replace(/^0/,'')}" target="_blank"><button class="btn-green">💬 WhatsApp Biashara</button></a>`:''}${mediaHtml}<br><button class="btn-blue" onclick="likePost()">❤️ LIKE +10 TZS</button>`;
+    feed.appendChild(div);
+    if(p.videoId && db){
+      getVideoUrl(p.videoId, (url)=>{ let v=document.getElementById('vid_'+p.videoId); if(v && url) v.src=url; });
+    }
+  });
+}
+
+function likePost(){ salio+=7; ceoSalio+=3; saveAll(); updateUI(); alert('Umepata 7 TZS, CEO 3 TZS'); }
+
+function ombaPesa(){
+  let njia=document.getElementById('njiaMalipo').value;
+  let namba=document.getElementById('nambaMalipo').value.trim();
+  let kiasi=Number(document.getElementById('kiasi').value);
+  if(!namba || namba.length<10){ alert('Weka namba sahihi!'); return; }
+  if(!kiasi || kiasi<1000){ alert('Kiasi cha chini ni 1000 TZS'); return; }
+  if(kiasi>salio){ alert('Salio lako halitoshi! Una '+salio+' TZS'); return; }
+  salio-=kiasi;
+  foleni.push({njia:njia,namba:namba,kiasi:kiasi,tarehe:new Date().toLocaleString()});
+  saveAll(); updateUI();
+  alert('Ombi limepokelewa! Uko namba '+foleni.length+' kwenye foleni. Utalipwa via '+njia);
+}
+
+function nimemlipa(i){
+  if(confirm('Umemlipa kweli '+foleni[i].namba+' '+foleni[i].kiasi+' TZS?')){
+    foleni.splice(i,1); saveAll(); updateUI(); alert('Sawa! Ameondolewa kwenye foleni.');
+  }
+}
 </script>
 </body>
 </html>

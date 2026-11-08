@@ -3,155 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAPAPP - Full</title>
-<meta name="theme-color" content="#1877f2">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="KAPAPP">
-<link rel="manifest" href="manifest.json">
+<title>KAPAPP - Pata Pesa na Marafiki</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f0f2f5}
-.top{background:#1877f2;color:white;padding:12px;text-align:center;position:sticky;top:0;z-index:10}
-.top h1{margin:0;font-size:22px}
-.top small{font-size:11px;font-weight:normal;opacity:.9}
-.top input{width:90%;padding:8px;border:none;border-radius:20px;margin-top:8px;outline:none}
-.downloadBar{background:#25D366;color:white;padding:10px;text-align:center;font-size:14px}
-.downloadBar span{background:white;color:#25D366;padding:3px 8px;border-radius:10px;font-weight:bold}
-.card{background:white;margin:10px;border-radius:12px;padding:15px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.btn{background:#1877f2;color:white;border:none;padding:12px;width:100%;border-radius:8px;font-size:16px;font-weight:bold}
-.btn-green{background:#25D366}
-input[type=text],input[type=tel]{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;margin:8px 0;font-size:16px}
-.post{display:flex;gap:10px;margin-bottom:15px}
-.avatar{width:45px;height:45px;background:#1877f2;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;flex-shrink:0}
-.post-box{background:#f0f2f5;padding:10px;border-radius:12px;flex:1}
-.hidden{display:none}
-.top-btn{background:rgba(255,255,255,.2);border:none;color:white;padding:6px 12px;border-radius:20px;margin:2px}
-</style>
-</head>
-<body>
-
-<div class="top">
-  <h1>KAPAPP</h1>
-  <small>Ungana • Chapisha • Pata Marafiki</small><br>
-  <div id="topUser"></div>
-  <input type="text" id="searchInput" placeholder="🔍 Tafuta post..." oninput="tafuta()">
-</div>
-
-<div class="downloadBar" id="installBar">
-  📲 Pakua KAPAPP App <span onclick="installApp()">PAKUA</span>
-</div>
-
-<!-- LOGIN -->
-<div class="card" id="loginCard">
-  <h2 style="text-align:center;margin:0">Karibu KAPAPP 👋</h2>
-  <p style="text-align:center;color:#666;font-size:14px">Jaza jina lako ili uingie</p>
-  <label>Jina Lako:</label>
-  <input type="text" id="userName" placeholder="Mf: Juma Mushi">
-  <label>Namba ya Simu (hiari):</label>
-  <input type="tel" id="userPhone" placeholder="Mf: 0712345678">
-  <button class="btn" onclick="ingia()">INGIA KAPAPP →</button>
-</div>
-
-<!-- HOME -->
-<div id="homeCard" class="hidden">
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <b id="karibuText"></b>
-      <button onclick="toka()" style="background:#ff3b30;color:white;border:none;padding:6px 12px;border-radius:20px">Toka</button>
-    </div>
-    <hr>
-    <div class="post">
-      <div class="avatar" id="myAvatar">K</div>
-      <div class="post-box">
-        <input type="text" id="postText" placeholder="Unafikiria nini leo?" style="border:none;background:transparent;margin:0;padding:5px">
-      </div>
-    </div>
-    <button class="btn btn-green" onclick="chapisha()">📝 CHAPISHA</button>
-  </div>
-
-  <div class="card">
-    <h3 style="margin:0 0 10px 0">📌 Posts za Leo</h3>
-    <div id="postsList"></div>
-  </div>
-
-  <div class="card" style="text-align:center">
-    <h3>👥 Marafiki Mtandaoni</h3>
-    <p>🟢 Neema - Dar es Salaam</p>
-    <p>🟢 Baraka - Arusha</p>
-    <p>🟢 Amina - Mwanza</p>
-    <button class="btn" onclick="alert('Karibu! Wasiliana na marafiki wako')">ONGEZA MARAFIKI</button>
-  </div>
-</div>
-
-<script>
-let posts = [
-  {jina:"Neema", herufi:"N", ujumbe:"Karibu sana KAPAPP! Hapa ni nyumbani 🔥"},
-  {jina:"Baraka", herufi:"B", ujumbe:"Leo Dar ni moto! Nani yupo Kariakoo?"},
-  {jina:"Amina", herufi:"A", ujumbe:"Nimeipenda hii App mpya, ni nzuri sana ❤️"}
-];
-let jinaLangu = localStorage.getItem("kapapp_name") || "";
-
-function onyesha(){
-  if(jinaLangu){
-    document.getElementById("loginCard").classList.add("hidden");
-    document.getElementById("homeCard").classList.remove("hidden");
-    document.getElementById("karibuText").innerText = "Karibu, " + jinaLangu + " 👋";
-    document.getElementById("myAvatar").innerText = jinaLangu.charAt(0).toUpperCase();
-    document.getElementById("topUser").innerHTML = '<button class="top-btn">👤 '+jinaLangu+'</button>';
-  } else {
-    document.getElementById("loginCard").classList.remove("hidden");
-    document.getElementById("homeCard").classList.add("hidden");
-    document.getElementById("topUser").innerHTML = "";
-  }
-  onyeshaPosts();
-}
-
-function ingia(){
-  let jina = document.getElementById("userName").value.trim();
-  if(!jina){ alert("Tafadhali andika jina lako kwanza!"); return; }
-  localStorage.setItem("kapapp_name", jina);
-  jinaLangu = jina;
-  onyesha();
-}
-
-function toka(){
-  localStorage.removeItem("kapapp_name");
-  jinaLangu = "";
-  document.getElementById("userName").value = "";
-  onyesha();
-}
-
-function chapisha(){
-  let txt = document.getElementById("postText").value.trim();
-  if(!txt){ alert("Andika kitu kwanza!"); return; }
-  posts.unshift({jina:jinaLangu, herufi:jinaLangu.charAt(0).toUpperCase(), ujumbe:txt});
-  document.getElementById("postText").value = "";
-  onyeshaPosts();
-  alert("Imechapishwa! ✅");
-}
-
-function onyeshaPosts(){
-  let html = "";
-  posts.forEach(p=>{
-    html += '<div class="post"><div class="avatar">'+p.herufi+'</div><div class="post-box"><b>'+p.jina+'</b><br>'+p.ujumbe+'</div></div>';
-  });
-  document.getElementById("postsList").innerHTML = html;
-}
-
-function tafuta(){
-  let s = document.getElementById("searchInput").value.toLowerCase();
-  let filtered = posts.filter(p=>p.ujumbe.toLowerCase().includes(s) || p.jina.toLowerCase().includes(s));
-  let html = "";
-  filtered.forEach(p=>{
-    html += '<div class="post"><div class="avatar">'+p.herufi+'</div><div class="post-box"><b>'+p.jina+'</b><br>'+p.ujumbe+'</div></div>';
-  });
-  document.getElementById("postsList").innerHTML = html || "<p>Hakuna kilichopatikana</p>";
-}
-
-function installApp(){ alert("Asante! Bonyeza ⋮ juu kulia > Add to Home screen ili kupakua App"); }
-
-onyesha();
-</script>
-</body>
-</html>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f0f2f5;padding-bottom:80px}
+.header{background:#1877f2;color:white;padding:12px;text-align:center;position:sticky;top:0;z-index:10}
+.header h1{font-size:24px}
+.wallet{background:white;margin:10px;padding:15px;border-radius:12px;text-align:center;box-shadow:0 1px 5px rgba(0,0,0,.1)}
+.wallet h2{color:#1877f2;font-size:28px}
+.wallet p{font-size:13px;color:#666;margin-top:4px}
+.wallet button{background:#00a400;color:white;border:none;padding:10px 20px;border-radius:20px;font-weight:bold;margin-top:10px}
+.post-box{background:white;margin:10px;padding:12px;border-radius:12px}
+.post-box input{width:100%;padding:10px;border:1px solid #ddd;border-radius:20px;margin-bottom:8px}
+.post-box button{background:#1877f2;color:white;border:none;padding:10px;width:100%;border-radius:20px;font-weight:bold}
+.post{background:white;margin:10px;border-radius:12px;overflow:hidden}
+.post-head{padding:10px;display:flex;align-items:center;gap:10px}
+.avatar{width:40px;height:40px;background:#1877f2;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px}
+.post-body{padding:0 12px 10px}
+.post-img{width:100%;max-height:300px;object-fit:cover}
+.actions{display:flex;justify-content:space-around;border-top:1px solid #eee;padding:8px}
+.actions button{border:none;background:none;font-size:15px;padding:6px 12px;border-radius:20px}
+.actions button.liked{background:#e7f3ff;color:#1877f2}
+.comments{padding:8px 12px;background:#f9f9f9;font-size:14px}
+.comments input{width:100%;padding:8px;border-radius:20px;border:1px solid #ddd;margin-top:5px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}
+.nav a{text-decoration:none;color:#333;font-weight:bold;font-size:14px}
+.info{background:#fff

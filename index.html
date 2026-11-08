@@ -9,23 +9,44 @@
 body{background:#f0f2f5;padding-bottom:80px}
 .header{background:#1877f2;color:white;padding:12px;text-align:center;position:sticky;top:0;z-index:10}
 .header h1{font-size:24px}
-.wallet{background:white;margin:10px;padding:15px;border-radius:12px;text-align:center;box-shadow:0 1px 5px rgba(0,0,0,.1)}
+.wallet{background:white;margin:10px;padding:15px;border-radius:12px;text-align:center}
 .wallet h2{color:#1877f2;font-size:28px}
-.wallet p{font-size:13px;color:#666;margin-top:4px}
 .wallet button{background:#00a400;color:white;border:none;padding:10px 20px;border-radius:20px;font-weight:bold;margin-top:10px}
 .post-box{background:white;margin:10px;padding:12px;border-radius:12px}
 .post-box input{width:100%;padding:10px;border:1px solid #ddd;border-radius:20px;margin-bottom:8px}
 .post-box button{background:#1877f2;color:white;border:none;padding:10px;width:100%;border-radius:20px;font-weight:bold}
 .post{background:white;margin:10px;border-radius:12px;overflow:hidden}
 .post-head{padding:10px;display:flex;align-items:center;gap:10px}
-.avatar{width:40px;height:40px;background:#1877f2;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px}
+.avatar{width:40px;height:40px;background:#1877f2;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold}
 .post-body{padding:0 12px 10px}
-.post-img{width:100%;max-height:300px;object-fit:cover}
 .actions{display:flex;justify-content:space-around;border-top:1px solid #eee;padding:8px}
 .actions button{border:none;background:none;font-size:15px;padding:6px 12px;border-radius:20px}
-.actions button.liked{background:#e7f3ff;color:#1877f2}
 .comments{padding:8px 12px;background:#f9f9f9;font-size:14px}
 .comments input{width:100%;padding:8px;border-radius:20px;border:1px solid #ddd;margin-top:5px}
 .nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}
 .nav a{text-decoration:none;color:#333;font-weight:bold;font-size:14px}
-.info{background:#fff
+.info{background:#fff3cd;margin:10px;padding:10px;border-radius:10px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="header"><h1>KAPAPP 🇹🇿</h1><p style="font-size:12px">Post • Like • Pata Pesa</p></div>
+<div class="wallet"><p>💰 MFUKO WAKO</p><h2><span id="pesa">0</span> TZS</h2><p>Like 1 = 10 TZS | Post = 50 TZS | Comment = 5 TZS</p><button onclick="toaPesa()">TOA PESA KWA M-PESA</button><p id="msg"></p></div>
+<div class="info"><b>Pesa zinatoka wapi?</b><br>Kampuni zinalipa KAPAPP kutangaza, KAPAPP inakugawia wewe sehemu ya pesa hiyo.</div>
+<div class="post-box"><input id="jina" placeholder="Jina lako..."><input id="maandishi" placeholder="Unafikiria nini leo?"><button onclick="tumaPost()">📝 CHAPISHA POST +50 TZS</button></div>
+<div id="feed"></div>
+<div class="nav"><a href="#">🏠 Nyumbani</a><a href="#">🛍️ Bidhaa</a><a href="#">🎬 Reels</a><a href="#">👤 Akaunti</a></div>
+<script>
+let pesa=parseInt(localStorage.getItem('kapapp_pesa')||'0');
+let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+if(posts.length==0){posts=[{jina:"KAPAPP",txt:"Karibu KAPAPP! Post hapa, watu wakipenda unapata 10 TZS kwa kila Like.",likes:12,comments:["Hongera!"]},{jina:"Neema",txt:"Leo niko Kariakoo, mizigo mipya imefika! 🛍️",likes:8,comments:[]}];}
+function save(){localStorage.setItem('kapapp_pesa',pesa);localStorage.setItem('kapapp_posts',JSON.stringify(posts));}
+function onyesha(){document.getElementById('pesa').innerText=pesa;let html='';posts.forEach((p,i)=>{html+=`<div class="post"><div class="post-head"><div class="avatar">${p.jina[0]}</div><b>${p.jina}</b></div><div class="post-body">${p.txt}</div><div class="actions"><button onclick="like(${i},this)">❤️ Like (${p.likes}) • 10 TZS</button><button onclick="comment(${i})">💬 Comment (${p.comments.length})</button></div><div class="comments">${p.comments.map(c=>'<div>👤 '+c+'</div>').join('')}<input placeholder="Andika comment..." onkeydown="if(event.key==='Enter'){commentAdd(${i},this)}"></div></div>`;});document.getElementById('feed').innerHTML=html;}
+function tumaPost(){let jina=document.getElementById('jina').value||'Mgeni';let txt=document.getElementById('maandishi').value;if(!txt){alert('Andika kitu kwanza!');return;}posts.unshift({jina:jina,txt:txt,likes:0,comments:[]});pesa+=50;save();onyesha();document.getElementById('maandishi').value='';alert('Hongera! Umepata +50 TZS');}
+function like(i,btn){posts[i].likes++;pesa+=10;save();onyesha();}
+function comment(i){let c=prompt('Andika comment yako:');if(c){posts[i].comments.push(c);pesa+=5;save();onyesha();}}
+function commentAdd(i,el){if(el.value){posts[i].comments.push(el.value);pesa+=5;save();onyesha();el.value='';}}
+function toaPesa(){if(pesa<1000){alert('Unahitaji angalau 1000 TZS ili kutoa. Una '+pesa+' TZS.');return;}let namba=prompt('Weka namba yako ya M-Pesa:');if(namba){alert('Ombi limetumwa! '+pesa+' TZS zitatumwa kwa '+namba);pesa=0;save();onyesha();}}
+onyesha();
+</script>
+</body>
+</html>

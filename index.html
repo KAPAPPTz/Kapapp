@@ -38,6 +38,11 @@ body{background:#f0f2f5;padding-bottom:80px}
 .bidhaa-card .btn-nunua{background:#00a400;color:white;border:none;padding:12px;width:100%;border-radius:20px;font-weight:bold;margin-top:8px;font-size:16px}
 .bidhaa-card .btn-wa{border:none;background:#25D366;color:white;padding:8px 12px;border-radius:15px;margin-top:5px}
 .shop-form{background:white;margin:10px;padding:12px;border-radius:12px}
+.admin-card{background:white;margin:10px;padding:15px;border-radius:12px}
+.admin-stat{display:flex;justify-content:space-between;background:#f0f2f5;padding:12px;border-radius:10px;margin-bottom:8px;font-weight:bold}
+.admin-stat span:last-child{color:#1877f2}
+.btn-del{background:#ff4444;color:white;border:none;padding:6px 12px;border-radius:15px;font-size:13px}
+.btn-admin{background:#ff9800;color:white;border:none;padding:12px;width:100%;border-radius:20px;font-weight:bold;margin-top:8px}
 </style>
 </head>
 <body>
@@ -47,7 +52,7 @@ body{background:#f0f2f5;padding-bottom:80px}
 </div>
 <div id="mainScreen" style="display:none">
 <div class="header"><h1>KAPAPP 🇹🇿</h1><p style="font-size:12px">Post • Like • Pata Pesa</p></div>
-<div class="top-user"><span>👤 <b id="showJina"></b><br><small id="showNamba"></small></span><button onclick="toka()">Toka</button></div>
+<div class="top-user"><span>👤 <b id="showJina"></b><br><small id="showNamba"></small><br><small id="ceoBadge" style="color:#ff9800;font-weight:bold"></small></span><button onclick="toka()">Toka</button></div>
 <div class="wallet"><p>💰 MFUKO WAKO</p><h2><span id="pesa">0</span> TZS</h2><p>Like 1 = 10 TZS | Post = 50 TZS | Comment = 5 TZS</p><button onclick="toaPesa()">TOA PESA KWA M-PESA</button></div>
 
 <div id="tabNyumbani">
@@ -62,29 +67,50 @@ body{background:#f0f2f5;padding-bottom:80px}
 <div id="bidhaaList"></div>
 </div>
 
-<div class="nav"><a href="#" id="navNyumbani" class="active" onclick="badiliTab('nyumbani');return false">🏠 Nyumbani</a><a href="#" id="navBidhaa" onclick="badiliTab('bidhaa');return false">🛍️ Bidhaa</a><a href="#" onclick="alert('Reels inakuja hivi karibuni!');return false">🎬 Reels</a><a href="#" onclick="alert('Akaunti yako: '+(user?user.jina:'')+' - Pesa: '+pesa+' TZS');return false">👤 Akaunti</a></div>
+<div id="tabAdmin" style="display:none">
+<div class="admin-card"><h3>👑 ADMIN PANEL - CEO TU!</h3><p style="font-size:13px;color:#666;margin:5px 0">Karibu Boss Said Kapwile! Hapa unadhibiti App yote.</p>
+<div class="admin-stat"><span>👥 Watumiaji Waliojiunga</span><span id="statWatu">0</span></div>
+<div class="admin-stat"><span>📝 Post Zote</span><span id="statPosts">0</span></div>
+<div class="admin-stat"><span>🛍️ Bidhaa Sokoni</span><span id="statBidhaa">0</span></div>
+<div class="admin-stat"><span>💰 Pesa Yako (CEO)</span><span id="statPesa">0 TZS</span></div>
+<div class="admin-stat"><span>❤️ Likes Zote</span><span id="statLikes">0</span></div>
+<button class="btn-admin" onclick="tangaza()">📢 TUMA TANGAZO KWA WOTE</button>
+<button class="btn-admin" style="background:#1877f2" onclick="onyeshaAdminLists()">👀 ONA POST NA BIDHAA ZOTE - FUTA MBAYA</button>
+</div>
+<div id="adminLists"></div>
+</div>
+
+<div class="nav"><a href="#" id="navNyumbani" class="active" onclick="badiliTab('nyumbani');return false">🏠 Nyumbani</a><a href="#" id="navBidhaa" onclick="badiliTab('bidhaa');return false">🛍️ Bidhaa</a><a href="#" id="navAdmin" style="display:none" onclick="badiliTab('admin');return false">👑 Admin</a><a href="#" onclick="alert('Reels inakuja hivi karibuni!');return false">🎬 Reels</a><a href="#" onclick="alert('Akaunti yako: '+(user?user.jina:'')+' - Pesa: '+pesa+' TZS');return false">👤 Akaunti</a></div>
 </div>
 <script>
 let user=JSON.parse(localStorage.getItem('kapapp_user')||'null');
 let pesa=parseInt(localStorage.getItem('kapapp_pesa')||'0');
 let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
 let bidhaa=JSON.parse(localStorage.getItem('kapapp_bidhaa')||'[]');
+let watumiaji=JSON.parse(localStorage.getItem('kapapp_users')||'[]');
+let CEO_NAMBA='0688472790';
 if(posts.length==0){posts=[{jina:"KAPAPP",txt:"Karibu KAPAPP! 🇹🇿\n\nPost hapa, watu wakipenda unapata 10 TZS kwa kila Like.\n\nTuanze kupata pesa leo!",likes:12,comments:["Hongera!"]},{jina:"Neema",txt:"Leo niko Kariakoo, mizigo mipya imefika! 🛍️\n\nKaribuni sana!",likes:8,comments:[]}];}
 if(bidhaa.length==0){bidhaa=[{jina:"Viatu vya Mpira - Nike",bei:"35000",eneo:"Kariakoo, Dar",maelezo:"Mpya kabisa, size 40-44, rangi nyeusi na nyeupe",muuzaji:"Neema",namba:"0755000111"},{jina:"Simu Samsung A14",bei:"280000",eneo:"Sinza, Dar",maelezo:"Mpya, GB 128, kamera kali, warranty 1 mwaka",muuzaji:"Juma",namba:"0765000222"}];}
-function save(){localStorage.setItem('kapapp_pesa',pesa);localStorage.setItem('kapapp_posts',JSON.stringify(posts));localStorage.setItem('kapapp_bidhaa',JSON.stringify(bidhaa));if(user) localStorage.setItem('kapapp_user',JSON.stringify(user));}
-function ingia(){let j=document.getElementById('loginJina').value.trim();let n=document.getElementById('loginNamba').value.trim();if(!j){alert('Andika jina lako kwanza!');return;}if(!n){alert('Andika namba ya simu!');return;}user={jina:j,namba:n};save();funguaApp();}
+function save(){localStorage.setItem('kapapp_pesa',pesa);localStorage.setItem('kapapp_posts',JSON.stringify(posts));localStorage.setItem('kapapp_bidhaa',JSON.stringify(bidhaa));localStorage.setItem('kapapp_users',JSON.stringify(watumiaji));if(user) localStorage.setItem('kapapp_user',JSON.stringify(user));}
+function isCEO(){return user && user.namba && user.namba.replace(/\s/g,'')==CEO_NAMBA;}
+function ingia(){let j=document.getElementById('loginJina').value.trim();let n=document.getElementById('loginNamba').value.trim();if(!j){alert('Andika jina lako kwanza!');return;}if(!n){alert('Andika namba ya simu!');return;}user={jina:j,namba:n};if(!watumiaji.find(u=>u.namba==n)){watumiaji.push({jina:j,namba:n,tarehe:new Date().toLocaleDateString()});}save();funguaApp();}
 function toka(){if(confirm('Unataka kutoka? Pesa yako itabaki salama.')){localStorage.removeItem('kapapp_user');user=null;document.getElementById('mainScreen').style.display='none';document.getElementById('loginScreen').style.display='block';}}
-function funguaApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('mainScreen').style.display='block';document.getElementById('showJina').innerText=user.jina;document.getElementById('showNamba').innerText=user.namba;document.getElementById('maandishi').placeholder='Unafikiria nini leo, '+user.jina.split(' ')[0]+'?';onyesha();onyeshaBidhaa();}
-function badiliTab(tab){if(tab=='nyumbani'){document.getElementById('tabNyumbani').style.display='block';document.getElementById('tabBidhaa').style.display='none';document.getElementById('navNyumbani').className='active';document.getElementById('navBidhaa').className='';}else{document.getElementById('tabNyumbani').style.display='none';document.getElementById('tabBidhaa').style.display='block';document.getElementById('navNyumbani').className='';document.getElementById('navBidhaa').className='active';}}
-function onyesha(){document.getElementById('pesa').innerText=pesa;let html='';posts.forEach((p,i)=>{let maandishi=(p.txt||"Karibu KAPAPP!").replace(/</g,'&lt;');html+=`<div class="post"><div class="post-head"><div class="avatar">${(p.jina||'K')[0].toUpperCase()}</div><b>${p.jina||'KAPAPP'}</b></div><div class="post-body">${maandishi}</div><div class="actions"><button onclick="like(${i})">❤️ Like (${p.likes||0}) • 10 TZS</button><button onclick="comment(${i})">💬 Comment (${(p.comments||[]).length})</button></div><div class="comments">${(p.comments||[]).map(c=>'<div>👤 '+c+'</div>').join('')}<input placeholder="Andika comment..." onkeydown="if(event.key==='Enter'){commentAdd(${i},this)}"></div></div>`;});document.getElementById('feed').innerHTML=html;}
-function tumaPost(){let txt=document.getElementById('maandishi').value.trim();if(!txt){alert('Andika kitu kwanza!');return;}posts.unshift({jina:user.jina,txt:txt,likes:0,comments:[]});pesa+=50;save();onyesha();document.getElementById('maandishi').value='';alert('Hongera '+user.jina.split(' ')[0]+'! Umepata +50 TZS');}
-function like(i){posts[i].likes=(posts[i].likes||0)+1;pesa+=10;save();onyesha();}
+function funguaApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('mainScreen').style.display='block';document.getElementById('showJina').innerText=user.jina;document.getElementById('showNamba').innerText=user.namba;if(isCEO()){document.getElementById('ceoBadge').innerText='👑 CEO - BOSS';document.getElementById('navAdmin').style.display='block';}else{document.getElementById('ceoBadge').innerText='';document.getElementById('navAdmin').style.display='none';}document.getElementById('maandishi').placeholder='Unafikiria nini leo, '+user.jina.split(' ')[0]+'?';onyesha();onyeshaBidhaa();onyeshaAdmin();}
+function badiliTab(tab){document.getElementById('tabNyumbani').style.display='none';document.getElementById('tabBidhaa').style.display='none';document.getElementById('tabAdmin').style.display='none';document.getElementById('navNyumbani').className='';document.getElementById('navBidhaa').className='';document.getElementById('navAdmin').className='';if(tab=='nyumbani'){document.getElementById('tabNyumbani').style.display='block';document.getElementById('navNyumbani').className='active';}if(tab=='bidhaa'){document.getElementById('tabBidhaa').style.display='block';document.getElementById('navBidhaa').className='active';}if(tab=='admin'){if(!isCEO()){alert('Samahani! Hii ni kwa CEO tu!');badiliTab('nyumbani');return;}document.getElementById('tabAdmin').style.display='block';document.getElementById('navAdmin').className='active';onyeshaAdmin();}}
+function onyesha(){document.getElementById('pesa').innerText=pesa;let html='';posts.forEach((p,i)=>{let maandishi=(p.txt||"").replace(/</g,'&lt;');html+=`<div class="post"><div class="post-head"><div class="avatar">${(p.jina||'K')[0].toUpperCase()}</div><b>${p.jina||'KAPAPP'}</b></div><div class="post-body">${maandishi}</div><div class="actions"><button onclick="like(${i})">❤️ Like (${p.likes||0}) • 10 TZS</button><button onclick="comment(${i})">💬 Comment (${(p.comments||[]).length})</button></div><div class="comments">${(p.comments||[]).map(c=>'<div>👤 '+c+'</div>').join('')}<input placeholder="Andika comment..." onkeydown="if(event.key==='Enter'){commentAdd(${i},this)}"></div></div>`;});document.getElementById('feed').innerHTML=html;}
+function tumaPost(){let txt=document.getElementById('maandishi').value.trim();if(!txt){alert('Andika kitu kwanza!');return;}posts.unshift({jina:user.jina,txt:txt,likes:0,comments:[]});pesa+=50;save();onyesha();onyeshaAdmin();document.getElementById('maandishi').value='';alert('Hongera '+user.jina.split(' ')[0]+'! Umepata +50 TZS');}
+function like(i){posts[i].likes=(posts[i].likes||0)+1;pesa+=10;save();onyesha();onyeshaAdmin();}
 function comment(i){let c=prompt('Andika comment yako:');if(c){posts[i].comments=posts[i].comments||[];posts[i].comments.push(c);pesa+=5;save();onyesha();}}
 function commentAdd(i,el){if(el.value.trim()){posts[i].comments=posts[i].comments||[];posts[i].comments.push(el.value);pesa+=5;save();onyesha();el.value='';}}
-function wekaBidhaa(){let j=document.getElementById('bJina').value.trim();let bei=document.getElementById('bBei').value.trim();let eneo=document.getElementById('bEneo').value.trim();let m=document.getElementById('bMaelezo').value.trim();if(!j||!bei){alert('Andika jina la bidhaa na bei!');return;}bidhaa.unshift({jina:j,bei:bei,eneo:eneo||'Dar es Salaam',maelezo:m,muuzaji:user.jina,namba:user.namba});pesa+=100;save();onyesha();onyeshaBidhaa();document.getElementById('bJina').value='';document.getElementById('bBei').value='';document.getElementById('bEneo').value='';document.getElementById('bMaelezo').value='';alert('Hongera! Bidhaa yako imewekwa sokoni +100 TZS');}
+function wekaBidhaa(){let j=document.getElementById('bJina').value.trim();let bei=document.getElementById('bBei').value.trim();let eneo=document.getElementById('bEneo').value.trim();let m=document.getElementById('bMaelezo').value.trim();if(!j||!bei){alert('Andika jina la bidhaa na bei!');return;}bidhaa.unshift({jina:j,bei:bei,eneo:eneo||'Dar es Salaam',maelezo:m,muuzaji:user.jina,namba:user.namba});pesa+=100;save();onyesha();onyeshaBidhaa();onyeshaAdmin();document.getElementById('bJina').value='';document.getElementById('bBei').value='';document.getElementById('bEneo').value='';document.getElementById('bMaelezo').value='';alert('Hongera! Bidhaa yako imewekwa sokoni +100 TZS');}
 function onyeshaBidhaa(){document.getElementById('pesa').innerText=pesa;let html='';bidhaa.forEach((b,i)=>{html+=`<div class="bidhaa-card"><h3>🛍️ ${b.jina}</h3><div class="bei">${b.bei} TZS</div><p>📍 ${b.eneo} | 👤 ${b.muuzaji}</p><p style="font-size:14px;color:#555;margin-top:5px">${b.maelezo||''}</p><button class="btn-nunua" onclick="nunua(${i})">📞 NUNUA - ONYESHA NAMBA</button><div id="namba-${i}" style="display:none;margin-top:8px;background:#e8f5e9;padding:10px;border-radius:10px;text-align:center"><b>Muuzaji: ${b.muuzaji}</b><br>📞 ${b.namba}<br><button class="btn-wa" onclick="window.open('https://wa.me/255'+'${b.namba}'.replace(/^0/,''))">💬 WhatsApp Muuzaji</button></div></div>`;});document.getElementById('bidhaaList').innerHTML=html;}
 function nunua(i){let el=document.getElementById('namba-'+i);el.style.display=el.style.display=='none'?'block':'none';}
-function toaPesa(){if(pesa<1000){alert('Unahitaji angalau 1000 TZS ili kutoa. Una '+pesa+' TZS.');return;}if(confirm('Tuma '+pesa+' TZS kwa '+(user?user.namba:'')+' ?')){alert('Ombi limetumwa! '+pesa+' TZS zitatumwa kwa '+(user?user.namba:''));pesa=0;save();onyesha();onyeshaBidhaa();}}
+function toaPesa(){if(pesa<1000){alert('Unahitaji angalau 1000 TZS ili kutoa. Una '+pesa+' TZS.');return;}if(confirm('Tuma '+pesa+' TZS kwa '+(user?user.namba:'')+' ?')){alert('Ombi limetumwa! '+pesa+' TZS zitatumwa kwa '+(user?user.namba:''));pesa=0;save();onyesha();onyeshaBidhaa();onyeshaAdmin();}}
+function onyeshaAdmin(){if(!document.getElementById('statWatu'))return;document.getElementById('statWatu').innerText=watumiaji.length+1;document.getElementById('statPosts').innerText=posts.length;document.getElementById('statBidhaa').innerText=bidhaa.length;document.getElementById('statPesa').innerText=pesa+' TZS';let totalLikes=0;posts.forEach(p=>totalLikes+=(p.likes||0));document.getElementById('statLikes').innerText=totalLikes;}
+function tangaza(){let msg=prompt('Andika tangazo lako kwa watumiaji wote:');if(msg){posts.unshift({jina:'KAPAPP 👑 - TANGAZO LA CEO',txt:msg,likes:0,comments:[]});save();onyesha();onyeshaAdmin();alert('Tangazo limetumwa kwa wote!');}}
+function onyeshaAdminLists(){let html='<div class="admin-card"><h3>📝 Post Zote - Futa Mbaya</h3>';posts.forEach((p,i)=>{html+=`<div style="border-bottom:1px solid #eee;padding:8px 0;display:flex;justify-content:space-between"><span><b>${p.jina}</b>: ${(p.txt||'').substring(0,60)}</span> <button class="btn-del" onclick="futaPost(${i})">Futa</button></div>`;});html+='</div><div class="admin-card"><h3>🛍️ Bidhaa Zote - Futa Mbaya</h3>';bidhaa.forEach((b,i)=>{html+=`<div style="border-bottom:1px solid #eee;padding:8px 0;display:flex;justify-content:space-between"><span><b>${b.jina}</b> - ${b.bei} TZS</span> <button class="btn-del" onclick="futaBidhaa(${i})">Futa</button></div>`;});html+='</div><div class="admin-card"><h3>👥 Watumiaji</h3>';if(watumiaji.length==0)html+='<p>Hakuna bado - wewe tu ndio umejiunga.</p>';watumiaji.forEach(u=>{html+=`<div style="padding:5px 0">👤 ${u.jina} - ${u.namba} - ${u.tarehe||''}</div>`;});html+='<div style="padding:5px 0">👤 '+user.jina+' - '+user.namba+' (Wewe - CEO)</div></div>';document.getElementById('adminLists').innerHTML=html;}
+function futaPost(i){if(confirm('Futa hii post?')){posts.splice(i,1);save();onyesha();onyeshaAdmin();onyeshaAdminLists();}}
+function futaBidhaa(i){if(confirm('Futa hii bidhaa?')){bidhaa.splice(i,1);save();onyeshaBidhaa();onyeshaAdmin();onyeshaAdminLists();}}
 if(user){funguaApp();}else{document.getElementById('loginScreen').style.display='block';}
 </script>
 </body>

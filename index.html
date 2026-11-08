@@ -30,21 +30,21 @@ body{background:#f0f2f5;padding-bottom:80px}
 </head>
 <body>
 <div class="header"><h1>KAPAPP 🇹🇿</h1><p style="font-size:12px">Post • Like • Pata Pesa</p></div>
-<div class="wallet"><p>💰 MFUKO WAKO</p><h2><span id="pesa">0</span> TZS</h2><p>Like 1 = 10 TZS | Post = 50 TZS | Comment = 5 TZS</p><button onclick="toaPesa()">TOA PESA KWA M-PESA</button><p id="msg"></p></div>
+<div class="wallet"><p>💰 MFUKO WAKO</p><h2><span id="pesa">0</span> TZS</h2><p>Like 1 = 10 TZS | Post = 50 TZS | Comment = 5 TZS</p><button onclick="toaPesa()">TOA PESA KWA M-PESA</button></div>
 <div class="info"><b>Pesa zinatoka wapi?</b><br>Kampuni zinalipa KAPAPP kutangaza, KAPAPP inakugawia wewe sehemu ya pesa hiyo.</div>
 <div class="post-box"><input id="jina" placeholder="Jina lako..."><input id="maandishi" placeholder="Unafikiria nini leo?"><button onclick="tumaPost()">📝 CHAPISHA POST +50 TZS</button></div>
 <div id="feed"></div>
 <div class="nav"><a href="#">🏠 Nyumbani</a><a href="#">🛍️ Bidhaa</a><a href="#">🎬 Reels</a><a href="#">👤 Akaunti</a></div>
 <script>
-let pesa=parseInt(localStorage.getItem('kapapp_pesa')||'0');
-let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+let pesa=parseInt(localStorage.getItem('kapapp2_pesa')||'0');
+let posts=JSON.parse(localStorage.getItem('kapapp2_posts')||'[]');
 if(posts.length==0){posts=[{jina:"KAPAPP",txt:"Karibu KAPAPP! Post hapa, watu wakipenda unapata 10 TZS kwa kila Like.",likes:12,comments:["Hongera!"]},{jina:"Neema",txt:"Leo niko Kariakoo, mizigo mipya imefika! 🛍️",likes:8,comments:[]}];}
-function save(){localStorage.setItem('kapapp_pesa',pesa);localStorage.setItem('kapapp_posts',JSON.stringify(posts));}
-function onyesha(){document.getElementById('pesa').innerText=pesa;let html='';posts.forEach((p,i)=>{html+=`<div class="post"><div class="post-head"><div class="avatar">${p.jina[0]}</div><b>${p.jina}</b></div><div class="post-body">${p.txt}</div><div class="actions"><button onclick="like(${i},this)">❤️ Like (${p.likes}) • 10 TZS</button><button onclick="comment(${i})">💬 Comment (${p.comments.length})</button></div><div class="comments">${p.comments.map(c=>'<div>👤 '+c+'</div>').join('')}<input placeholder="Andika comment..." onkeydown="if(event.key==='Enter'){commentAdd(${i},this)}"></div></div>`;});document.getElementById('feed').innerHTML=html;}
+function save(){localStorage.setItem('kapapp2_pesa',pesa);localStorage.setItem('kapapp2_posts',JSON.stringify(posts));}
+function onyesha(){document.getElementById('pesa').innerText=pesa;let html='';posts.forEach((p,i)=>{let maandishi=p.txt||p.text||"Karibu KAPAPP!";html+=`<div class="post"><div class="post-head"><div class="avatar">${(p.jina||'K')[0]}</div><b>${p.jina||'KAPAPP'}</b></div><div class="post-body">${maandishi}</div><div class="actions"><button onclick="like(${i},this)">❤️ Like (${p.likes||0}) • 10 TZS</button><button onclick="comment(${i})">💬 Comment (${(p.comments||[]).length})</button></div><div class="comments">${(p.comments||[]).map(c=>'<div>👤 '+c+'</div>').join('')}<input placeholder="Andika comment..." onkeydown="if(event.key==='Enter'){commentAdd(${i},this)}"></div></div>`;});document.getElementById('feed').innerHTML=html;}
 function tumaPost(){let jina=document.getElementById('jina').value||'Mgeni';let txt=document.getElementById('maandishi').value;if(!txt){alert('Andika kitu kwanza!');return;}posts.unshift({jina:jina,txt:txt,likes:0,comments:[]});pesa+=50;save();onyesha();document.getElementById('maandishi').value='';alert('Hongera! Umepata +50 TZS');}
-function like(i,btn){posts[i].likes++;pesa+=10;save();onyesha();}
-function comment(i){let c=prompt('Andika comment yako:');if(c){posts[i].comments.push(c);pesa+=5;save();onyesha();}}
-function commentAdd(i,el){if(el.value){posts[i].comments.push(el.value);pesa+=5;save();onyesha();el.value='';}}
+function like(i,btn){posts[i].likes=(posts[i].likes||0)+1;pesa+=10;save();onyesha();}
+function comment(i){let c=prompt('Andika comment yako:');if(c){posts[i].comments=posts[i].comments||[];posts[i].comments.push(c);pesa+=5;save();onyesha();}}
+function commentAdd(i,el){if(el.value){posts[i].comments=posts[i].comments||[];posts[i].comments.push(el.value);pesa+=5;save();onyesha();el.value='';}}
 function toaPesa(){if(pesa<1000){alert('Unahitaji angalau 1000 TZS ili kutoa. Una '+pesa+' TZS.');return;}let namba=prompt('Weka namba yako ya M-Pesa:');if(namba){alert('Ombi limetumwa! '+pesa+' TZS zitatumwa kwa '+namba);pesa=0;save();onyesha();}}
 onyesha();
 </script>

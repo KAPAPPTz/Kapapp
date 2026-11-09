@@ -5,109 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KAPAPP 🇹🇿</title>
 <style>
-  /* ===== MUONEKANO WA JUMLA ===== */
-  body { margin:0; font-family: Arial; background:#f2f3f5; padding-bottom:90px; }
-  
-  /* ===== KICHWA JUU ===== */
-  header { background:white; padding:12px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:10; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
-  .logo { font-size:24px; font-weight:900; color:#1877f2; }
-  .btn-jiunge { background:#1877f2; color:white; border:none; padding:9px 16px; border-radius:20px; font-weight:bold; }
-  .btn-ingia { background:#eee; border:none; padding:9px 14px; border-radius:20px; font-weight:bold; }
-
-  /* ===== TAFUTA ===== */
-  .tafuta { padding:12px; }
-  .tafuta input { width:100%; padding:13px; border-radius:25px; border:1px solid #ddd; font-size:15px; box-sizing:border-box; }
-
-  /* ===== BANGO KUBWA ===== */
-  .bango { margin:0 12px; background:linear-gradient(90deg, #1877f2, #ff6600); color:white; padding:20px; border-radius:18px; text-align:center; }
-  .bango h2 { margin:0; font-size:22px; }
-  .bango button { background:#ff6600; color:white; border:none; padding:11px 22px; border-radius:25px; font-weight:bold; margin-top:10px; font-size:15px; }
-
-  /* ===== VIFUNGUO ===== */
-  .vifungu { display:flex; gap:8px; padding:12px; overflow:auto; }
-  .vifungu button { background:white; border:1px solid #ddd; padding:9px 15px; border-radius:20px; white-space:nowrap; font-weight:bold; }
-
-  /* ===== STORIES ===== */
-  .stories { display:flex; gap:12px; padding:5px 12px; overflow:auto; }
-  .story { text-align:center; min-width:65px; }
-  .story .duara { width:62px; height:62px; border-radius:50%; border:3px solid #ff6600; background:white; font-size:30px; display:flex; align-items:center; justify-content:center; }
-  .story small { font-weight:bold; }
-
-  /* ===== POST ===== */
-  .post { background:white; margin:12px; border-radius:18px; padding:12px; box-shadow:0 4px 15px rgba(0,0,0,0.08); }
-  .post img { width:100%; border-radius:14px; height:280px; object-fit:cover; }
-  .mtu { display:flex; gap:10px; align-items:center; margin-bottom:8px; }
-  .avatar { width:44px; height:44px; border-radius:50%; background:#1877f2; color:white; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:20px; }
-  .bei { background:#e7f5e9; padding:8px; border-radius:10px; font-weight:bold; }
-  .vitendo { display:flex; gap:8px; margin-top:10px; }
-  .vitendo button { flex:1; border:none; padding:11px; border-radius:20px; background:#f0f2f5; font-weight:bold; font-size:14px; }
-
-  /* ===== CHINI ===== */
-  .chini { position:fixed; bottom:0; left:0; right:0; background:white; display:flex; justify-content:space-around; padding:12px; border-top:1px solid #ddd; }
-  .chini button { border:none; background:none; font-weight:bold; font-size:14px; }
-
-  /* ===== DIRISHA LA KUJIUNGA ===== */
-  .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:99; align-items:center; justify-content:center; padding:15px; }
-  .modal.show { display:flex; }
-  .kadi { background:white; width:100%; max-width:380px; padding:22px; border-radius:20px; }
-  .kadi input, .kadi select { width:100%; padding:12px; margin:6px 0; border:1px solid #ddd; border-radius:12px; box-sizing:border-box; }
-  .kadi button { width:100%; padding:13px; background:#25D366; color:white; border:none; border-radius:12px; font-weight:bold; font-size:16px; margin-top:8px; }
+body{margin:0;font-family:Arial;background:#f2f3f5;padding-bottom:90px}
+header{background:#fff;padding:12px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.logo{font-size:24px;font-weight:900;color:#1877f2}
+.btn-b{border:none;background:#1877f2;color:#fff;padding:9px 16px;border-radius:20px;font-weight:bold}
+.btn-g{border:none;background:#eee;padding:9px 14px;border-radius:20px;font-weight:bold}
+.tafuta{padding:12px}.tafuta input{width:100%;padding:13px;border-radius:25px;border:1px solid #ddd;box-sizing:border-box}
+.bango{margin:0 12px;background:linear-gradient(90deg,#1877f2,#ff6600);color:#fff;padding:20px;border-radius:18px;text-align:center}
+.bango button{background:#ff6600;color:#fff;border:none;padding:11px 22px;border-radius:25px;font-weight:bold;margin-top:10px}
+.vifungu{display:flex;gap:8px;padding:12px;overflow:auto}.vifungu button{background:#fff;border:1px solid #ddd;padding:9px 15px;border-radius:20px;font-weight:bold;white-space:nowrap}
+.stories{display:flex;gap:12px;padding:5px 12px;overflow:auto}.story{text-align:center;min-width:65px}.story .duara{width:62px;height:62px;border-radius:50%;border:3px solid #ff6600;background:#fff;font-size:30px;display:flex;align-items:center;justify-content:center}
+.post{background:#fff;margin:12px;border-radius:18px;padding:12px;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+.post img{width:100%;border-radius:14px;height:280px;object-fit:cover}
+.mtu{display:flex;gap:10px;align-items:center}.avatar{width:44px;height:44px;border-radius:50%;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px}
+.bei{background:#e7f5e9;padding:8px;border-radius:10px;font-weight:bold}
+.vitendo{display:flex;gap:8px;margin-top:10px}.vitendo button{flex:1;border:none;padding:11px;border-radius:20px;background:#f0f2f5;font-weight:bold}
+.chini{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}.chini button{border:none;background:none;font-weight:bold}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99;align-items:center;justify-content:center;padding:15px}.modal.show{display:flex}.kadi{background:#fff;width:100%;max-width:380px;padding:22px;border-radius:20px}.kadi input{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:12px;box-sizing:border-box}.kadi button{width:100%;padding:13px;background:#25D366;color:#fff;border:none;border-radius:12px;font-weight:bold;font-size:16px}
 </style>
 </head>
 <body>
+<header><div class="logo">KAPAPP 🇹🇿</div><div><button class="btn-g" onclick="fungua('login')">Ingia</button> <button class="btn-b" onclick="fungua('jiunge')">Jiunge BURE</button></div></header>
+<div class="tafuta"><input placeholder="🔍 Tafuta viatu, wimbo, jina..."></div>
+<div class="bango"><h2 style="margin:0">KAPAPP IMEFIKA! 🔥</h2><p>Kujiunga ni BURE! Post, Uza, Pata Pesa!</p><button onclick="fungua('jiunge')">JIUNGE SASA BURE</button></div>
+<div class="vifungu"><button>Zote 🔥</button><button>Biashara 🛍️</button><button>Muziki 🎵</button><button>Vipaji ⭐</button></div>
+<div class="stories"><div class="story"><div class="duara">➕</div><small>Wewe</small></div><div class="story"><div class="duara">👟</div><small>Said</small></div><div class="story"><div class="duara">🎤</div><small>Neema</small></div><div class="story"><div class="duara">💄</div><small>Zawadi</small></div><div class="story"><div class="duara">⚽</div><small>Baraka</small></div></div>
 
-<!-- KICHWA -->
-<header>
-  <div class="logo">KAPAPP 🇹🇿</div>
-  <div>
-    <button class="btn-ingia" onclick="fungua('login')">Ingia</button>
-    <button class="btn-jiunge" onclick="fungua('jiunge')">Jiunge BURE</button>
-  </div>
-</header>
-
-<!-- TAFUTA -->
-<div class="tafuta">
-  <input id="tafuta" oninput="onyesha()" placeholder="🔍 Tafuta viatu, wimbo, jina...">
+<!-- POST 1 - VIATU -->
+<div class="post">
+<div class="mtu"><div class="avatar">S</div><div><b>Said Kapwile ✅</b><br><small>Biashara • Sasa hivi</small></div></div>
+<p><b>Viatu Vizuri Original - 25,000/= tu!</b></p>
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600">
+<p class="bei">💰 Bei: 25,000</p>
+<div class="vitendo"><button onclick="this.innerHTML='❤️ 125'">❤️ 124</button><button>💬 Comment</button><button onclick="window.open('https://wa.me/255688472790?text=Nataka viatu KAPAPP')">💚 WhatsApp</button></div>
 </div>
 
-<!-- BANGO -->
-<div class="bango">
-  <h2>KAPAPP IMEFIKA! 🔥</h2>
-  <p>Kujiunga ni BURE! Post, Uza, Pata Pesa!</p>
-  <button onclick="fungua('jiunge')">JIUNGE SASA BURE</button>
+<!-- POST 2 - MUZIKI -->
+<div class="post">
+<div class="mtu"><div class="avatar">N</div><div><b>Neema M. 🎤</b><br><small>Muziki • Sasa hivi</small></div></div>
+<p><b>Wimbo Mpya - Nitakupenda 🔥 Sikiliza!</b></p>
+<img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600">
+<p class="bei">💰 Bei: Bure</p>
+<div class="vitendo"><button onclick="this.innerHTML='❤️ 90'">❤️ 89</button><button>💬 Comment</button><button onclick="window.open('https://wa.me/255688472790?text=Nimeupenda wimbo KAPAPP')">💚 WhatsApp</button></div>
 </div>
 
-<!-- VIFUNGUO -->
-<div class="vifungu">
-  <button onclick="aina='Zote';onyesha()">Zote 🔥</button>
-  <button onclick="aina='Biashara';onyesha()">Biashara 🛍️</button>
-  <button onclick="aina='Muziki';onyesha()">Muziki 🎵</button>
-  <button onclick="aina='Vipaji';onyesha()">Vipaji ⭐</button>
+<!-- POST 3 - MAFUTA -->
+<div class="post">
+<div class="mtu"><div class="avatar">Z</div><div><b>Zawadi Shop</b><br><small>Biashara • Sasa hivi</small></div></div>
+<p><b>Mafuta ya Nywele Asili - 15,000/=</b></p>
+<img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=600">
+<p class="bei">💰 Bei: 15,000</p>
+<div class="vitendo"><button onclick="this.innerHTML='❤️ 57'">❤️ 56</button><button>💬 Comment</button><button onclick="window.open('https://wa.me/255688472790?text=Nataka mafuta KAPAPP')">💚 WhatsApp</button></div>
 </div>
 
-<!-- STORIES -->
-<div class="stories">
-  <div class="story"><div class="duara">➕</div><small>Wewe</small></div>
-  <div class="story"><div class="duara">👟</div><small>Said</small></div>
-  <div class="story"><div class="duara">🎤</div><small>Neema</small></div>
-  <div class="story"><div class="duara">💄</div><small>Zawadi</small></div>
-  <div class="story"><div class="duara">⚽</div><small>Baraka</small></div>
-</div>
-
-<!-- HAPA POST ZITAONEKANA -->
-<div id="feed"></div>
-
-<!-- MENU YA CHINI -->
-<div class="chini">
-  <button onclick="window.scrollTo(0,0)">🏠<br>Nyumbani</button>
-  <button onclick="fungua('post')">➕<br>Post</button>
-  <button onclick="alert('Karibu KAPAPP!')">👤<br>Zangu</button>
-</div>
-
-<!-- DIRISHA JIUNGE -->
-<div class="modal" id="jiunge"><div class="kadi">
-  <h2>JIUNGE BURE! 🎉</h2>
-  <input id="jina" placeholder="Jina lako">
-  <input id="simu" placeholder="Namba 07xx">
-  <input type="password" placeholder="Password">
- 
+<div class="chini"><button onclick="window.scrollTo(0,0)">🏠<br>Nyumbani</button><button onclick="fungua('post')">➕<br>Post</button><button>👤<br>Zangu</button></div>
+<div class="modal" id="jiunge"><div class="kadi"><h2>JIUNGE BURE! 🎉</h2><input placeholder="Jina lako"><input placeholder="Namba 07xx"><input type="password" placeholder="Password"><button onclick="alert('Hongera! Umejiunga KAPAPP!');funga()">JIUNGE SASA</button><p style="text-align:center" onclick="funga()">Funga ✖️</p></div></div>
+<div class="modal" id="login"><div class="kadi"><h2>Karibu Tena! 👋</h2><input placeholder="Namba ya simu"><input type="password" placeholder="Password"><button onclick="alert('Karibu tena!');funga()">INGIA</button><p style="text-align:center" onclick="funga()">Funga ✖️</p></div></div>
+<div class="modal" id="post"><div class="kadi"><h2>Weka Post Mpya ➕</h2><input placeholder="Andika nini? mf: Viatu 25,000"><input placeholder="Bei"><input placeholder="Namba WhatsApp"><button onclick="alert('Post yako imewekwa!');funga()">POST SASA 🚀</button><p style="text-align:center" onclick="funga()">Funga ✖️</p></div></div>
+<script>
+function fungua(id){funga();document.getElementById(id).classList.add('show')}
+function funga(){document.querySelectorAll('.modal').forEach(m=>m.classList.remove('show'))}
+</script>
+</body>
+</html>

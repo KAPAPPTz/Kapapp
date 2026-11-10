@@ -111,7 +111,6 @@ function convert(p){let c=document.getElementById('currency').value;return c+' '
 function save(){
   try{ localStorage.setItem('kapapp_posts',JSON.stringify(posts)); }
   catch(e){
-    // Picha kubwa imejaa storage - tunahifadhi bila picha kubwa
     alert('Picha ni kubwa sana, tunahifadhi post bila picha kubwa ili isipotee.');
     let backup = posts.map(p=>({...p, img: p.img && p.img.length>2000 ? 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500' : p.img}));
     try{ localStorage.setItem('kapapp_posts',JSON.stringify(backup)); posts=backup; }catch(e2){}
@@ -160,7 +159,6 @@ function addPost(){
   let img=currentFile||'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500';
   posts.unshift({name,price:Number(price),hashtag:hashtag||'#KAPAPP',desc:desc||'Bidhaa nzuri!',seller,img,type:currentType});
   save(); render();
-  // Futa fomu ili ujue imepost
   document.getElementById('pName').value='';
   document.getElementById('pPrice').value='';
   document.getElementById('pHashtag').value='';

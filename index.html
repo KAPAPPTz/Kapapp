@@ -32,21 +32,23 @@ button{border:none;padding:12px 20px;border-radius:25px;font-weight:bold;cursor:
 <input type="file" id="picInput" accept="image/*" style="display:none">
 <h3 id="welcomeText"></h3>
 <p style="color:#ff2a55;font-weight:bold">👤 Profile Yangu</p>
-<p>👆 Bonyeza picha yako hapo juu kubadilisha / kuweka picha mpya</p>
+<p>👆 Bonyeza picha yako hapo juu kubadilisha</p>
 <p style="color:green;font-size:13px" id="picStatus"></p>
 <button class="btn-black" onclick="logout()">Toka / Logout</button>
+<button style="background:#eee;color:#333;margin-top:8px;width:100%" onclick="clearAll()">🧹 Safisha App (kama imekwama)</button>
 </div>
 <div id="loginArea">
 <input id="userName" placeholder="Andika Jina Lako...">
 <button class="btn-pink" onclick="login()">INGIA ▶️</button>
-<p style="text-align:center;font-size:13px;color:#777">Jina tu - Ukija mara ya kwanza unaji-Register, mara ya pili una-Login</p>
+<p style="text-align:center;font-size:13px;color:#777">Jina tu - Ukija mara ya kwanza unaji-Register</p>
+<button style="background:#eee;color:#333;margin-top:8px;width:100%" onclick="clearAll()">🧹 Safisha App (kama INGIA haendi)</button>
 </div>
 </div>
 
 <div class="card">
 <select id="lang"><option>Kiswahili</option><option>English</option><option>Français</option><option>العربية</option><option>中文</option></select>
 <select id="curr"><option>TSh</option><option>USD $</option><option>KES</option><option>UGX</option><option>EUR €</option></select>
-<div class="topbar"><input id="search" placeholder="🔍 Tafuta bidhaa... #V" oninput="render()"><button class="btn-black" onclick="alert('DM - Andika ujumbe hapa hivi karibuni')">💬 DM</button></div>
+<div class="topbar"><input id="search" placeholder="🔍 Tafuta bidhaa..." oninput="render()"><button class="btn-black" onclick="alert('DM - Andika ujumbe hapa hivi karibuni')">💬 DM</button></div>
 </div>
 
 <div class="card">
@@ -62,41 +64,47 @@ button{border:none;padding:12px 20px;border-radius:25px;font-weight:bold;cursor:
 <div id="feed"></div>
 
 <script>
-// *** KUPUNGUZA PICHA KIOTOMATIKI ***
 function compressImage(file, cb){
   const reader = new FileReader();
   reader.onload = function(e){
     const img = new Image();
     img.onload = function(){
       let w = img.width, h = img.height;
-      let max = 800;
+      let max = 600;
       if(w > max || h > max){
         if(w > h){ h = h * max / w; w = max; } else { w = w * max / h; h = max; }
       }
       const c = document.createElement('canvas');
       c.width = w; c.height = h;
       c.getContext('2d').drawImage(img,0,0,w,h);
-      cb(c.toDataURL('image/jpeg', 0.7)); // punguza hadi 70%
+      cb(c.toDataURL('image/jpeg', 0.6));
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
-
-let user = JSON.parse(localStorage.getItem('ka_user')||'null');
-let posts = JSON.parse(localStorage.getItem('ka_posts')||'[]');
-
-function saveUser(){ localStorage.setItem('ka_user', JSON.stringify(user)); }
+function safeGet(k){
+  try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ localStorage.removeItem(k); return null; }
+}
+let user = safeGet('ka_user');
+let posts = safeGet('ka_posts') || [];
+function saveUser(){
+  try{ localStorage.setItem('ka_user', JSON.stringify(user)); }
+  catch(e){ localStorage.removeItem('ka_posts'); posts=[]; try{ localStorage.setItem('ka_user', JSON.stringify(user)); }catch(e2){} }
+}
+function clearAll(){
+  localStorage.removeItem('ka_user'); localStorage.removeItem('ka_posts');
+  user=null; posts=[]; alert('Imesafishwa! Sasa andika jina na INGIA tena'); showAuth();
+}
 function login(){
   let n = document.getElementById('userName').value.trim();
-  if(!n) return alert('Andika jina kwanza');
-  if(!user || user.name !== n){
-    user = {name:n, pic:''};
-  }
+  if(!n){ alert('Andika jina kwanza'); return; }
+  if(user && user.name === n){ /* keep pic */ }
+  else { user = {name:n, pic: (user && user.pic) ? user.pic : ''}; }
   saveUser(); showAuth();
+  alert('Karibu '+n+'! Sasa bonyeza duara S kuweka picha');
 }
 function logout(){ user=null; localStorage.removeItem('ka_user'); showAuth(); }
-
 function showAuth(){
   let pa=document.getElementById('profileArea'), la=document.getElementById('loginArea');
   if(user){
@@ -107,17 +115,15 @@ function showAuth(){
   } else { pa.style.display='none'; la.style.display='block'; }
   render();
 }
-
 document.getElementById('picInput').addEventListener('change', function(e){
   if(!user) return;
   let f=e.target.files[0]; if(!f) return;
-  document.getElementById('picStatus').innerText='⏳ Napunguza picha... subiri kidogo';
+  document.getElementById('picStatus').innerText='⏳ Napunguza picha...';
   compressImage(f, function(small){
     user.pic = small; saveUser(); showAuth();
-    document.getElementById('picStatus').innerText='✅ Picha imewekwa! Imebana yenyewe kuwa ndogo';
+    document.getElementById('picStatus').innerText='✅ Picha imewekwa!';
   });
 });
-
 function addPost(){
   if(!user) return alert('Ingia kwanza');
   let t=document.getElementById('pTitle').value.trim();
@@ -128,14 +134,13 @@ function addPost(){
   document.getElementById('postStatus').innerText='⏳ Napunguza picha...';
   function doSave(imgData){
     posts.unshift({title:t, price:pr, desc:d, img:imgData||'', name:user.name, pic:user.pic||'', time:new Date().toLocaleString()});
-    localStorage.setItem('ka_posts', JSON.stringify(posts));
+    try{ localStorage.setItem('ka_posts', JSON.stringify(posts)); }catch(e){ posts=posts.slice(0,5); try{ localStorage.setItem('ka_posts', JSON.stringify(posts)); }catch(e2){} }
     document.getElementById('pTitle').value=''; document.getElementById('pPrice').value=''; document.getElementById('pDesc').value='';
     document.getElementById('postStatus').innerText='✅ Imechapishwa!';
     render();
   }
   if(f){ compressImage(f, doSave); } else { doSave(''); }
 }
-
 function render(){
   let q=(document.getElementById('search').value||'').toLowerCase();
   let html='';

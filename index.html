@@ -27,6 +27,8 @@ nav button.active{color:#ff2d55}
 .price{color:green;font-weight:bold;font-size:18px;margin:6px 0}
 .actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 .actions button{flex:1;padding:8px;border-radius:20px;border:1px solid #ddd;background:#f9f9f9}
+.actions button.wa{background:#25D366;color:#fff;font-weight:bold;border:none}
+.actions button.del{background:#ffe0e0;color:red}
 .post-box{background:#fff;margin:10px;padding:12px;border-radius:12px}
 .post-box input,.post-box textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ddd;border-radius:10px}
 .post-box button{width:100%;padding:12px;background:#ff2d55;color:#fff;border:none;border-radius:20px;font-weight:bold}
@@ -61,12 +63,13 @@ nav button.active{color:#ff2d55}
 </header>
 <div id="regBox">
 <h3>📝 JIUNGE NA KAPAPP / REGISTER</h3>
-<input id="rName" placeholder="Jina Kamili - Mf: Dotto">
-<input id="rPhone" placeholder="Namba ya Simu / Email">
+<input id="rName" placeholder="Jina Kamili - Mf: Said Kapwile">
+<input id="rPhone" placeholder="Namba ya WhatsApp - Mf: 0755000000">
 <input id="rPass" type="password" placeholder="Password">
 <button onclick="doRegister()">✅ JIUNGE SASA</button>
 <button onclick="doLogin()" style="background:#ff2d55">🔑 INGIA / LOGIN</button>
 <p id="regMsg" style="color:green;text-align:center;margin-top:8px"></p>
+<p style="font-size:12px;text-align:center;color:#666">Weka namba sahihi ya WhatsApp ili wateja wakuweze kukutafuta!</p>
 </div>
 <nav>
 <button class="active" onclick="showTab('feed',this)">🏠 Feed</button>
@@ -100,9 +103,9 @@ let posts=[];
 try{ posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]'); }catch(e){ posts=[]; }
 if(!Array.isArray(posts) || posts.length==0){
   posts=[
-    {name:'Viatu Vipya',price:25000,hashtag:'#Viatu #Fashion',desc:'Viatu vizuri sana!',seller:'Dotto',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500',type:'image'},
-    {name:'Simu iPhone',price:450000,hashtag:'#Simu #Tech',desc:'Simu safi!',seller:'Jay',img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500',type:'image'},
-    {name:'Video ya Mavazi',price:35000,hashtag:'#Mavazi #Video',desc:'Tazama video hii!',seller:'Mama Ntilie',img:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',type:'video'}
+    {name:'Viatu Vipya',price:25000,hashtag:'#Viatu #Fashion',desc:'Viatu vizuri sana!',seller:'Dotto',phone:'255750000000',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500',type:'image'},
+    {name:'Simu iPhone',price:450000,hashtag:'#Simu #Tech',desc:'Simu safi!',seller:'Jay',phone:'255750000000',img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500',type:'image'},
+    {name:'Video ya Mavazi',price:35000,hashtag:'#Mavazi #Video',desc:'Tazama video hii!',seller:'Mama Ntilie',phone:'255750000000',img:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',type:'video'}
   ];
 }
 let rates={TSh:1,USD:0.0004,KES:0.05,NGN:0.6,EUR:0.00035,ZAR:0.007};
@@ -110,16 +113,12 @@ let currentFile='',currentType='image';
 function convert(p){let c=document.getElementById('currency').value;return c+' '+Math.round(Number(p||0)*rates[c]).toLocaleString()}
 function save(){
   try{ localStorage.setItem('kapapp_posts',JSON.stringify(posts)); }
-  catch(e){
-    alert('Bado kubwa, tumefuta post za zamani ili hii mpya ihifadhiwe.');
-    posts = posts.slice(0,5);
-    try{ localStorage.setItem('kapapp_posts',JSON.stringify(posts)); }catch(e2){}
-  }
+  catch(e){ posts=posts.slice(0,5); try{ localStorage.setItem('kapapp_posts',JSON.stringify(posts)); }catch(e2){} }
 }
 function showReg(){let b=document.getElementById('regBox');b.style.display=b.style.display=='block'?'none':'block';window.scrollTo(0,0)}
 function updateLoginUI(){let n=localStorage.getItem('kapapp_user');if(n){document.getElementById('authBar').style.display='none';document.getElementById('regBox').style.display='none';document.getElementById('welcomeBar').style.display='block';document.getElementById('welcomeName').innerText=n;document.getElementById('profileName').innerText=n;}}
-function doRegister(){let n=document.getElementById('rName').value.trim(),p=document.getElementById('rPhone').value.trim();if(!n||!p){alert('Jaza jina na namba!');return}localStorage.setItem('kapapp_user',n);updateLoginUI();document.getElementById('regMsg').innerText='Hongera '+n+'! Umejiunga!';alert('Hongera '+n+'! Umejiunga na KAPAPP!')}
-function doLogin(){let n=document.getElementById('rName').value.trim()||localStorage.getItem('kapapp_user')||'KAPAPPTz';localStorage.setItem('kapapp_user',n);updateLoginUI();alert('Karibu tena '+n+'! Umeingia!')}
+function doRegister(){let n=document.getElementById('rName').value.trim(),p=document.getElementById('rPhone').value.trim();if(!n||!p){alert('Jaza jina na namba ya WhatsApp!');return}localStorage.setItem('kapapp_user',n);localStorage.setItem('kapapp_phone',p);updateLoginUI();document.getElementById('regMsg').innerText='Hongera '+n+'! Umejiunga!';alert('Hongera '+n+'! Umejiunga na KAPAPP! Sasa wateja watakupata WhatsApp kwa namba '+p)}
+function doLogin(){let n=document.getElementById('rName').value.trim()||localStorage.getItem('kapapp_user')||'KAPAPPTz';let ph=document.getElementById('rPhone').value.trim();if(ph) localStorage.setItem('kapapp_phone',ph);localStorage.setItem('kapapp_user',n);updateLoginUI();alert('Karibu tena '+n+'! Umeingia!')}
 function logoutUser(){localStorage.removeItem('kapapp_user');document.getElementById('authBar').style.display='flex';document.getElementById('welcomeBar').style.display='none';document.getElementById('regBox').style.display='none';document.getElementById('profileName').innerText='KAPAPPTz';alert('Umetoka. Karibu tena!')}
 function showTab(id,btn){document.querySelectorAll('[id^="tab-"]').forEach(e=>e.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn) btn.classList.add('active')}
 function previewFile(){
@@ -131,8 +130,7 @@ function previewFile(){
     r.onload=function(e){ currentFile=e.target.result; currentType='video'; document.getElementById('previewVid').src=currentFile; document.getElementById('previewVid').style.display='block'; document.getElementById('previewImg').style.display='none'; document.getElementById('fileName').innerText='✅ Umechagua: '+f.name; };
     r.readAsDataURL(f); return;
   }
-  let img=new Image();
-  let url=URL.createObjectURL(f);
+  let img=new Image(); let url=URL.createObjectURL(f);
   img.onload=function(){
     let maxW=800; let scale=Math.min(1, maxW/img.width);
     let w=Math.round(img.width*scale); let h=Math.round(img.height*scale);
@@ -146,15 +144,30 @@ function previewFile(){
   img.src=url;
 }
 function escapeHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function cleanPhone(p){let s=String(p||'').replace(/[^0-9]/g,'');if(s.startsWith('0')) s='255'+s.slice(1);if(s.length<10) s='255750000000';return s}
+function orderWhatsApp(idx){
+  let p=posts[idx]; if(!p) return;
+  let phone=cleanPhone(p.phone);
+  let msg='Habari '+p.seller+'! Nimeona bidhaa yako KAPAPP: '+p.name+' - Bei '+p.price+' TSh. '+(p.desc||'')+' Je ipo? Nataka kuinunua.';
+  window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank');
+}
+function deletePost(idx){
+  if(!confirm('Una uhakika unataka kufuta post hii?')) return;
+  posts.splice(idx,1); save(); render(); alert('✅ Post imefutwa!');
+}
 function render(){
   let q=(document.getElementById('search').value||'').toLowerCase();
   let html='';
-  let filtered=posts.filter(p=>((p.name||'')+(p.hashtag||'')+(p.desc||'')+(p.seller||'')).toLowerCase().includes(q));
+  let filtered=[];
+  posts.forEach((p,i)=>{ if(((p.name||'')+(p.hashtag||'')+(p.desc||'')+(p.seller||'')).toLowerCase().includes(q)) filtered.push({p:p,idx:i}); });
   if(filtered.length==0) html='<p style="text-align:center;padding:20px">Hakuna bidhaa.</p>';
-  filtered.forEach(p=>{
+  filtered.forEach(item=>{
+    let p=item.p; let idx=item.idx;
     let media=p.type=='video'?`<video src="${p.img}" controls playsinline></video>`:`<img src="${p.img}">`;
     let first=(p.seller||'W').charAt(0).toUpperCase();
-    html+=`<div class="card">${media}<div class="card-body"><div class="user"><div class="avatar">${first}</div><b>${escapeHtml(p.seller)}</b><button class="follow" onclick="followMe(this)">+ FOLLOW</button></div><div class="price">${convert(p.price)}</div><b>${escapeHtml(p.name)}</b><p>${escapeHtml(p.desc)}</p><p style="color:#ff2d55">${escapeHtml(p.hashtag)}</p><div class="actions"><button onclick="like(this)">❤️ Like</button><button onclick="comment(this)">💬 Comment</button><button onclick="sharePost('${escapeHtml(p.name)}')">🔄 Share</button><button onclick="showDM()">💬 DM</button></div></div></div>`
+    let me=localStorage.getItem('kapapp_user');
+    let delBtn=(me && me===p.seller)?`<button class="del" onclick="deletePost(${idx})">🗑 Futa</button>`:'';
+    html+=`<div class="card">${media}<div class="card-body"><div class="user"><div class="avatar">${first}</div><b>${escapeHtml(p.seller)}</b><button class="follow" onclick="followMe(this)">+ FOLLOW</button></div><div class="price">${convert(p.price)}</div><b>${escapeHtml(p.name)}</b><p>${escapeHtml(p.desc)}</p><p style="color:#ff2d55">${escapeHtml(p.hashtag)}</p><div class="actions"><button onclick="like(this)">❤️ Like</button><button onclick="comment(this)">💬 Comment</button><button onclick="sharePost('${escapeHtml(p.name)}')">🔄 Share</button><button onclick="showDM()">💬 DM</button></div><div class="actions"><button class="wa" onclick="orderWhatsApp(${idx})">🟢 ORDER WhatsApp</button>${delBtn}</div></div></div>`
   });
   document.getElementById('feed').innerHTML=html;
   document.getElementById('pCount').innerText=posts.length;
@@ -167,21 +180,13 @@ function addPost(){
   let desc=document.getElementById('pDesc').value.trim();
   if(!name||!price){alert('Weka jina na bei!');return}
   let seller=localStorage.getItem('kapapp_user')||'Wewe';
+  let phone=localStorage.getItem('kapapp_phone')||'255750000000';
   let img=currentFile||'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500';
-  posts.unshift({name,price:Number(price),hashtag:hashtag||'#KAPAPP',desc:desc||'Bidhaa nzuri!',seller,img,type:currentType});
+  posts.unshift({name,price:Number(price),hashtag:hashtag||'#KAPAPP',desc:desc||'Bidhaa nzuri!',seller,phone,img,type:currentType});
   save(); render();
-  document.getElementById('pName').value='';
-  document.getElementById('pPrice').value='';
-  document.getElementById('pHashtag').value='';
-  document.getElementById('pDesc').value='';
-  document.getElementById('pFile').value='';
-  document.getElementById('fileName').innerText='';
-  document.getElementById('previewImg').style.display='none';
-  document.getElementById('previewImg').src='';
-  document.getElementById('previewVid').style.display='none';
-  document.getElementById('previewVid').src='';
+  document.getElementById('pName').value=''; document.getElementById('pPrice').value=''; document.getElementById('pHashtag').value=''; document.getElementById('pDesc').value=''; document.getElementById('pFile').value=''; document.getElementById('fileName').innerText=''; document.getElementById('previewImg').style.display='none'; document.getElementById('previewImg').src=''; document.getElementById('previewVid').style.display='none'; document.getElementById('previewVid').src='';
   currentFile=''; currentType='image';
-  alert('✅ Imepost! Picha yako imehifadhiwa!');
+  alert('✅ Imepost! Sasa wateja wanaweza ku-order kwa WhatsApp!');
   window.scrollTo(0,0);
 }
 function like(btn){btn.innerText='❤️ Liked!';btn.style.color='red'}

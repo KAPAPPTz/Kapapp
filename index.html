@@ -5,201 +5,147 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KA-PAPP 🌍</title>
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#f2f2f2;padding-bottom:30px}
-header{background:#ff2d55;color:#fff;text-align:center;padding:14px 10px;position:sticky;top:0;z-index:10}
-header h1{margin:0;font-size:26px}
-header p{margin:2px;font-size:13px}
-.topbar{background:#fff;padding:10px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;position:sticky;top:68px;z-index:9}
-.topbar select,.topbar input{padding:9px;border-radius:20px;border:1px solid #ddd}
-.topbar input{flex:1;min-width:130px}
-.btn{background:#ff2d55;color:#fff;border:none;padding:10px 16px;border-radius:20px;cursor:pointer;font-weight:bold}
-.btn2{background:#000;color:#fff;border:none;padding:8px 12px;border-radius:20px;cursor:pointer}
-.card{background:#fff;margin:10px;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-.card img.post-img{width:100%;max-height:380px;object-fit:cover;display:block;background:#eee}
-.card-body{padding:12px}
-.profile-row{display:flex;align-items:center;gap:10px}
-.avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;background:#ff2d55;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:bold;cursor:pointer;overflow:hidden;flex-shrink:0;border:2px solid #ff2d55}
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f2f2f2}
+header{background:#ff2a55;color:#fff;text-align:center;padding:15px 10px;position:sticky;top:0;z-index:10}
+header h1{margin:0;font-size:28px}header p{margin:2px;font-size:13px}
+.card{background:#fff;margin:12px;border-radius:15px;padding:15px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:25px;font-size:15px;outline:none}
+button{border:none;padding:12px 20px;border-radius:25px;font-weight:bold;cursor:pointer}
+.btn-pink{background:#ff2a55;color:#fff;width:100%}
+.btn-black{background:#000;color:#fff}
+.avatar{width:140px;height:140px;border-radius:50%;background:#ff2a55;color:#fff;font-size:70px;display:flex;align-items:center;justify-content:center;margin:5px auto;overflow:hidden;cursor:pointer;border:3px solid #ffe0e6}
 .avatar img{width:100%;height:100%;object-fit:cover}
-.avatar-big{width:105px;height:105px;font-size:48px;margin:0 auto;border:3px solid #ff2d55}
-.follow{margin-left:auto;background:#ff2d55;color:#fff;border:none;padding:7px 14px;border-radius:20px;cursor:pointer}
-.actions{display:flex;justify-content:space-between;margin-top:12px;gap:4px}
-.actions button{border:1px solid #eee;background:#f9f9f9;padding:9px 4px;border-radius:20px;flex:1;cursor:pointer;font-size:13px}
-.profile-box{background:#fff;margin:10px;padding:16px;border-radius:16px;text-align:center}
-input,textarea,select{width:100%;padding:11px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
-.hidden{display:none}
-.badge{background:#ffeef1;color:#ff2d55;padding:4px 10px;border-radius:20px;font-size:12px}
-.comment-box{display:flex;gap:5px;margin-top:8px}
-.comment-box input{flex:1}
+.post-img{width:100%;border-radius:12px;max-height:320px;object-fit:cover}
+.small-ava{width:40px;height:40px;border-radius:50%;background:#ff2a55;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;overflow:hidden;flex-shrink:0}
+.small-ava img{width:100%;height:100%;object-fit:cover}
+.flex{display:flex;gap:8px;align-items:center}
+.post{margin-top:12px}
+.topbar{display:flex;gap:8px}
 </style>
 </head>
 <body>
+<header><h1>KA-PAPP 🌍</h1><p>Every Language. Every Currency. Every Country.</p></header>
 
-<header>
-<h1>KA-PAPP 🌍</h1>
-<p>Every Language. Every Currency. Every Country.</p>
-</header>
-
-<!-- LOGIN -->
-<div id="loginBox" class="profile-box">
-<h3>Karibu KA-PAPP 👋</h3>
-<p>Andika jina lako uingie</p>
-<input id="jinaInput" placeholder="Mf: Said Kapwile">
-<button class="btn" onclick="ingia()">INGIA ▶️</button>
+<div class="card" id="authBox">
+<div id="profileArea" style="text-align:center;display:none">
+<div class="avatar" id="bigAvatar" onclick="document.getElementById('picInput').click()">S</div>
+<input type="file" id="picInput" accept="image/*" style="display:none">
+<h3 id="welcomeText"></h3>
+<p style="color:#ff2a55;font-weight:bold">👤 Profile Yangu</p>
+<p>👆 Bonyeza picha yako hapo juu kubadilisha / kuweka picha mpya</p>
+<p style="color:green;font-size:13px" id="picStatus"></p>
+<button class="btn-black" onclick="logout()">Toka / Logout</button>
+</div>
+<div id="loginArea">
+<input id="userName" placeholder="Andika Jina Lako...">
+<button class="btn-pink" onclick="login()">INGIA ▶️</button>
+<p style="text-align:center;font-size:13px;color:#777">Jina tu - Ukija mara ya kwanza unaji-Register, mara ya pili una-Login</p>
+</div>
 </div>
 
-<!-- PROFILE YANGU -->
-<div id="profileBox" class="profile-box hidden">
-<div class="avatar avatar-big" onclick="document.getElementById('pichaInput').click()" title="Bonyeza kubadilisha picha">
-<span id="herufiYangu">S</span>
-<img id="pichaYangu" class="hidden">
-</div>
-<input type="file" id="pichaInput" accept="image/*" hidden onchange="wekaPicha(event)">
-<h3 id="jinaLangu"></h3>
-<span class="badge">👤 Profile Yangu</span>
-<p style="font-size:14px;color:#555">👆 Bonyeza picha yako hapo juu kubadilisha / kuweka picha mpya</p>
-<button class="btn2" onclick="toka()">Toka / Logout</button>
+<div class="card">
+<select id="lang"><option>Kiswahili</option><option>English</option><option>Français</option><option>العربية</option><option>中文</option></select>
+<select id="curr"><option>TSh</option><option>USD $</option><option>KES</option><option>UGX</option><option>EUR €</option></select>
+<div class="topbar"><input id="search" placeholder="🔍 Tafuta bidhaa... #V" oninput="render()"><button class="btn-black" onclick="alert('DM - Andika ujumbe hapa hivi karibuni')">💬 DM</button></div>
 </div>
 
-<div class="topbar">
-<select id="lugha" onchange="badilishaLugha()"><option value="sw">Kiswahili</option><option value="en">English</option><option value="fr">Français</option></select>
-<select id="pesa" onchange="onyeshaPosts()"><option>TSh</option><option>KSh</option><option>$ USD</option><option>€ EUR</option></select>
-<input id="tafuta" placeholder="🔍 Tafuta bidhaa... #V" oninput="onyeshaPosts()">
-<button class="btn2" onclick="alert('DM inakuja! Chagua mtu umtume ujumbe')">💬 DM</button>
-</div>
-
-<!-- POST MPYA -->
-<div class="card hidden" id="postBox">
-<div class="card-body">
+<div class="card">
 <h3>📦 Weka Bidhaa Yako</h3>
-<input id="bidhaaInput" placeholder="Jina la bidhaa Mf: Machungwa">
-<input id="beiInput" placeholder="Bei Mf: 100">
-<input id="maelezoInput" placeholder="Maelezo Mf: Tunapatikana Kerege">
-<label style="font-size:13px">Picha ya bidhaa:</label>
-<input type="file" id="pichaBidhaa" accept="image/*">
-<button class="btn" onclick="wekaPost()">POST BIDHAA ✅</button>
-</div>
+<input id="pTitle" placeholder="Jina la bidhaa...">
+<input id="pPrice" type="number" placeholder="Bei...">
+<textarea id="pDesc" placeholder="Maelezo..."></textarea>
+<input type="file" id="pImg" accept="image/*">
+<button class="btn-pink" onclick="addPost()">CHAPISHA BIDHAA</button>
+<p id="postStatus" style="color:green;font-size:13px"></p>
 </div>
 
 <div id="feed"></div>
 
 <script>
-let mtumiaji = localStorage.getItem('ka_user') || '';
-let posts = JSON.parse(localStorage.getItem('ka_posts') || '[]');
-let follows = JSON.parse(localStorage.getItem('ka_follows') || '{}');
-
-function ingia(){
-  let j = document.getElementById('jinaInput').value.trim();
-  if(!j) return alert('Andika jina lako kwanza');
-  localStorage.setItem('ka_user', j);
-  mtumiaji = j; location.reload();
-}
-function toka(){ localStorage.removeItem('ka_user'); location.reload(); }
-
-function wekaPicha(e){
-  let f = e.target.files[0]; if(!f) return;
-  let r = new FileReader();
-  r.onload = function(ev){
-    localStorage.setItem('picha_' + mtumiaji, ev.target.result);
-    onyeshaProfile(); onyeshaPosts();
-    alert('Picha yako imewekwa! ✅');
+// *** KUPUNGUZA PICHA KIOTOMATIKI ***
+function compressImage(file, cb){
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const img = new Image();
+    img.onload = function(){
+      let w = img.width, h = img.height;
+      let max = 800;
+      if(w > max || h > max){
+        if(w > h){ h = h * max / w; w = max; } else { w = w * max / h; h = max; }
+      }
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      cb(c.toDataURL('image/jpeg', 0.7)); // punguza hadi 70%
+    };
+    img.src = e.target.result;
   };
-  r.readAsDataURL(f);
+  reader.readAsDataURL(file);
 }
-function pichaYa(jina){ return localStorage.getItem('picha_' + jina) || ''; }
 
-function onyeshaProfile(){
-  if(!mtumiaji) return;
-  document.getElementById('loginBox').classList.add('hidden');
-  document.getElementById('profileBox').classList.remove('hidden');
-  document.getElementById('postBox').classList.remove('hidden');
-  document.getElementById('jinaLangu').innerText = 'Umeingia kama ' + mtumiaji;
-  document.getElementById('herufiYangu').innerText = mtumiaji.charAt(0).toUpperCase();
-  let p = pichaYa(mtumiaji);
-  if(p){
-    document.getElementById('pichaYangu').src = p;
-    document.getElementById('pichaYangu').classList.remove('hidden');
-    document.getElementById('herufiYangu').classList.add('hidden');
+let user = JSON.parse(localStorage.getItem('ka_user')||'null');
+let posts = JSON.parse(localStorage.getItem('ka_posts')||'[]');
+
+function saveUser(){ localStorage.setItem('ka_user', JSON.stringify(user)); }
+function login(){
+  let n = document.getElementById('userName').value.trim();
+  if(!n) return alert('Andika jina kwanza');
+  if(!user || user.name !== n){
+    user = {name:n, pic:''};
   }
+  saveUser(); showAuth();
 }
-function wekaPost(){
-  let bidhaa = document.getElementById('bidhaaInput').value.trim() || 'Bidhaa';
-  let bei = document.getElementById('beiInput').value.trim() || '100';
-  let maelezo = document.getElementById('maelezoInput').value.trim() || 'Karibu KA-PAPP';
-  let file = document.getElementById('pichaBidhaa').files[0];
-  let pesa = document.getElementById('pesa').value;
-  if(file){
-    let r = new FileReader();
-    r.onload = function(e){ hifadhiPost(bidhaa,bei,maelezo,e.target.result,pesa); };
-    r.readAsDataURL(file);
-  } else hifadhiPost(bidhaa,bei,maelezo,'https://images.unsplash.com/photo-1582979518144-b9e3e3c8f3b7?w=600',pesa);
-}
-function hifadhiPost(bidhaa,bei,maelezo,picha,pesa){
-  posts.unshift({jina:mtumiaji, bidhaa, bei, maelezo, picha, pesa, likes:0, comments:[]});
-  localStorage.setItem('ka_posts', JSON.stringify(posts));
-  document.getElementById('bidhaaInput').value=''; document.getElementById('beiInput').value=''; document.getElementById('maelezoInput').value='';
-  onyeshaPosts(); alert('Bidhaa imepostwa! ✅');
-}
-function likePost(i,btn){
-  posts[i].likes = (posts[i].likes||0)+1;
-  localStorage.setItem('ka_posts', JSON.stringify(posts));
-  btn.innerText = '❤️ ' + posts[i].likes;
-}
-function followUser(jina,btn){
-  follows[jina]=true; localStorage.setItem('ka_follows', JSON.stringify(follows));
-  btn.innerText='✓ Following'; btn.style.background='#000';
-}
-function commentPost(i){
-  let inp = document.getElementById('cmt'+i);
-  let txt = inp.value.trim(); if(!txt) return;
-  posts[i].comments = posts[i].comments||[];
-  posts[i].comments.push(mtumiaji+': '+txt);
-  localStorage.setItem('ka_posts', JSON.stringify(posts));
-  onyeshaPosts();
-}
-function sharePost(p){
-  let txt = p.bidhaa+' - '+p.pesa+' '+p.bei+' - '+p.maelezo+' - KA-PAPP';
-  if(navigator.share){ navigator.share({text:txt}); } else { alert(txt); }
-}
-function badilishaLugha(){ alert('Lugha imebadilishwa: '+document.getElementById('lugha').value); }
+function logout(){ user=null; localStorage.removeItem('ka_user'); showAuth(); }
 
-function onyeshaPosts(){
-  let s = document.getElementById('tafuta').value.toLowerCase();
-  let feed = document.getElementById('feed'); feed.innerHTML='';
-  let zote = posts.length ? posts : [
-    {jina:'Said Kapwile', bidhaa:'Machungwa', bei:'100', maelezo:'Tunapatikana Kerege - #MatamuSana', picha:'https://images.unsplash.com/photo-1582979518144-b9e3e3c8f3b7?w=600', pesa:'TSh', likes:5, comments:['Juma: Safi sana']},
-    {jina:'Mama Ntilie', bidhaa:'Mchele Mzuri', bei:'2500', maelezo:'Mchele wa Morogoro, karibu sana', picha:'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600', pesa:'TSh', likes:12, comments:[]}
-  ];
-  zote.forEach((p,i)=>{
-    if(s && !(p.bidhaa+' '+p.maelezo+' '+p.jina).toLowerCase().includes(s)) return;
-    let pp = pichaYa(p.jina);
-    let avatar = pp ? `<img src="${pp}">` : p.jina.charAt(0).toUpperCase();
-    let cmtHtml = (p.comments||[]).map(c=>`<div style="background:#f5f5f5;padding:6px 10px;border-radius:10px;margin-top:4px;font-size:13px">💬 ${c}</div>`).join('');
-    let followTxt = follows[p.jina] ? '✓ Following' : '+ FOLLOW';
-    feed.innerHTML += `
-    <div class="card">
-      <img class="post-img" src="${p.picha}">
-      <div class="card-body">
-        <div class="profile-row">
-          <div class="avatar">${avatar}</div>
-          <div><b>${p.jina}</b><br><span style="font-size:12px;color:#888">KA-PAPP • ${p.pesa||'TSh'}</span></div>
-          <button class="follow" onclick="followUser('${p.jina}',this)">${followTxt}</button>
-        </div>
-        <h3 style="color:green;margin:10px 0 2px">${p.pesa||'TSh'} ${p.bei}</h3>
-        <b>${p.bidhaa}</b><br><span style="color:#444">${p.maelezo}</span>
-        ${cmtHtml}
-        <div class="comment-box"><input id="cmt${i}" placeholder="Andika comment..."><button class="btn2" onclick="commentPost(${i})">Tuma</button></div>
-        <div class="actions">
-          <button onclick="likePost(${i},this)">❤️ ${p.likes||0}</button>
-          <button onclick="document.getElementById('cmt${i}').focus()">💬 Comment</button>
-          <button onclick='sharePost(${JSON.stringify(p).replace(/'/g,"")})'>↗️ Share</button>
-          <button onclick="alert('Umemtumia DM ${p.jina}')">💬 DM</button>
-        </div>
-      </div>
-    </div>`;
-  });
+function showAuth(){
+  let pa=document.getElementById('profileArea'), la=document.getElementById('loginArea');
+  if(user){
+    pa.style.display='block'; la.style.display='none';
+    document.getElementById('welcomeText').innerText='Umeingia kama '+user.name;
+    let av=document.getElementById('bigAvatar');
+    av.innerHTML = user.pic ? '<img src="'+user.pic+'">' : user.name.charAt(0).toUpperCase();
+  } else { pa.style.display='none'; la.style.display='block'; }
+  render();
 }
-onyeshaProfile(); onyeshaPosts();
+
+document.getElementById('picInput').addEventListener('change', function(e){
+  if(!user) return;
+  let f=e.target.files[0]; if(!f) return;
+  document.getElementById('picStatus').innerText='⏳ Napunguza picha... subiri kidogo';
+  compressImage(f, function(small){
+    user.pic = small; saveUser(); showAuth();
+    document.getElementById('picStatus').innerText='✅ Picha imewekwa! Imebana yenyewe kuwa ndogo';
+  });
+});
+
+function addPost(){
+  if(!user) return alert('Ingia kwanza');
+  let t=document.getElementById('pTitle').value.trim();
+  let pr=document.getElementById('pPrice').value;
+  let d=document.getElementById('pDesc').value;
+  if(!t) return alert('Andika jina la bidhaa');
+  let f=document.getElementById('pImg').files[0];
+  document.getElementById('postStatus').innerText='⏳ Napunguza picha...';
+  function doSave(imgData){
+    posts.unshift({title:t, price:pr, desc:d, img:imgData||'', name:user.name, pic:user.pic||'', time:new Date().toLocaleString()});
+    localStorage.setItem('ka_posts', JSON.stringify(posts));
+    document.getElementById('pTitle').value=''; document.getElementById('pPrice').value=''; document.getElementById('pDesc').value='';
+    document.getElementById('postStatus').innerText='✅ Imechapishwa!';
+    render();
+  }
+  if(f){ compressImage(f, doSave); } else { doSave(''); }
+}
+
+function render(){
+  let q=(document.getElementById('search').value||'').toLowerCase();
+  let html='';
+  posts.filter(p=>(p.title+' '+p.desc).toLowerCase().includes(q)).forEach(p=>{
+    let av = p.pic ? '<img src="'+p.pic+'">' : p.name.charAt(0).toUpperCase();
+    html+=`<div class="card post"><div class="flex"><div class="small-ava">${av}</div><b>${p.name}</b><small style="color:#888"> ${p.time}</small></div>${p.img?`<img class="post-img" src="${p.img}">`:''}<h3>${p.title}</h3><p>${p.desc||''}</p><b style="color:#ff2a55">${p.price||''} TSh</b><br><br><button class="btn-black" onclick="alert('DM kwa ${p.name}')">💬 DM Muuzaji</button></div>`;
+  });
+  document.getElementById('feed').innerHTML = html || '<div class="card" style="text-align:center;color:#888">Hakuna bidhaa bado. Weka ya kwanza hapo juu 👆</div>';
+}
+showAuth();
 </script>
 </body>
 </html>

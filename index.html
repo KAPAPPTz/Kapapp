@@ -47,10 +47,11 @@ nav button.active{color:#ff2d55}
 <header>
 <h1>KA-PAPP 🌍</h1>
 <p style="text-align:center;font-size:12px">Every Language. Every Currency. Every Country.</p>
-<div class="authbar">
+<div class="authbar" id="authBar">
 <a href="#" onclick="showReg();return false">📝 REGISTER / JIUNGE</a>
 <a href="#" onclick="showReg();return false">🔑 LOGIN / INGIA</a>
 </div>
+<div id="welcomeBar" style="display:none;text-align:center;background:#fff;color:#000;padding:8px;border-radius:20px;margin-top:8px;font-weight:bold">👋 Umeingia kama <span id="welcomeName"></span> | <a href="#" onclick="logoutUser();return false" style="color:red">Toka / Logout</a></div>
 <div class="topbar">
 <select id="lang" onchange="changeLang()"><option value="sw">Kiswahili</option><option value="en">English</option><option value="fr">Français</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="pt">Português</option></select>
 <select id="currency" onchange="render()"><option value="TSh">TSh</option><option value="USD">USD $</option><option value="KES">KES</option><option value="NGN">NGN ₦</option><option value="EUR">EUR €</option><option value="ZAR">ZAR R</option></select>
@@ -58,7 +59,6 @@ nav button.active{color:#ff2d55}
 <button onclick="showDM()">💬 DM</button>
 </div>
 </header>
-
 <div id="regBox">
 <h3>📝 JIUNGE NA KAPAPP / REGISTER</h3>
 <input id="rName" placeholder="Jina Kamili - Mf: Dotto">
@@ -68,13 +68,11 @@ nav button.active{color:#ff2d55}
 <button onclick="doLogin()" style="background:#ff2d55">🔑 INGIA / LOGIN</button>
 <p id="regMsg" style="color:green;text-align:center;margin-top:8px"></p>
 </div>
-
 <nav>
 <button class="active" onclick="showTab('feed',this)">🏠 Feed</button>
 <button onclick="showTab('live',this)">📡 LIVE</button>
 <button onclick="showTab('profile',this)">👑 Profile</button>
 </nav>
-
 <div id="tab-feed">
 <div class="post-box">
 <h3 id="postTitle">Post Bidhaa Yako - Picha / Video</h3>
@@ -90,17 +88,13 @@ nav button.active{color:#ff2d55}
 </div>
 <div id="feed"></div>
 </div>
-
 <div id="tab-live" class="hidden">
 <div class="live-box"><h2>📡 LIVE SELLING</h2><p id="liveText">Uko LIVE sasa! Watu 128 wanakuangalia.</p><video id="liveVideo" autoplay muted playsinline style="width:100%;max-height:300px;background:#222;border-radius:12px"></video><br><br><button onclick="startLive()">🔴 ANZA LIVE</button> <button onclick="stopLive()" style="background:#333">⏹ MALIZA</button></div>
 </div>
-
 <div id="tab-profile" class="hidden">
 <div class="card"><div class="card-body"><div class="user"><div class="avatar">K</div><div><b id="profileName">KAPAPPTz</b><br><span>CEO of KAPAPP 🌍</span></div></div><p style="margin-top:10px">Followers: <b>1,240</b> | Posts: <b id="pCount">0</b></p><button class="follow" onclick="followMe(this)" style="margin-top:10px">+ FOLLOW</button></div></div><div id="myPosts"></div>
 </div>
-
 <div id="dmBox" class="dm-box"><h3>💬 DM - Chat Ndani ya KAPAPP</h3><div id="dmMsgs"><div class="msg"><b>Mama Ntilie:</b> Hii bidhaa ipo?</div></div><input id="dmInput" placeholder="Andika meseji..."><button onclick="sendDM()">Tuma</button></div>
-
 <script>
 let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
 if(posts.length==0){posts=[{name:'Viatu Vipya',price:25000,hashtag:'#Viatu #Fashion',desc:'Viatu vizuri sana!',seller:'Dotto',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500',type:'image'},{name:'Simu iPhone',price:450000,hashtag:'#Simu #Tech',desc:'Simu safi!',seller:'Jay',img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500',type:'image'},{name:'Video ya Mavazi',price:35000,hashtag:'#Mavazi #Video',desc:'Tazama video hii!',seller:'Mama Ntilie',img:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',type:'video'}];}
@@ -109,8 +103,10 @@ let currentFile='',currentType='image';
 function convert(p){let c=document.getElementById('currency').value;return c+' '+Math.round(p*rates[c]).toLocaleString()}
 function save(){localStorage.setItem('kapapp_posts',JSON.stringify(posts))}
 function showReg(){let b=document.getElementById('regBox');b.style.display=b.style.display=='block'?'none':'block';window.scrollTo(0,0)}
-function doRegister(){let n=document.getElementById('rName').value,p=document.getElementById('rPhone').value;if(!n||!p){alert('Jaza jina na namba!');return}localStorage.setItem('kapapp_user',n);document.getElementById('regMsg').innerText='✅ Karibu '+n+'! Umejiunga na KAPAPP!';document.getElementById('profileName').innerText=n;alert('Hongera '+n+'! Umejiunga!')}
-function doLogin(){let n=document.getElementById('rName').value||localStorage.getItem('kapapp_user')||'KAPAPPTz';document.getElementById('regMsg').innerText='✅ Karibu tena '+n+'! Umeingia!';alert('Umeingia kama '+n)}
+function updateLoginUI(){let n=localStorage.getItem('kapapp_user');if(n){document.getElementById('authBar').style.display='none';document.getElementById('regBox').style.display='none';document.getElementById('welcomeBar').style.display='block';document.getElementById('welcomeName').innerText=n;document.getElementById('profileName').innerText=n;}}
+function doRegister(){let n=document.getElementById('rName').value,p=document.getElementById('rPhone').value;if(!n||!p){alert('Jaza jina na namba!');return}localStorage.setItem('kapapp_user',n);updateLoginUI();alert('Hongera '+n+'! Umejiunga na KAPAPP!')}
+function doLogin(){let n=document.getElementById('rName').value||localStorage.getItem('kapapp_user')||'KAPAPPTz';if(document.getElementById('rName').value) localStorage.setItem('kapapp_user',n);updateLoginUI();alert('Karibu tena '+n+'! Umeingia!')}
+function logoutUser(){localStorage.removeItem('kapapp_user');document.getElementById('authBar').style.display='flex';document.getElementById('welcomeBar').style.display='none';document.getElementById('regBox').style.display='none';alert('Umetoka. Karibu tena!')}
 function showTab(id,btn){document.querySelectorAll('[id^="tab-"]').forEach(e=>e.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
 function previewFile(){let f=document.getElementById('pFile').files[0];if(!f)return;document.getElementById('fileName').innerText='✅ Umechagua: '+f.name;let r=new FileReader();r.onload=function(e){currentFile=e.target.result;currentType=f.type.startsWith('video')?'video':'image';if(currentType=='video'){document.getElementById('previewVid').src=currentFile;document.getElementById('previewVid').style.display='block';document.getElementById('previewImg').style.display='none'}else{document.getElementById('previewImg').src=currentFile;document.getElementById('previewImg').style.display='block';document.getElementById('previewVid').style.display='none'}};r.readAsDataURL(f)}
 function render(){let q=document.getElementById('search').value.toLowerCase();let html='';let filtered=posts.filter(p=>(p.name+p.hashtag+p.desc+p.seller).toLowerCase().includes(q));if(filtered.length==0)html='<p style="text-align:center;padding:20px">Hakuna bidhaa.</p>';filtered.forEach(p=>{let media=p.type=='video'?`<video src="${p.img}" controls></video>`:`<img src="${p.img}">`;html+=`<div class="card">${media}<div class="card-body"><div class="user"><div class="avatar">${p.seller[0]}</div><b>${p.seller}</b><button class="follow" onclick="followMe(this)">+ FOLLOW</button></div><div class="price">${convert(p.price)}</div><b>${p.name}</b><p>${p.desc}</p><p style="color:#ff2d55">${p.hashtag}</p><div class="actions"><button onclick="like(this)">❤️ Like</button><button onclick="comment(this)">💬 Comment</button><button onclick="sharePost('${p.name}')">🔄 Share</button><button onclick="showDM()">💬 DM</button></div></div></div>`});document.getElementById('feed').innerHTML=html;document.getElementById('pCount').innerText=posts.length;document.getElementById('myPosts').innerHTML=html}
@@ -123,6 +119,7 @@ function showDM(){let d=document.getElementById('dmBox');d.style.display=d.style
 function sendDM(){let v=document.getElementById('dmInput').value;if(!v)return;document.getElementById('dmMsgs').innerHTML+=`<div class="msg"><b>Wewe:</b> ${v}</div>`;document.getElementById('dmInput').value=''}
 function changeLang(){let l=document.getElementById('lang').value;let t={sw:'Post Bidhaa Yako - Picha / Video',en:'Post Your Product - Photo / Video',fr:'Publiez Votre Produit',ar:'انشر منتجك',hi:'अपना उत्पाद पोस्ट करें',pt:'Publique Seu Produto'};document.getElementById('postTitle').innerText=t[l]||t.sw}
 let stream=null;async function startLive(){try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});document.getElementById('liveVideo').srcObject=stream;document.getElementById('liveText').innerText='🔴 Uko LIVE! Watu 245 wanakuangalia!'}catch(e){alert('Ruhusu kamera ili uanze LIVE')}}function stopLive(){if(stream){stream.getTracks().forEach(t=>t.stop());document.getElementById('liveVideo').srcObject=null;document.getElementById('liveText').innerText='LIVE imemalizika.'}}
+updateLoginUI();
 render();
 </script>
 </body>

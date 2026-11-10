@@ -111,9 +111,9 @@ function convert(p){let c=document.getElementById('currency').value;return c+' '
 function save(){
   try{ localStorage.setItem('kapapp_posts',JSON.stringify(posts)); }
   catch(e){
-    alert('Picha ni kubwa sana, tunahifadhi post bila picha kubwa ili isipotee.');
-    let backup = posts.map(p=>({...p, img: p.img && p.img.length>2000 ? 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500' : p.img}));
-    try{ localStorage.setItem('kapapp_posts',JSON.stringify(backup)); posts=backup; }catch(e2){}
+    alert('Bado kubwa, tumefuta post za zamani ili hii mpya ihifadhiwe.');
+    posts = posts.slice(0,5);
+    try{ localStorage.setItem('kapapp_posts',JSON.stringify(posts)); }catch(e2){}
   }
 }
 function showReg(){let b=document.getElementById('regBox');b.style.display=b.style.display=='block'?'none':'block';window.scrollTo(0,0)}
@@ -124,15 +124,26 @@ function logoutUser(){localStorage.removeItem('kapapp_user');document.getElement
 function showTab(id,btn){document.querySelectorAll('[id^="tab-"]').forEach(e=>e.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn) btn.classList.add('active')}
 function previewFile(){
   let f=document.getElementById('pFile').files[0];if(!f)return;
-  if(f.size > 3*1024*1024){ alert('Picha/Video ni kubwa sana. Chagua ile ndogo chini ya 3MB ili isipotee.'); document.getElementById('pFile').value=''; return; }
-  document.getElementById('fileName').innerText='✅ Umechagua: '+f.name;
-  let r=new FileReader();
-  r.onload=function(e){
-    currentFile=e.target.result;currentType=f.type.startsWith('video')?'video':'image';
-    if(currentType=='video'){document.getElementById('previewVid').src=currentFile;document.getElementById('previewVid').style.display='block';document.getElementById('previewImg').style.display='none'}
-    else{document.getElementById('previewImg').src=currentFile;document.getElementById('previewImg').style.display='block';document.getElementById('previewVid').style.display='none'}
+  document.getElementById('fileName').innerText='⏳ Inapunguza picha... subiri...';
+  if(f.type.startsWith('video')){
+    if(f.size > 4*1024*1024){ alert('Video ni kubwa sana. Chagua video fupi ndogo chini ya 4MB.'); document.getElementById('pFile').value=''; document.getElementById('fileName').innerText=''; return; }
+    let r=new FileReader();
+    r.onload=function(e){ currentFile=e.target.result; currentType='video'; document.getElementById('previewVid').src=currentFile; document.getElementById('previewVid').style.display='block'; document.getElementById('previewImg').style.display='none'; document.getElementById('fileName').innerText='✅ Umechagua: '+f.name; };
+    r.readAsDataURL(f); return;
+  }
+  let img=new Image();
+  let url=URL.createObjectURL(f);
+  img.onload=function(){
+    let maxW=800; let scale=Math.min(1, maxW/img.width);
+    let w=Math.round(img.width*scale); let h=Math.round(img.height*scale);
+    let canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
+    let ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0,w,h);
+    currentFile=canvas.toDataURL('image/jpeg',0.7); currentType='image';
+    document.getElementById('previewImg').src=currentFile; document.getElementById('previewImg').style.display='block'; document.getElementById('previewVid').style.display='none';
+    document.getElementById('fileName').innerText='✅ Picha imepunguzwa na iko tayari! - '+f.name;
+    URL.revokeObjectURL(url);
   };
-  r.readAsDataURL(f)
+  img.src=url;
 }
 function escapeHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function render(){
@@ -170,7 +181,7 @@ function addPost(){
   document.getElementById('previewVid').style.display='none';
   document.getElementById('previewVid').src='';
   currentFile=''; currentType='image';
-  alert('✅ Imepost! Picha/Video yako inaonekana sasa juu ya Feed!');
+  alert('✅ Imepost! Picha yako imehifadhiwa!');
   window.scrollTo(0,0);
 }
 function like(btn){btn.innerText='❤️ Liked!';btn.style.color='red'}

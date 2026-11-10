@@ -96,29 +96,95 @@ nav button.active{color:#ff2d55}
 </div>
 <div id="dmBox" class="dm-box"><h3>💬 DM - Chat Ndani ya KAPAPP</h3><div id="dmMsgs"><div class="msg"><b>Mama Ntilie:</b> Hii bidhaa ipo?</div></div><input id="dmInput" placeholder="Andika meseji..."><button onclick="sendDM()">Tuma</button></div>
 <script>
-let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
-if(posts.length==0){posts=[{name:'Viatu Vipya',price:25000,hashtag:'#Viatu #Fashion',desc:'Viatu vizuri sana!',seller:'Dotto',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500',type:'image'},{name:'Simu iPhone',price:450000,hashtag:'#Simu #Tech',desc:'Simu safi!',seller:'Jay',img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500',type:'image'},{name:'Video ya Mavazi',price:35000,hashtag:'#Mavazi #Video',desc:'Tazama video hii!',seller:'Mama Ntilie',img:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',type:'video'}];}
+let posts=[];
+try{ posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]'); }catch(e){ posts=[]; }
+if(!Array.isArray(posts) || posts.length==0){
+  posts=[
+    {name:'Viatu Vipya',price:25000,hashtag:'#Viatu #Fashion',desc:'Viatu vizuri sana!',seller:'Dotto',img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500',type:'image'},
+    {name:'Simu iPhone',price:450000,hashtag:'#Simu #Tech',desc:'Simu safi!',seller:'Jay',img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500',type:'image'},
+    {name:'Video ya Mavazi',price:35000,hashtag:'#Mavazi #Video',desc:'Tazama video hii!',seller:'Mama Ntilie',img:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',type:'video'}
+  ];
+}
 let rates={TSh:1,USD:0.0004,KES:0.05,NGN:0.6,EUR:0.00035,ZAR:0.007};
 let currentFile='',currentType='image';
-function convert(p){let c=document.getElementById('currency').value;return c+' '+Math.round(p*rates[c]).toLocaleString()}
-function save(){localStorage.setItem('kapapp_posts',JSON.stringify(posts))}
+function convert(p){let c=document.getElementById('currency').value;return c+' '+Math.round(Number(p||0)*rates[c]).toLocaleString()}
+function save(){
+  try{ localStorage.setItem('kapapp_posts',JSON.stringify(posts)); }
+  catch(e){
+    // Picha kubwa imejaa storage - tunahifadhi bila picha kubwa
+    alert('Picha ni kubwa sana, tunahifadhi post bila picha kubwa ili isipotee.');
+    let backup = posts.map(p=>({...p, img: p.img && p.img.length>2000 ? 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500' : p.img}));
+    try{ localStorage.setItem('kapapp_posts',JSON.stringify(backup)); posts=backup; }catch(e2){}
+  }
+}
 function showReg(){let b=document.getElementById('regBox');b.style.display=b.style.display=='block'?'none':'block';window.scrollTo(0,0)}
 function updateLoginUI(){let n=localStorage.getItem('kapapp_user');if(n){document.getElementById('authBar').style.display='none';document.getElementById('regBox').style.display='none';document.getElementById('welcomeBar').style.display='block';document.getElementById('welcomeName').innerText=n;document.getElementById('profileName').innerText=n;}}
-function doRegister(){let n=document.getElementById('rName').value,p=document.getElementById('rPhone').value;if(!n||!p){alert('Jaza jina na namba!');return}localStorage.setItem('kapapp_user',n);updateLoginUI();alert('Hongera '+n+'! Umejiunga na KAPAPP!')}
-function doLogin(){let n=document.getElementById('rName').value||localStorage.getItem('kapapp_user')||'KAPAPPTz';if(document.getElementById('rName').value) localStorage.setItem('kapapp_user',n);updateLoginUI();alert('Karibu tena '+n+'! Umeingia!')}
-function logoutUser(){localStorage.removeItem('kapapp_user');document.getElementById('authBar').style.display='flex';document.getElementById('welcomeBar').style.display='none';document.getElementById('regBox').style.display='none';alert('Umetoka. Karibu tena!')}
-function showTab(id,btn){document.querySelectorAll('[id^="tab-"]').forEach(e=>e.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
-function previewFile(){let f=document.getElementById('pFile').files[0];if(!f)return;document.getElementById('fileName').innerText='✅ Umechagua: '+f.name;let r=new FileReader();r.onload=function(e){currentFile=e.target.result;currentType=f.type.startsWith('video')?'video':'image';if(currentType=='video'){document.getElementById('previewVid').src=currentFile;document.getElementById('previewVid').style.display='block';document.getElementById('previewImg').style.display='none'}else{document.getElementById('previewImg').src=currentFile;document.getElementById('previewImg').style.display='block';document.getElementById('previewVid').style.display='none'}};r.readAsDataURL(f)}
-function render(){let q=document.getElementById('search').value.toLowerCase();let html='';let filtered=posts.filter(p=>(p.name+p.hashtag+p.desc+p.seller).toLowerCase().includes(q));if(filtered.length==0)html='<p style="text-align:center;padding:20px">Hakuna bidhaa.</p>';filtered.forEach(p=>{let media=p.type=='video'?`<video src="${p.img}" controls></video>`:`<img src="${p.img}">`;html+=`<div class="card">${media}<div class="card-body"><div class="user"><div class="avatar">${p.seller[0]}</div><b>${p.seller}</b><button class="follow" onclick="followMe(this)">+ FOLLOW</button></div><div class="price">${convert(p.price)}</div><b>${p.name}</b><p>${p.desc}</p><p style="color:#ff2d55">${p.hashtag}</p><div class="actions"><button onclick="like(this)">❤️ Like</button><button onclick="comment(this)">💬 Comment</button><button onclick="sharePost('${p.name}')">🔄 Share</button><button onclick="showDM()">💬 DM</button></div></div></div>`});document.getElementById('feed').innerHTML=html;document.getElementById('pCount').innerText=posts.length;document.getElementById('myPosts').innerHTML=html}
-function addPost(){let name=document.getElementById('pName').value,price=document.getElementById('pPrice').value,hashtag=document.getElementById('pHashtag').value,desc=document.getElementById('pDesc').value;if(!name||!price){alert('Weka jina na bei!');return}let seller=localStorage.getItem('kapapp_user')||'Wewe';let img=currentFile||'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500';posts.unshift({name,price:Number(price),hashtag:hashtag||'#KAPAPP',desc:desc||'Bidhaa nzuri!',seller,img,type:currentType});save();render();alert('✅ Imepost! Picha/Video yako inaonekana sasa!');document.getElementById('previewImg').style.display='none';document.getElementById('previewVid').style.display='none';currentFile=''}
+function doRegister(){let n=document.getElementById('rName').value.trim(),p=document.getElementById('rPhone').value.trim();if(!n||!p){alert('Jaza jina na namba!');return}localStorage.setItem('kapapp_user',n);updateLoginUI();document.getElementById('regMsg').innerText='Hongera '+n+'! Umejiunga!';alert('Hongera '+n+'! Umejiunga na KAPAPP!')}
+function doLogin(){let n=document.getElementById('rName').value.trim()||localStorage.getItem('kapapp_user')||'KAPAPPTz';localStorage.setItem('kapapp_user',n);updateLoginUI();alert('Karibu tena '+n+'! Umeingia!')}
+function logoutUser(){localStorage.removeItem('kapapp_user');document.getElementById('authBar').style.display='flex';document.getElementById('welcomeBar').style.display='none';document.getElementById('regBox').style.display='none';document.getElementById('profileName').innerText='KAPAPPTz';alert('Umetoka. Karibu tena!')}
+function showTab(id,btn){document.querySelectorAll('[id^="tab-"]').forEach(e=>e.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn) btn.classList.add('active')}
+function previewFile(){
+  let f=document.getElementById('pFile').files[0];if(!f)return;
+  if(f.size > 3*1024*1024){ alert('Picha/Video ni kubwa sana. Chagua ile ndogo chini ya 3MB ili isipotee.'); document.getElementById('pFile').value=''; return; }
+  document.getElementById('fileName').innerText='✅ Umechagua: '+f.name;
+  let r=new FileReader();
+  r.onload=function(e){
+    currentFile=e.target.result;currentType=f.type.startsWith('video')?'video':'image';
+    if(currentType=='video'){document.getElementById('previewVid').src=currentFile;document.getElementById('previewVid').style.display='block';document.getElementById('previewImg').style.display='none'}
+    else{document.getElementById('previewImg').src=currentFile;document.getElementById('previewImg').style.display='block';document.getElementById('previewVid').style.display='none'}
+  };
+  r.readAsDataURL(f)
+}
+function escapeHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function render(){
+  let q=(document.getElementById('search').value||'').toLowerCase();
+  let html='';
+  let filtered=posts.filter(p=>((p.name||'')+(p.hashtag||'')+(p.desc||'')+(p.seller||'')).toLowerCase().includes(q));
+  if(filtered.length==0) html='<p style="text-align:center;padding:20px">Hakuna bidhaa.</p>';
+  filtered.forEach(p=>{
+    let media=p.type=='video'?`<video src="${p.img}" controls playsinline></video>`:`<img src="${p.img}">`;
+    let first=(p.seller||'W').charAt(0).toUpperCase();
+    html+=`<div class="card">${media}<div class="card-body"><div class="user"><div class="avatar">${first}</div><b>${escapeHtml(p.seller)}</b><button class="follow" onclick="followMe(this)">+ FOLLOW</button></div><div class="price">${convert(p.price)}</div><b>${escapeHtml(p.name)}</b><p>${escapeHtml(p.desc)}</p><p style="color:#ff2d55">${escapeHtml(p.hashtag)}</p><div class="actions"><button onclick="like(this)">❤️ Like</button><button onclick="comment(this)">💬 Comment</button><button onclick="sharePost('${escapeHtml(p.name)}')">🔄 Share</button><button onclick="showDM()">💬 DM</button></div></div></div>`
+  });
+  document.getElementById('feed').innerHTML=html;
+  document.getElementById('pCount').innerText=posts.length;
+  document.getElementById('myPosts').innerHTML=html;
+}
+function addPost(){
+  let name=document.getElementById('pName').value.trim();
+  let price=document.getElementById('pPrice').value.trim();
+  let hashtag=document.getElementById('pHashtag').value.trim();
+  let desc=document.getElementById('pDesc').value.trim();
+  if(!name||!price){alert('Weka jina na bei!');return}
+  let seller=localStorage.getItem('kapapp_user')||'Wewe';
+  let img=currentFile||'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500';
+  posts.unshift({name,price:Number(price),hashtag:hashtag||'#KAPAPP',desc:desc||'Bidhaa nzuri!',seller,img,type:currentType});
+  save(); render();
+  // Futa fomu ili ujue imepost
+  document.getElementById('pName').value='';
+  document.getElementById('pPrice').value='';
+  document.getElementById('pHashtag').value='';
+  document.getElementById('pDesc').value='';
+  document.getElementById('pFile').value='';
+  document.getElementById('fileName').innerText='';
+  document.getElementById('previewImg').style.display='none';
+  document.getElementById('previewImg').src='';
+  document.getElementById('previewVid').style.display='none';
+  document.getElementById('previewVid').src='';
+  currentFile=''; currentType='image';
+  alert('✅ Imepost! Picha/Video yako inaonekana sasa juu ya Feed!');
+  window.scrollTo(0,0);
+}
 function like(btn){btn.innerText='❤️ Liked!';btn.style.color='red'}
 function comment(btn){let c=prompt('Andika comment:');if(c)alert('Comment: '+c)}
 function sharePost(n){alert('Ume-share: '+n)}
 function followMe(btn){btn.innerText=btn.innerText.includes('FOLLOW')?'✓ Following':'+ FOLLOW'}
-function showDM(){let d=document.getElementById('dmBox');d.style.display=d.style.display=='block'?'none':'block';window.scrollTo(0,0)}
-function sendDM(){let v=document.getElementById('dmInput').value;if(!v)return;document.getElementById('dmMsgs').innerHTML+=`<div class="msg"><b>Wewe:</b> ${v}</div>`;document.getElementById('dmInput').value=''}
+function showDM(){let d=document.getElementById('dmBox');d.style.display=d.style.display=='block'?'none':'block';if(d.style.display=='block') d.scrollIntoView({behavior:'smooth'})}
+function sendDM(){let v=document.getElementById('dmInput').value.trim();if(!v)return;document.getElementById('dmMsgs').innerHTML+=`<div class="msg"><b>Wewe:</b> ${escapeHtml(v)}</div>`;document.getElementById('dmInput').value=''}
 function changeLang(){let l=document.getElementById('lang').value;let t={sw:'Post Bidhaa Yako - Picha / Video',en:'Post Your Product - Photo / Video',fr:'Publiez Votre Produit',ar:'انشر منتجك',hi:'अपना उत्पाद पोस्ट करें',pt:'Publique Seu Produto'};document.getElementById('postTitle').innerText=t[l]||t.sw}
-let stream=null;async function startLive(){try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});document.getElementById('liveVideo').srcObject=stream;document.getElementById('liveText').innerText='🔴 Uko LIVE! Watu 245 wanakuangalia!'}catch(e){alert('Ruhusu kamera ili uanze LIVE')}}function stopLive(){if(stream){stream.getTracks().forEach(t=>t.stop());document.getElementById('liveVideo').srcObject=null;document.getElementById('liveText').innerText='LIVE imemalizika.'}}
+let stream=null;
+async function startLive(){try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});document.getElementById('liveVideo').srcObject=stream;document.getElementById('liveText').innerText='🔴 Uko LIVE! Watu 245 wanakuangalia!'}catch(e){alert('Ruhusu kamera ili uanze LIVE')}}
+function stopLive(){if(stream){stream.getTracks().forEach(t=>t.stop());document.getElementById('liveVideo').srcObject=null;document.getElementById('liveText').innerText='LIVE imemalizika.'}}
 updateLoginUI();
 render();
 </script>

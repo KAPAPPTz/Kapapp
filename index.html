@@ -3,211 +3,312 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kapapp - VYOTE</title>
+<title>KAPAPP - Post • Like • Pata Pesa</title>
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#f0f2f5}
-header{background:#fff;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;box-shadow:0 1px 5px #ccc}
-header b{font-size:22px} header b span{color:#ff2d55}
-nav{display:flex;gap:5px;background:#fff;padding:8px;position:sticky;top:52px;z-index:10}
-nav button{flex:1;padding:10px;border:0;border-radius:20px;background:#eee;font-weight:bold;cursor:pointer}
-nav button.active{background:#000;color:#fff}
-.container{max-width:520px;margin:auto;padding:10px;padding-bottom:80px}
-.card{background:#fff;border-radius:15px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px #ddd}
-input,textarea,select{width:100%;padding:11px;margin:6px 0;border:1px solid #ddd;border-radius:10px;outline:none}
-button.btn{background:#ff2d55;color:#fff;border:0;padding:11px;border-radius:10px;width:100%;font-weight:bold;cursor:pointer}
-.post-img,.post-vid{width:100%;border-radius:12px;margin-top:8px;max-height:420px;object-fit:cover}
-.actions{display:flex;gap:8px;margin-top:10px}
-.actions button{flex:1;padding:8px;border:0;border-radius:20px;background:#f0f2f5;cursor:pointer}
-.hashtag{color:#1877f2;cursor:pointer;font-weight:bold}
-.tag{background:#ffeef1;color:#ff2d55;padding:2px 8px;border-radius:10px;font-size:12px}
-.comment{background:#f0f2f5;padding:8px;border-radius:10px;margin-top:6px;font-size:14px}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f0f2f5;padding-bottom:80px}
+header{background:#1877f2;color:#fff;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+header b{font-size:20px}
+header span{font-size:14px;background:#fff;color:#1877f2;padding:4px 10px;border-radius:20px;font-weight:bold}
+.balance{background:#fff;margin:10px;padding:12px;border-radius:10px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.balance b{color:#0a9e3f;font-size:22px}
+.card{background:#fff;margin:10px;padding:12px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.user-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.avatar{width:38px;height:38px;border-radius:50%;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:18px}
+input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ddd;border-radius:8px}
+button{background:#1877f2;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:bold}
+button:active{opacity:.8}
+.actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.actions button{background:#eef2ff;color:#1877f2;padding:7px 12px}
+.comment{background:#f0f2f5;padding:7px 10px;border-radius:8px;margin-top:6px;font-size:14px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}
+.nav button{background:none;color:#333}
+.nav button.active{color:#1877f2}
 .hidden{display:none}
-.user-row{display:flex;gap:10px;align-items:center}
-.avatar{width:40px;height:40px;border-radius:50%;background:#ff2d55;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px}
-.msg{padding:8px 12px;border-radius:15px;margin:5px 0;max-width:80%}
-.me{background:#ff2d55;color:#fff;margin-left:auto}
-.other{background:#eee}
+.login{max-width:400px;margin:40px auto;padding:20px;background:#fff;border-radius:12px}
+.login h2{text-align:center;color:#1877f2;margin-bottom:15px}
 </style>
 </head>
 <body>
-<header><b>Ka<span>papp</span></b><span id="myName">👤 Guest</span></header>
-<nav>
-<button onclick="show('feed')" id="b-feed" class="active">🏠 Feed</button>
-<button onclick="show('post')" id="b-post">➕ Post</button>
-<button onclick="show('dm')" id="b-dm">💬 DM</button>
-<button onclick="show('profile')" id="b-profile">👤 Profile</button>
-</nav>
 
-<div class="container">
+<header>
+<b>KAPAPP</b>
+<span id="headerName">Karibu</span>
+</header>
+
 <!-- LOGIN -->
-<div class="card" id="loginCard">
-<h3>Ingia Kapapp</h3>
-<input id="username" placeholder="Jina lako - mfano: Kapapa">
-<input id="userpic" placeholder="Link ya picha yako (hiari)">
-<button class="btn" onclick="login()">INGIA</button>
+<div id="loginPage" class="login">
+<h2>KAPAPP 🇹🇿</h2>
+<p style="text-align:center;margin-bottom:10px">Post • Like • Pata Pesa</p>
+<input id="loginName" placeholder="Andika jina lako - mfano Said">
+<input id="loginPhone" placeholder="Namba ya simu (hiari)">
+<button onclick="login()" style="width:100%">INGIA / JISAJILI</button>
+<p style="font-size:12px;color:#666;text-align:center;margin-top:10px">Post = 50 TZS • Like = 10 TZS • Comment = 5 TZS</p>
+</div>
+
+<!-- APP -->
+<div id="appPage" class="hidden">
+
+<div class="balance">
+👋 Habari, <b id="welcomeName"></b><br>
+Mfuko Wako: <b id="myBalance">0 TZS</b><br>
+<span id="myStats" style="font-size:13px;color:#666"></span>
 </div>
 
 <!-- FEED -->
-<div id="feed">
-<div class="card"><input id="searchTag" placeholder="🔍 Tafuta #hashtag au mtu... Tafuta #dance" oninput="loadFeed()"></div>
-<div id="feedList"><p style="text-align:center">Inapakia...</p></div>
-</div>
-
-<!-- POST -->
-<div id="post" class="hidden">
+<div id="feedPage">
 <div class="card">
-<h3>Tengeneza Post Mpya</h3>
-<textarea id="caption" rows="3" placeholder="Andika chochote... Tumia #hashtag na @tag mtu. Mfano: Niko Dar #dance @kapapa"></textarea>
-<input id="mediaUrl" placeholder="Link ya Picha / Video - au chagua faili chini">
-<input type="file" id="mediaFile" accept="image/*,video/*">
-<select id="mediaType"><option value="image">🖼️ Ni Picha</option><option value="video">🎥 Ni Video</option></select>
-<input id="tagInput" placeholder="@Tag mtu - mfano: @sara, @john">
-<button class="btn" onclick="createPost()">POST SASA 🚀</button>
-<p style="font-size:12px;color:#888">Tip: Unaweza kuweka link ya picha kutoka Google / au chagua faili kutoka simu.</p>
+<textarea id="caption" placeholder="Andika kitu... #Kapapp"></textarea>
+<input id="postUrl" placeholder="Link ya picha/video (hiari)">
+<input type="file" id="postFile" accept="image/*,video/*">
+<button onclick="createPost()" style="width:100%">POST • +50 TZS</button>
 </div>
+<input id="searchInput" placeholder="🔍 Tafuta #hashtag au jina..." oninput="loadFeed()" style="margin:10px">
+<div id="feedList"></div>
 </div>
 
 <!-- DM -->
-<div id="dm" class="hidden">
-<div class="card"><h3>💬 Direct Messages</h3>
-<input id="dmTo" placeholder="DM kwa nani? Andika jina - mfano: Sara">
+<div id="dmPage" class="hidden">
+<div class="card">
+<h3>DM 💬</h3>
+<input id="dmTo" placeholder="Tuma kwa nani? Andika jina">
 <input id="dmText" placeholder="Andika ujumbe...">
-<button class="btn" onclick="sendDM()">TUMA DM</button></div>
+<button onclick="sendDM()" style="width:100%">TUMA DM</button>
+</div>
 <div id="dmList"></div>
 </div>
 
 <!-- PROFILE -->
-<div id="profile" class="hidden">
-<div class="card" style="text-align:center"><div class="avatar" style="margin:auto;width:70px;height:70px;font-size:30px" id="profAvatar">K</div><h2 id="profName">Guest</h2><p id="profStats"></p></div>
+<div id="profilePage" class="hidden">
+<div class="card" style="text-align:center">
+<div class="avatar" id="profAvatar" style="margin:0 auto;width:70px;height:70px;font-size:30px">S</div>
+<h3 id="profName"></h3>
+<p id="profStats"></p>
+<button onclick="logout()">TOKA / BADILISHA JINA</button>
+</div>
 <div id="myPosts"></div>
 </div>
+
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, updateDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<div class="nav" id="bottomNav" style="display:none">
+<button id="btnFeed" class="active" onclick="show('feed')">🏠 Feed</button>
+<button id="btnDm" onclick="show('dm')">💬 DM</button>
+<button id="btnProfile" onclick="show('profile')">👤 Mimi</button>
+</div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wElVXS9mBZKyw",
-  authDomain: "kapapp-97bed.firebaseapp.com",
-  projectId: "kapapp-97bed",
-  storageBucket: "kapapp-97bed.firebasestorage.app",
-  messagingSenderId: "497811742831",
-  appId: "1:497811742831:web:9cf03078065ceb0805ed9a"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+<script>
+// ===== KAPAPP - IME REKEBISHWA =====
+let me = ""; // jina tu, sio object
+let myPhone = "";
 
-let me = localStorage.getItem('kapapp_user') || 'Guest';
-if(me!=='Guest'){ document.getElementById('myName').innerText='👤 '+me; document.getElementById('loginCard').style.display='none'; }
+function getData(k, def){ try{ return JSON.parse(localStorage.getItem(k)) || def }catch(e){ return def } }
+function saveData(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
 
-window.login = () => {
-  let n = document.getElementById('username').value.trim();
-  if(!n) return alert('Andika jina kwanza!');
-  me=n; localStorage.setItem('kapapp_user',n);
-  document.getElementById('myName').innerText='👤 '+n;
-  document.getElementById('loginCard').style.display='none';
-  alert('Karibu '+n+'! 🎉'); loadFeed();
-}
-
-window.show = (id) => {
-  ['feed','post','dm','profile'].forEach(x=>{
-    document.getElementById(x).classList.add('hidden');
-    document.getElementById('b-'+x).classList.remove('active');
-  });
-  document.getElementById(id).classList.remove('hidden');
-  document.getElementById('b-'+id).classList.add('active');
-  if(id==='dm') loadDM(); if(id==='profile') loadProfile(); if(id==='feed') loadFeed();
-}
-
-function formatText(t){
-  if(!t) return '';
-  return t.replace(/#(\w+)/g,'<span class="hashtag" onclick="searchHashtag(\'$1\')">#$1</span>')
-          .replace(/@(\w+)/g,'<span class="tag">@$1</span>');
-}
-window.searchHashtag = (h)=>{ document.getElementById('searchTag').value='#'+h; loadFeed(); }
-
-window.createPost = async () => {
-  let caption = document.getElementById('caption').value;
-  let url = document.getElementById('mediaUrl').value;
-  let type = document.getElementById('mediaType').value;
-  let tags = document.getElementById('tagInput').value;
-  let file = document.getElementById('mediaFile').files[0];
-  if(!caption && !url && !file) return alert('Andika kitu au weka picha!');
-  if(file){
-    url = await new Promise(res=>{
-      let r=new FileReader(); r.onload=e=>res(e.target.result); r.readAsDataURL(file);
-    });
-    if(file.type.startsWith('video')) type='video';
+// Soma mtumiaji - REKEBISHO KUU HAPA
+function loadUser(){
+  let saved = localStorage.getItem('kapappUser');
+  if(!saved) return false;
+  try{
+    let u = JSON.parse(saved);
+    // Kama ilikuwa object {"name":"Said"} chukua name tu
+    // Kama ilikuwa string "Said" chukua kama ilivyo
+    if(typeof u === 'object' && u !== null){
+      me = u.name || u.username || "";
+    } else {
+      me = u;
+    }
+  }catch(e){
+    // Kama ilihifadhiwa vibaya, chukua kama string
+    me = saved.replace(/[{}\"]/g,'').replace('name:','').replace(':', '');
   }
-  let hashtags = (caption.match(/#\w+/g)||[]).join(' ');
-  await addDoc(collection(db,'posts'), {user:me, caption, media:url, type, tags, hashtags, likes:0, likedBy:[], comments:[], createdAt: Date.now()});
-  alert('Post imetumwa! ✅');
-  document.getElementById('caption').value=''; document.getElementById('mediaUrl').value=''; document.getElementById('tagInput').value='';
-  show('feed'); loadFeed();
+  // Safisha kama bado ina { au "
+  if(me.includes('{') || me.includes('"')){
+    let m = me.match(/"name":"([^"]+)"/);
+    if(m) me = m[1];
+  }
+  return me ? true : false;
 }
 
-window.likePost = async (id, likes, likedBy) => {
-  if(likedBy.includes(me)) return alert('Umesha-like!');
-  await updateDoc(doc(db,'posts',id), {likes: likes+1, likedBy:[...likedBy, me]});
-}
-window.addComment = async (id, comments) => {
-  let txt = prompt('Andika comment yako:');
-  if(!txt) return;
-  await updateDoc(doc(db,'posts',id), {comments:[...comments, {user:me, text:txt}]});
-}
-window.sharePost = (caption) => {
-  navigator.clipboard.writeText(caption); alert('Link ime-copy! Share sasa ✅');
+function updateHeader(){
+  document.getElementById('headerName').textContent = me || "Karibu";
+  document.getElementById('welcomeName').textContent = me || "";
+  document.getElementById('profName').textContent = me || "";
+  document.getElementById('profAvatar').textContent = me ? me.charAt(0).toUpperCase() : "S";
 }
 
-async function loadFeed(){
-  let q = query(collection(db,'posts'), orderBy('createdAt','desc'));
-  let snap = await getDocs(q);
-  let search = document.getElementById('searchTag').value.toLowerCase();
-  let html='';
-  snap.forEach(d=>{
-    let p=d.data(); let id=d.id;
-    if(search && !((p.caption||'').toLowerCase().includes(search) || (p.hashtags||'').toLowerCase().includes(search) || (p.user||'').toLowerCase().includes(search))) return;
-    let media = p.media ? (p.type==='video' ? `<video class="post-vid" controls src="${p.media}"></video>` : `<img class="post-img" src="${p.media}">`) : '';
+function login(){
+  let n = document.getElementById('loginName').value.trim();
+  if(!n) return alert('Andika jina lako kwanza!');
+  // Hifadhi kama object lakini tunasoma name tu baadaye
+  me = n;
+  myPhone = document.getElementById('loginPhone').value.trim();
+  saveData('kapappUser', {name: me, phone: myPhone});
+  startApp();
+}
+
+function logout(){
+  localStorage.removeItem('kapappUser');
+  location.reload();
+}
+
+function startApp(){
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('appPage').classList.remove('hidden');
+  document.getElementById('bottomNav').style.display = 'flex';
+  updateHeader();
+  loadFeed();
+  loadDM();
+  loadProfile();
+}
+
+function show(page){
+  document.getElementById('feedPage').classList.add('hidden');
+  document.getElementById('dmPage').classList.add('hidden');
+  document.getElementById('profilePage').classList.add('hidden');
+  document.getElementById('btnFeed').classList.remove('active');
+  document.getElementById('btnDm').classList.remove('active');
+  document.getElementById('btnProfile').classList.remove('active');
+  if(page==='feed'){ document.getElementById('feedPage').classList.remove('hidden'); document.getElementById('btnFeed').classList.add('active'); loadFeed(); }
+  if(page==='dm'){ document.getElementById('dmPage').classList.remove('hidden'); document.getElementById('btnDm').classList.add('active'); loadDM(); }
+  if(page==='profile'){ document.getElementById('profilePage').classList.remove('hidden'); document.getElementById('btnProfile').classList.add('active'); loadProfile(); }
+}
+
+function getBalance(){ return getData('kapappBalance_'+me, 0); }
+function addMoney(amount){ let b = getBalance() + amount; saveData('kapappBalance_'+me, b); document.getElementById('myBalance').textContent = b + " TZS"; }
+
+function createPost(){
+  let caption = document.getElementById('caption').value.trim();
+  let url = document.getElementById('postUrl').value.trim();
+  let file = document.getElementById('postFile').files[0];
+  if(!caption && !url && !file) return alert('Andika kitu kwanza!');
+  let doSave = (finalUrl)=>{
+    let posts = getData('kapappPosts', []);
+    let hashtags = (caption.match(/#\w+/g) || []).join(' ');
+    posts.unshift({id: Date.now(), user: me, caption: caption, media: finalUrl, type: '', tags: hashtags, likes: 0, likedBy: [], comments: [], time: new Date().toLocaleString()});
+    saveData('kapappPosts', posts);
+    addMoney(50);
+    alert('Post imetumwa! ✅ +50 TZS');
+    document.getElementById('caption').value = '';
+    document.getElementById('postUrl').value = '';
+    document.getElementById('postFile').value = '';
+    show('feed');
+  };
+  if(file){
+    let r = new FileReader();
+    r.onload = e => doSave(e.target.result);
+    r.readAsDataURL(file);
+  } else doSave(url);
+}
+
+function formatText(t){ return (t||'').replace(/#(\w+)/g, '<b style="color:#1877f2">#$1</b>'); }
+
+function loadFeed(){
+  let posts = getData('kapappPosts', []);
+  let search = (document.getElementById('searchInput')?.value || '').toLowerCase();
+  let html = '';
+  if(posts.length===0) html = '<div class="card" style="text-align:center">Hakuna post bado.<br>Kuwa wa kwanza kupost!</div>';
+  posts.forEach(p=>{
+    if(search && !(p.caption||'').toLowerCase().includes(search) && !(p.user||'').toLowerCase().includes(search)) return;
+    let media = '';
+    if(p.media){
+      if(p.media.startsWith('data:video') || p.media.includes('.mp4')) media = `<video src="${p.media}" controls style="width:100%;border-radius:8px;margin-top:8px"></video>`;
+      else media = `<img src="${p.media}" style="width:100%;border-radius:8px;margin-top:8px">`;
+    }
     let comments = (p.comments||[]).map(c=>`<div class="comment"><b>${c.user}:</b> ${c.text}</div>`).join('');
-    html+=`<div class="card">
-      <div class="user-row"><div class="avatar">${(p.user||'K')[0].toUpperCase()}</div><div><b>${p.user}</b><br><small>${new Date(p.createdAt).toLocaleString()} • ${p.hashtags||''}</small></div></div>
-      <p>${formatText(p.caption||'')} <br><span class="tag">${p.tags||''}</span></p>
+    html += `<div class="card">
+      <div class="user-row"><div class="avatar">${(p.user||'?').charAt(0).toUpperCase()}</div><div><b>${p.user}</b><br><small style="color:#666">${p.time||''}</small></div></div>
+      <p>${formatText(p.caption||'')}</p>
       ${media}
       <div class="actions">
-        <button onclick="likePost('${id}',${p.likes||0},${JSON.stringify(p.likedBy||[]).replace(/"/g,"'")})">❤️ Like (${p.likes||0})</button>
-        <button onclick="addComment('${id}',${JSON.stringify(p.comments||[]).replace(/"/g,"'")})">💬 Comment (${(p.comments||[]).length})</button>
-        <button onclick="sharePost('${(p.caption||'').replace(/'/g,"")}')">↗️ Share</button>
+        <button onclick="likePost(${p.id}, ${p.likes})">❤️ Like (${p.likes})</button>
+        <button onclick="addComment(${p.id})">💬 Comment</button>
+        <button onclick="sharePost('${(p.caption||'').replace(/'/g,'')}')">🔗 Share</button>
       </div>${comments}
     </div>`;
   });
-  document.getElementById('feedList').innerHTML = html || '<p style="text-align:center">Hakuna post bado. Kuwa wa kwanza ku-post! 🚀</p>';
-  // Realtime
-  onSnapshot(q, ()=>{});
+  document.getElementById('feedList').innerHTML = html;
+  document.getElementById('myBalance').textContent = getBalance() + " TZS";
+  let myPosts = posts.filter(p=>p.user===me).length;
+  document.getElementById('myStats').textContent = `Posts zako: ${myPosts}`;
 }
-loadFeed();
 
-window.sendDM = async () => {
-  let to=document.getElementById('dmTo').value.trim(); let txt=document.getElementById('dmText').value.trim();
-  if(!to||!txt) return alert('Jaza kwa nani na ujumbe!');
-  await addDoc(collection(db,'dms'), {from:me, to, text:txt, createdAt:Date.now()});
-  document.getElementById('dmText').value=''; loadDM();
+function likePost(id, likes){
+  let posts = getData('kapappPosts', []);
+  let p = posts.find(x=>x.id===id);
+  if(!p) return;
+  if((p.likedBy||[]).includes(me)) return alert('Umesha-like hii!');
+  p.likedBy.push(me);
+  p.likes = (p.likes||0)+1;
+  saveData('kapappPosts', posts);
+  // Mwenye post apate 10 TZS kama sio wewe
+  if(p.user !== me){
+    let bal = getData('kapappBalance_'+p.user, 0) + 10;
+    saveData('kapappBalance_'+p.user, bal);
+  } else {
+    addMoney(0);
+  }
+  loadFeed();
 }
-async function loadDM(){
-  let snap=await getDocs(query(collection(db,'dms'), orderBy('createdAt','asc')));
-  let html='';
-  snap.forEach(d=>{ let m=d.data(); if(m.from===me||m.to===me){ let cls=m.from===me?'me':'other'; html+=`<div class="msg ${cls}"><b>${m.from} ➡️ ${m.to}:</b><br>${m.text}</div>`; }});
-  document.getElementById('dmList').innerHTML='<div class="card">'+(html||'Hakuna DM bado')+'</div>';
+
+function addComment(id){
+  let txt = prompt('Andika comment yako:');
+  if(!txt) return;
+  let posts = getData('kapappPosts', []);
+  let p = posts.find(x=>x.id===id);
+  if(!p) return;
+  p.comments.push({user: me, text: txt});
+  saveData('kapappPosts', posts);
+  // Mwenye post apate 5 TZS
+  if(p.user !== me){
+    let bal = getData('kapappBalance_'+p.user, 0) + 5;
+    saveData('kapappBalance_'+p.user, bal);
+  }
+  loadFeed();
 }
-async function loadProfile(){
-  document.getElementById('profName').innerText=me;
-  document.getElementById('profAvatar').innerText=me[0].toUpperCase();
-  let snap=await getDocs(query(collection(db,'posts'), orderBy('createdAt','desc')));
-  let my=[]; let totalLikes=0;
-  snap.forEach(d=>{ let p=d.data(); if(p.user===me){ my.push(p); totalLikes+=p.likes||0; }});
-  document.getElementById('profStats').innerText=`Posts: ${my.length} • Total Likes: ${totalLikes}`;
-  document.getElementById('myPosts').innerHTML=my.map(p=>`<div class="card"><p>${p.caption}</p><span>❤️ ${p.likes||0} • 💬 ${(p.comments||[]).length}</span></div>`).join('')||'<p>Hujapost bado</p>';
+
+function sharePost(caption){
+  navigator.clipboard.writeText(caption + " - Kupitia KAPAPP").then(()=>alert('Imecopywa! Share WhatsApp ✅'));
+}
+
+function sendDM(){
+  let to = document.getElementById('dmTo').value.trim();
+  let txt = document.getElementById('dmText').value.trim();
+  if(!to || !txt) return alert('Jaza kwa nani na ujumbe!');
+  let dms = getData('kapappDMs', []);
+  dms.unshift({from: me, to: to, text: txt, time: new Date().toLocaleString()});
+  saveData('kapappDMs', dms);
+  document.getElementById('dmText').value = '';
+  loadDM();
+}
+
+function loadDM(){
+  let dms = getData('kapappDMs', []);
+  let html = '';
+  dms.forEach(m=>{
+    if(m.to===me || m.from===me){
+      html += `<div class="card"><b>${m.from} → ${m.to}</b><br>${m.text}<br><small>${m.time}</small></div>`;
+    }
+  });
+  if(!html) html = '<div class="card">Hakuna DM bado.</div>';
+  document.getElementById('dmList').innerHTML = html;
+}
+
+function loadProfile(){
+  let posts = getData('kapappPosts', []);
+  let my = posts.filter(p=>p.user===me);
+  let totalLikes = 0;
+  my.forEach(p=> totalLikes += (p.likes||0));
+  document.getElementById('profStats').textContent = `Balance: ${getBalance()} TZS • Posts: ${my.length} • Likes: ${totalLikes}`;
+  let html = my.map(p=>`<div class="card"><p>${formatText(p.caption)}</p><small>❤️ ${p.likes} • 💬 ${(p.comments||[]).length}</small></div>`).join('');
+  if(!html) html = '<div class="card">Hujapost bado.</div>';
+  document.getElementById('myPosts').innerHTML = html;
+  document.getElementById('myBalance').textContent = getBalance() + " TZS";
+}
+
+// ANZA
+if(loadUser()){
+  startApp();
 }
 </script>
 </body>

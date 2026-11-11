@@ -21,14 +21,16 @@
 <div class="bottom"><button onclick="showAll()">🏠 Nyumbani</button><button onclick="filterCat('Tukio')">🎉 Matukio</button><button onclick="filterCat('Kampuni')">🏢 Makampuni</button><button onclick="filterCat('Bidhaa')">🛒 Soko</button><button>👤 Mimi</button></div>
 <script>
 let user=JSON.parse(localStorage.getItem("kapapp_user")||'{"name":"Said Kapwile"}');document.getElementById("userName").innerText=user.name;
+const pics=["photo-1492684223066-81342ee5ff30","photo-1501281668745-f7f57925c3b4","photo-1514525253161-7a46d19cd819","photo-1470229722913-7c0e2dbbafd3","photo-1505373877841-8d25f7d46678","photo-1540575467063-178a50c2df87","photo-1511578314322-379afb476865","photo-1493225457124-a3eb161ffa5f","photo-1526304640581-d334cdbbf45e","photo-1560472354-b33ff0c44a43"];
+function pic(i){return "https://images.unsplash.com/"+pics[i%pics.length]+"?w=400&q=80"}
 const cats=["Yote","Tukio","Kampuni","Bidhaa","Ajira","Nyumba","Huduma"];let data=[];
-for(let i=1;i<=30;i++)data.push({aina:"Tukio",jina:"Tukio la Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:"https://picsum.photos/400/300?random="+i,maelezo:"Tukio la kimataifa"});
-for(let i=31;i<=80;i++)data.push({aina:"Kampuni",jina:"Kampuni ya Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:"https://picsum.photos/400/300?random="+(i+100),maelezo:"Kampuni"});
-for(let i=81;i<=130;i++)data.push({aina:"Bidhaa",jina:"Bidhaa ya Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:"https://picsum.photos/400/300?random="+(i+200),maelezo:"Bidhaa"});
-data.unshift({aina:"Kampuni",jina:"Kapapp - Said Kapwile",mji:"Dar esalam",bei:"Mmiliki",img:"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400",maelezo:"Kampuni ya kwanza - Mmiliki wa Jumba!"});
+for(let i=1;i<=30;i++)data.push({aina:"Tukio",jina:"Tukio la Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:pic(i),maelezo:"Tukio la kimataifa"});
+for(let i=31;i<=80;i++)data.push({aina:"Kampuni",jina:"Kampuni ya Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:pic(i),maelezo:"Kampuni"});
+for(let i=81;i<=130;i++)data.push({aina:"Bidhaa",jina:"Bidhaa ya Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:pic(i),maelezo:"Bidhaa"});
+data.unshift({aina:"Kampuni",jina:"Kapapp - Said Kapwile",mji:"Dar esalam",bei:"Mmiliki",img:pic(0),maelezo:"Kampuni ya kwanza - Mmiliki wa Jumba!"});
 function render(l){document.getElementById("grid").innerHTML=l.map(d=>`<div class="card"><img src="${d.img}"><div><b>${d.jina}</b><p>📍 ${d.mji} • ${d.aina}</p><p>${d.maelezo}</p><b>${d.bei}</b><button class="btn">FUNGUA</button></div></div>`).join("")}
 function filterCat(c){if(c=="Yote")render(data);else render(data.filter(d=>d.aina==c))}
 function showAll(){render(data)}function tafuta(){let q=document.getElementById("search").value.toLowerCase();render(data.filter(d=>(d.jina+d.mji).toLowerCase().includes(q)))}
-function weka(){let d={aina:document.getElementById("aina").value,jina:document.getElementById("jina").value,mji:document.getElementById("mji").value||"Dunia Nzima",bei:document.getElementById("bei").value||"Tazama",img:document.getElementById("picha").value||"https://picsum.photos/400/300?random=999",maelezo:document.getElementById("maelezo").value};if(!d.jina){alert("Andika jina");return}data.unshift(d);render(data);alert("Imepostwa Duniani! 🌍")}
+function weka(){let d={aina:document.getElementById("aina").value,jina:document.getElementById("jina").value,mji:document.getElementById("mji").value||"Dunia Nzima",bei:document.getElementById("bei").value||"Tazama",img:document.getElementById("picha").value||pic(1),maelezo:document.getElementById("maelezo").value};if(!d.jina){alert("Andika jina");return}data.unshift(d);render(data);alert("Imepostwa Duniani! 🌍")}
 document.getElementById("chips").innerHTML=cats.map(c=>`<button onclick="filterCat('${c}')">${c}</button>`).join("");render(data);
 </script></body></html>

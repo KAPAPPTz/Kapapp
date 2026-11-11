@@ -1,78 +1,54 @@
 <!DOCTYPE html>
-<html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KAPAPP V2.4 - Video ya Said</title>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAPAPP</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#f0f2f5}.header{background:#FFD700;padding:10px;position:sticky;top:0;z-index:99}
-.top{display:flex;justify-content:space-between;align-items:center}.logo{font-weight:900;font-size:22px}
-.logo span{background:#000;color:#FFD700;padding:2px 7px;border-radius:8px}
-.user{display:flex;align-items:center;gap:8px;background:#fff;padding:6px;border-radius:20px;margin-top:8px}
-.user img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #FFD700;cursor:pointer}
-.user button{margin-left:auto;background:#000;color:#FFD700;border:none;padding:5px 12px;border-radius:15px}
-.box{max-width:500px;margin:auto;padding:10px}
-.post{background:#fff;padding:12px;border-radius:12px;margin-bottom:12px}
-.post textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;min-height:60px}
-.post input{width:100%;padding:9px;border:1px solid #ddd;border-radius:8px;margin-top:8px}
-.btn{background:#FFD700;border:none;width:100%;padding:11px;border-radius:8px;font-weight:900;margin-top:8px}
-.card{background:#fff;border-radius:12px;margin-bottom:14px;overflow:hidden}
-.head{display:flex;gap:8px;padding:10px;align-items:center}.head img{width:40px;height:40px;border-radius:50%;object-fit:cover}
-.head small{color:#777;display:block}.card p{padding:0 12px 10px}
-.card img.post-img{width:100%}.card video{width:100%;display:block}
-.acts{display:flex;justify-content:space-around;padding:10px;border-top:1px solid #eee}
-.acts button{border:none;background:none;font-weight:700;font-size:15px}
-.cmt{padding:0 12px 12px;display:none}.cmt div{background:#f0f2f5;padding:7px;border-radius:10px;margin-bottom:5px;font-size:14px}
-.cmt input{width:70%;padding:8px;border-radius:20px;border:1px solid #ddd}.cmt button{padding:8px;background:#FFD700;border:none;border-radius:20px;font-weight:700}
-</style></head>
+  body{font-family:sans-serif;text-align:center;padding:20px;background:#f5f5f5}
+  .card{background:white;padding:20px;border-radius:15px;max-width:400px;margin:auto;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+  input{width:90%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
+  button{width:95%;padding:12px;background:#ff6b00;color:white;border:none;border-radius:8px;font-weight:bold}
+  #status{margin-top:10px;color:green}
+</style>
+</head>
 <body>
-<div class="header"><div class="top"><div class="logo"><span>K</span> KAPAPP</div><div>🌍 Dunia Nzima</div></div>
-<div class="user"><img id="myPic" src="https://i.pravatar.cc/100?img=12" onclick="changePic()"><div><b>Said Kapwile</b><br><small style="color:#777">Bonyeza picha kubadilisha</small></div><button>Toka</button></div></div>
-<div class="box">
-<div class="post"><h3>📝 Post Kitu - Watu Waone!</h3>
-<textarea id="txt" placeholder="Andika hapa... Nini kipya?"></textarea>
-<input id="link" placeholder="Weka link ya Picha / Video">
-<input type="file" id="file" accept="image/*,video/*">
-<button class="btn" onclick="doPost()">🚀 POST SASA - Watu Waone!</button></div>
-
-<div id="feed">
-<!-- VIDEO YA SAID KAPWILE -->
-<div class="card"><div class="head"><img class="saidPic" src="https://i.pravatar.cc/100?img=12"><div><b>Said Kapwile</b><small>Sasa hivi • Dar esalam</small></div><button onclick="dm('Said Kapwile')" style="margin-left:auto;background:#25D366;color:#fff;border:none;padding:6px 10px;border-radius:15px">📩 DM</button></div>
-<p>🎬 VIDEO YANGU FUPI! Karibu KAPAPP! Mimi ni Said Kapwile kutoka Dar esalam! Like na Comment kama umeipenda! 🔥</p>
-<video controls poster="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500"><source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"></video>
-<div class="acts"><button onclick="like(this)">❤️ Like (<span>48</span>)</button><button onclick="showC(1)">💬 Comment</button><button onclick="share()">🔁 Share</button></div>
-<div class="cmt" id="c1"><div><b>Mteja:</b> Video kali mkuu! 🔥</div><div><b>Fatuma:</b> Hongera Said!</div><input id="i1" placeholder="Andika comment..."><button onclick="addC(1)">Tuma</button></div></div>
-
-<!-- KAPAPP SOKO - PICHA TU -->
-<div class="card"><div class="head"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=100"><div><b>Kapapp Soko ✅</b><small>Dakika 5 • Dar esalam • Duka</small></div><button onclick="dm('Kapapp Soko')" style="margin-left:auto;background:#25D366;color:#fff;border:none;padding:6px 10px;border-radius:15px">📩 DM</button></div>
-<p>🏢 Kampuni ya kwanza Dar esalam! Tuna bidhaa kali! DM kwa oda!</p>
-<img class="post-img" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500">
-<div class="acts"><button onclick="like(this)">❤️ Like (<span>25</span>)</button><button onclick="showC(2)">💬 Comment</button><button onclick="share()">🔁 Share</button></div>
-<div class="cmt" id="c2"><input id="i2" placeholder="Andika comment..."><button onclick="addC(2)">Tuma</button></div></div>
+<div class="card">
+  <h1>KAPAPP 🔥</h1>
+  <p>App imeunganishwa na Firebase!</p>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="signup()">Jisajili / Ingia</button>
+  <p id="status"></p>
 </div>
-<p style="text-align:center;color:#777;font-size:13px;padding:15px">KAPAPP V2.4 - Said Kapwile - WhatsApp: 0688472790</p>
-</div>
-<input type="file" id="picInput" accept="image/*" style="display:none">
-<script>
-let savedPic = localStorage.getItem('kapapp_pic');
-if(savedPic){document.getElementById('myPic').src=savedPic; document.querySelectorAll('.saidPic').forEach(i=>i.src=savedPic);}
-function changePic(){document.getElementById('picInput').click();}
-document.getElementById('picInput').addEventListener('change',function(e){
-let f=e.target.files[0]; if(!f) return;
-let r=new FileReader(); r.onload=function(ev){
-let url=ev.target.result; localStorage.setItem('kapapp_pic',url);
-document.getElementById('myPic').src=url; document.querySelectorAll('.saidPic').forEach(i=>i.src=url);
-alert('✅ Picha ya Said Kapwile imebadilika!');
-}; r.readAsDataURL(f);
-});
-function like(b){let s=b.querySelector('span');s.textContent=parseInt(s.textContent)+1;b.style.color='red';}
-function showC(id){let e=document.getElementById('c'+id);e.style.display=e.style.display=='block'?'none':'block';}
-function addC(id){let v=document.getElementById('i'+id).value;if(!v)return;let d=document.createElement('div');d.innerHTML='<b>Wewe:</b> '+v;document.getElementById('c'+id).prepend(d);document.getElementById('i'+id).value='';}
-function share(){window.open('https://wa.me/?text='+encodeURIComponent('Tazama Video ya Said Kapwile KAPAPP: https://kapapptz.github.io/Kapapp/'),'_blank');}
-function dm(name){window.open('https://wa.me/255688472790?text='+encodeURIComponent('Habari '+name+'! Nimeona video yako KAPAPP'),'_blank');}
-function doPost(){let t=document.getElementById('txt').value;let l=document.getElementById('link').value;let f=document.getElementById('file').files[0];if(!t&&!l&&!f){alert('Andika kitu kwanza!');return;}
-let div=document.createElement('div');div.className='card';
-let media=''; if(f){let u=URL.createObjectURL(f);media=f.type.startsWith('video')?'<video controls style="width:100%" src="'+u+'"></video>':'<img class="post-img" src="'+u+'">';}
-else if(l){media=l.includes('.mp4')?'<video controls style="width:100%" src="'+l+'"></video>':'<img class="post-img" src="'+l+'">';}
-let pic=document.getElementById('myPic').src;
-div.innerHTML='<div class="head"><img src="'+pic+'"><div><b>Said Kapwile</b><small>Sasa hivi • Dar esalam</small></div></div><p>'+(t||'Video mpya!')+'</p>'+media+'<div class="acts"><button onclick="like(this)">❤️ Like (<span>0</span>)</button><button>💬 Comment</button><button onclick="share()">🔁 Share</button></div>';
-document.getElementById('feed').prepend(div); document.getElementById('txt').value=''; alert('✅ Imepostiwa!');}
-</script></body></html>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wE1VXS9mBZKyw",
+    authDomain: "kapapp-97bed.firebaseapp.com",
+    projectId: "kapapp-97bed",
+    storageBucket: "kapapp-97bed.firebasestorage.app",
+    messagingSenderId: "497811742831",
+    appId: "1:497811742831:web:9cf03078065ceb0805ed9a"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  document.getElementById("status").innerText = "✅ Firebase Imeunganishwa! Project: kapapp-97bed";
+
+  window.signup = async () => {
+    const email = document.getElementById("email").value;
+    const pass = document.getElementById("password").value;
+    try {
+      await createUserWithEmailAndPassword(auth, email, pass);
+      document.getElementById("status").innerText = "✅ Akaunti imetengenezwa!";
+    } catch(e){ document.getElementById("status").innerText = "❌ " + e.message; }
+  }
+</script>
+</body>
+</html>

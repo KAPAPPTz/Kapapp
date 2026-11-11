@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KAPAPP V2.2 - Badilisha Picha</title>
+<title>KAPAPP V2.3 - Profili Tofauti</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#f0f2f5}.header{background:#FFD700;padding:10px;position:sticky;top:0;z-index:99}
@@ -24,48 +24,49 @@ body{background:#f0f2f5}.header{background:#FFD700;padding:10px;position:sticky;
 </style></head>
 <body>
 <div class="header"><div class="top"><div class="logo"><span>K</span> KAPAPP</div><div>🌍 Dunia Nzima</div></div>
-<div class="user"><img id="myPic" src="https://i.pravatar.cc/100?img=12" onclick="changePic()" title="Bonyeza kubadilisha picha"><div><b>Said Kapwile</b><br><small style="color:#777">Bonyeza picha kubadilisha</small></div><button>Toka</button></div></div>
+<div class="user"><img id="myPic" src="https://i.pravatar.cc/100?img=12" onclick="changePic()"><div><b>Said Kapwile</b><br><small style="color:#777">Bonyeza picha kubadilisha</small></div><button>Toka</button></div></div>
 <div class="box">
 <div class="post"><h3>📝 Post Kitu - Watu Waone!</h3>
 <textarea id="txt" placeholder="Andika hapa... Nini kipya?"></textarea>
 <input id="link" placeholder="Weka link ya Picha / Video">
 <input type="file" id="file" accept="image/*,video/*">
-<button class="btn" onclick="doPost()">🚀 POST SASA - Watu Waone!</button>
-<p style="font-size:12px;color:#777;margin-top:5px">Video dakika 3-5: Chagua file kutoka simu</p></div>
+<button class="btn" onclick="doPost()">🚀 POST SASA - Watu Waone!</button></div>
 
 <div id="feed">
-<div class="card"><div class="head"><img class="pPic" src="https://i.pravatar.cc/100?img=12"><div><b>Said Kapwile</b><small>Sasa hivi • Dar esalam</small></div><button onclick="dm()" style="margin-left:auto;background:#25D366;color:#fff;border:none;padding:6px 10px;border-radius:15px">📩 DM</button></div>
-<p>🔥 Karibu KAPAPP V2.2! Sasa unaweza kubadilisha picha ya profili kwa kuibonyeza!</p>
+<!-- POST YA SAID KAPWILE - Picha yake tu -->
+<div class="card"><div class="head"><img class="saidPic" src="https://i.pravatar.cc/100?img=12"><div><b>Said Kapwile</b><small>Sasa hivi • Dar esalam</small></div><button onclick="dm('Said Kapwile')" style="margin-left:auto;background:#25D366;color:#fff;border:none;padding:6px 10px;border-radius:15px">📩 DM</button></div>
+<p>🔥 Karibu KAPAPP V2.3! Sasa kila profili ina picha yake tofauti!</p>
 <img class="post-img" src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500">
 <div class="acts"><button onclick="like(this)">❤️ Like (<span>12</span>)</button><button onclick="showC(1)">💬 Comment</button><button onclick="share()">🔁 Share</button></div>
 <div class="cmt" id="c1"><div><b>Mteja:</b> Hongera mkuu! App kali!</div><input id="i1" placeholder="Andika comment..."><button onclick="addC(1)">Tuma</button></div></div>
 
-<div class="card"><div class="head"><img class="pPic" src="https://i.pravatar.cc/100?img=12"><div><b>Kapapp Soko</b><small>Dakika 5 • Dar esalam</small></div><button onclick="dm()" style="margin-left:auto;background:#25D366;color:#fff;border:none;padding:6px 10px;border-radius:15px">📩 DM</button></div>
+<!-- POST YA KAPAPP SOKO - Picha tofauti kabisa - Logo ya Duka -->
+<div class="card"><div class="head"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=100"><div><b>Kapapp Soko ✅</b><small>Dakika 5 • Dar esalam • Duka</small></div><button onclick="dm('Kapapp Soko')" style="margin-left:auto;background:#25D366;color:#fff;border:none;padding:6px 10px;border-radius:15px">📩 DM</button></div>
 <p>🏢 Kampuni ya kwanza Dar esalam! Tuna bidhaa kali! DM kwa oda!</p>
 <img class="post-img" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500">
 <div class="acts"><button onclick="like(this)">❤️ Like (<span>25</span>)</button><button onclick="showC(2)">💬 Comment</button><button onclick="share()">🔁 Share</button></div>
 <div class="cmt" id="c2"><input id="i2" placeholder="Andika comment..."><button onclick="addC(2)">Tuma</button></div></div>
 </div>
-<p style="text-align:center;color:#777;font-size:13px;padding:15px">KAPAPP V2.2 - Said Kapwile - WhatsApp: 0688472790</p>
+<p style="text-align:center;color:#777;font-size:13px;padding:15px">KAPAPP V2.3 - Said Kapwile - WhatsApp: 0688472790</p>
 </div>
 <input type="file" id="picInput" accept="image/*" style="display:none">
 <script>
 let savedPic = localStorage.getItem('kapapp_pic');
-if(savedPic){document.getElementById('myPic').src=savedPic; document.querySelectorAll('.pPic').forEach(i=>i.src=savedPic);}
+if(savedPic){document.getElementById('myPic').src=savedPic; document.querySelectorAll('.saidPic').forEach(i=>i.src=savedPic);}
 function changePic(){document.getElementById('picInput').click();}
 document.getElementById('picInput').addEventListener('change',function(e){
 let f=e.target.files[0]; if(!f) return;
 let r=new FileReader(); r.onload=function(ev){
 let url=ev.target.result; localStorage.setItem('kapapp_pic',url);
-document.getElementById('myPic').src=url; document.querySelectorAll('.pPic').forEach(i=>i.src=url);
-alert('✅ Picha ya profili imebadilika!');
+document.getElementById('myPic').src=url; document.querySelectorAll('.saidPic').forEach(i=>i.src=url);
+alert('✅ Picha ya Said Kapwile imebadilika! Kapapp Soko haikubadilika.');
 }; r.readAsDataURL(f);
 });
 function like(b){let s=b.querySelector('span');s.textContent=parseInt(s.textContent)+1;b.style.color='red';}
 function showC(id){let e=document.getElementById('c'+id);e.style.display=e.style.display=='block'?'none':'block';}
 function addC(id){let v=document.getElementById('i'+id).value;if(!v)return;let d=document.createElement('div');d.innerHTML='<b>Wewe:</b> '+v;document.getElementById('c'+id).prepend(d);document.getElementById('i'+id).value='';}
 function share(){window.open('https://wa.me/?text='+encodeURIComponent('Tazama KAPAPP: https://kapapptz.github.io/Kapapp/'),'_blank');}
-function dm(){window.open('https://wa.me/255688472790?text='+encodeURIComponent('Habari! Nimeona post yako KAPAPP'),'_blank');}
+function dm(name){window.open('https://wa.me/255688472790?text='+encodeURIComponent('Habari '+name+'! Nimeona post yako KAPAPP'),'_blank');}
 function doPost(){let t=document.getElementById('txt').value;let l=document.getElementById('link').value;let f=document.getElementById('file').files[0];if(!t&&!l&&!f){alert('Andika kitu kwanza!');return;}
 let div=document.createElement('div');div.className='card';
 let media=''; if(f){let u=URL.createObjectURL(f);media=f.type.startsWith('video')?'<video controls style="width:100%" src="'+u+'"></video>':'<img class="post-img" src="'+u+'">';}

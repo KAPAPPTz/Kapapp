@@ -3,158 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KA-PAPP 🌍</title>
+<title>KAPAPP - Dunia Nzima Iko Hapa</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f0f2f5;padding-bottom:90px}
-header{background:linear-gradient(90deg,#ff2a55,#ff7a00);color:#fff;text-align:center;padding:12px;position:sticky;top:0;z-index:30}
-header h1{margin:0;font-size:30px}header p{margin:0;font-size:12px}
-.wa-bar{background:#25D366;color:#fff;text-align:center;padding:9px;font-weight:bold;font-size:14px;position:sticky;top:68px;z-index:29}
-.wa-bar a{color:#fff;text-decoration:none;background:#128C7E;padding:5px 12px;border-radius:20px;margin-left:5px}
-.nav{display:flex;background:#fff;padding:8px;gap:6px;position:sticky;top:104px;z-index:28;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-.nav button{flex:1;background:#f0f2f5;padding:11px;border-radius:25px;font-size:15px}
-.nav button.active{background:#ff2a55;color:#fff}
-.card{background:#fff;margin:10px;border-radius:16px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:25px;font-size:15px;outline:none}
-button{border:none;padding:11px 16px;border-radius:25px;font-weight:bold;cursor:pointer}
-.btn-pink{background:linear-gradient(90deg,#ff2a55,#ff7a00);color:#fff;width:100%}
-.btn-black{background:#111;color:#fff}
-.btn-wa{background:#25D366;color:#fff;width:100%;text-align:center;display:block;text-decoration:none;padding:12px;border-radius:25px;font-weight:bold;margin-top:8px}
-.avatar{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#ff2a55,#ff7a00);color:#fff;font-size:60px;display:flex;align-items:center;justify-content:center;margin:5px auto;overflow:hidden;cursor:pointer;border:4px solid #ffe0e6}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.post-img,.post-video{width:100%;border-radius:12px;max-height:380px;object-fit:cover;background:#000}
-.small-ava{width:42px;height:42px;border-radius:50%;background:#ff2a55;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;overflow:hidden;flex-shrink:0}
-.small-ava img{width:100%;height:100%;object-fit:cover}
-.flex{display:flex;gap:8px;align-items:center}
-.like-row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.like-row button{background:#f0f2f5;color:#333;flex:1}
-.like-row button.liked{background:#ffe0e6;color:#ff2a55}
-.comment-box{background:#f8f8f8;padding:10px;border-radius:12px;margin-top:8px}
-.comment-box p{margin:4px 0;font-size:14px}
-.stories{display:flex;gap:10px;overflow-x:auto;padding:5px}
-.story{min-width:70px;text-align:center;font-size:12px}
-.story .small-ava{width:60px;height:60px;margin:auto;border:3px solid #ff2a55}
-.dm-item{display:flex;gap:10px;padding:12px;border-bottom:1px solid #eee;cursor:pointer;align-items:center}
-.chat-box{background:#e5ddd5;padding:10px;border-radius:12px;max-height:300px;overflow-y:auto}
-.msg{background:#fff;padding:8px 12px;border-radius:12px;margin:5px 0;max-width:80%}
-.msg.me{background:#dcf8c6;margin-left:auto;text-align:right}
-.emoji-row{font-size:22px;text-align:center;letter-spacing:4px;cursor:pointer}
-.live-box{background:#111;color:#fff;border-radius:15px;padding:15px;text-align:center}
-.dot{width:10px;height:10px;background:red;border-radius:50%;display:inline-block;animation:blink 1s infinite}
-@keyframes blink{50%{opacity:.2}}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#0a0a0a;color:#fff;overflow-x:hidden}
+.hero{background:linear-gradient(135deg,#111 0%,#FFD700 180%),url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800');background-size:cover;background-blend-mode:overlay;min-height:100vh;padding:20px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.logo{font-size:48px;font-weight:900;letter-spacing:2px}
+.logo span{color:#FFD700}
+.tag{font-size:20px;margin:10px 0;color:#FFD700;font-weight:800}
+.sub{font-size:15px;color:#ddd;line-height:1.6;max-width:500px;margin:0 auto}
+.stats{display:flex;justify-content:center;gap:12px;margin:18px 0;flex-wrap:wrap}
+.stats div{background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);padding:12px 16px;border-radius:14px;text-align:center;border:1px solid rgba(255,215,0,0.3)}
+.stats b{font-size:20px;color:#FFD700;display:block}
+.stats small{font-size:11px}
+.form{background:#fff;color:#111;padding:20px;border-radius:20px;max-width:420px;margin:20px auto;text-align:left;box-shadow:0 20px 50px rgba(0,0,0,0.5)}
+.form h3{text-align:center;margin-bottom:4px}
+.form p{text-align:center;font-size:13px;color:#666;margin-bottom:12px}
+.form input,.form select{width:100%;padding:13px;margin:6px 0;border:1px solid #ddd;border-radius:12px;font-size:15px}
+.form button{width:100%;padding:15px;background:#111;color:#FFD700;border:0;border-radius:12px;font-size:17px;font-weight:900;margin-top:8px}
+.form button:hover{background:#FFD700;color:#111}
+.or{text-align:center;margin:10px 0;font-size:13px;color:#888}
+.google{width:100%;padding:12px;background:#fff;border:1px solid #ddd;border-radius:12px;font-weight:700}
+.showcase{padding:20px;background:#fff;color:#111}
+.showcase h2{text-align:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.card{border-radius:16px;overflow:hidden;background:#f5f5f5}
+.card img{width:100%;height:110px;object-fit:cover}
+.card div{padding:10px}
+.card b{font-size:13px}
+.card p{font-size:11px;color:#666}
+.why{background:#111;padding:20px;text-align:center}
+.why h2{color:#FFD700}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;text-align:left}
+.why-grid div{background:#222;padding:14px;border-radius:14px}
+.why-grid b{color:#FFD700}
+.cta{padding:20px;text-align:center}
+.cta button{padding:16px 30px;background:#FFD700;border:0;border-radius:30px;font-weight:900;font-size:17px}
+footer{padding:16px;text-align:center;font-size:12px;color:#888}
+.badge{display:inline-block;background:#FFD700;color:#111;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:800;margin:4px}
 </style>
 </head>
 <body>
-<header><h1>KA-PAPP 🌍✨</h1><p>Every Language • Every Currency • Every Country 💰🌍</p></header>
-<div class="wa-bar">🟢 WhatsApp: 0688 472 790 <a href="https://wa.me/255688472790?text=Nimeona%20KA-PAPP">Chat Sasa ▶️</a></div>
-<div class="nav">
-<button id="btnHome" class="active" onclick="showTab('home')">🏠 Home</button>
-<button id="btnDm" onclick="showTab('dm')">💬 DM <span id="dmCount"></span></button>
-<button id="btnLive" onclick="showTab('live')">🔴 LIVE</button>
-<button id="btnProfile" onclick="showTab('profile')">👤 Profile</button>
+
+<div class="hero">
+<div class="logo">KAP<span>APP</span></div>
+<div class="badge">🌍 DUNIA NZIMA • 100% BURE</div>
+<div class="tag">Dunia Nzima Iko Hapa. Wewe Uko Wapi?</div>
+<p class="sub">Matukio, Makampuni, Biashara, Ajira, Soko, Burudani - <b>kila kitu, kutoka popote duniani, kwenye app moja.</b><br>Usibaki nje. Ingia uone kuna nini ndani!</p>
+
+<div class="stats">
+<div><b>130+</b><small>MATUKIO LIVE</small></div>
+<div><b>50+</b><small>MAKAMPUNI</small></div>
+<div><b>50+</b><small>BIDHAA</small></div>
+<div><b>🌍</b><small>DUNIA NZIMA</small></div>
 </div>
 
-<div id="tab-home">
-<div class="card"><div class="stories">
-<div class="story"><div class="small-ava">S</div>Said<br>🔴 LIVE</div>
-<div class="story"><div class="small-ava">M</div>Mixx<br>🟢 NEW</div>
-<div class="story"><div class="small-ava">A</div>Azam<br>⭐</div>
-<div class="story"><div class="small-ava">V</div>Vodacom<br>📢</div>
-<div class="story"><div class="small-ava">J</div>Juma<br>😍</div>
-</div></div>
-<div class="card">
-<h3 style="margin:0">📢 TANGAZA HAPA - Kampuni Yako Ionekane! 🚀</h3>
-<p>Watu 1,000+ wanaona KA-PAPP kila wiki.  Nafasi 5 tu!</p>
-<a class="btn-wa" href="https://wa.me/255688472790?text=Nahitaji%20kutangaza%20kampuni%20yangu%20KA-PAPP">🟢 Nataka Kutangaza - 10,000 TSh Tu!</a>
+<div class="form" id="signup">
+<h3>🚀 JIUNGE SASA - BURE</h3>
+<p>Chukua sekunde 10 tu. Hakuna malipo.</p>
+<select id="type">
+<option value="Mtu">👤 Mimi ni Mtu - Nataka kuona & kununua</option>
+<option value="Kampuni">🏢 Mimi ni Kampuni - Nataka kupost & kuuza</option>
+<option value="Muuzaji">🛒 Mimi ni Muuzaji - Nataka kuuza bidhaa</option>
+<option value="Msanii">🎤 Mimi ni Msanii - Nataka kuonyesha kazi</option>
+</select>
+<input id="name" placeholder="👤 Jina lako kamili - mfano: Said">
+<input id="phone" placeholder="📱 Namba ya simu / WhatsApp">
+<input id="city" placeholder="📍 Uko wapi? Mji wako - mfano: Dar, London, New York">
+<input id="pass" type="password" placeholder="🔒 Weka password">
+<button onclick="join()">INGIA KWENYE KAPAPP →</button>
+<div class="or">au</div>
+<button class="google" onclick="join()">🔍 Ingia na Google</button>
+<p style="font-size:11px;margin-top:10px">Ukijiunga unakubali Masharti ya Kapapp. Tunakulinda, hatuuzi data yako.</p>
+<p id="msg" style="color:green;font-weight:800;text-align:center"></p>
 </div>
-<div class="card">
-<div class="flex"><div class="small-ava" id="miniAva">K</div><input id="quickText" placeholder="Unauza nini leo? 😍..."></div>
-<div class="emoji-row" onclick="document.getElementById('quickText').value+=' 😍'">😍 🔥 ❤️ 😋 🍊 🥭 👗 👟 🏠 🚗 💰 ✨ 🎉</div>
-<input type="file" id="pImg" accept="image/*">
-<label style="font-size:13px;color:#666">🎥 Weka Video (Dakika 3 - 5):</label>
-<input type="file" id="pVideo" accept="video/*">
-<input id="pTitle" placeholder="Jina la bidhaa... 🍊">
-<input id="pPrice" type="number" placeholder="Bei... 💰">
-<textarea id="pDesc" placeholder="Maelezo..."></textarea>
-<button class="btn-pink" onclick="addPost()">📤 CHAPISHA BIDHAA 🚀</button>
-<p id="postStatus" style="color:green;font-size:13px"></p>
-</div>
-<div class="card"><div class="flex"><input id="search" placeholder="🔍 Tafuta bidhaa..." oninput="render()"><select id="curr" style="width:100px"><option>TSh</option><option>USD $</option><option>KES</option></select></div></div>
-<div id="feed"></div>
+<p style="font-size:12px;color:#ccc">Watu 2,347 wamejiunga leo • Usibaki nyuma</p>
 </div>
 
-<div id="tab-dm" style="display:none">
-<div class="card"><h3>💬 Mazungumzo - DM</h3><p style="color:#666;font-size:13px">Hapa ndipo wateja wanakuchat. Jibu haraka ili wanunue!</p><div id="dmList"></div></div>
-<div class="card" id="chatArea" style="display:none"><h3 id="chatWith"></h3><div class="chat-box" id="chatBox"></div><div class="flex"><input id="chatInput" placeholder="Andika ujumbe... 💬"><button class="btn-black" onclick="sendDM()">Tuma ➡️</button></div><a class="btn-wa" href="https://wa.me/255688472790">🟢 Endelea WhatsApp</a></div>
+<div class="showcase">
+<h2>👀 Angalia Kile Kilichopo Ndani</h2>
+<p style="text-align:center;font-size:13px;color:#666">Hii ndiyo watu wanaiona wakishaingia</p>
+<div class="grid">
+<div class="card"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400"><div><b>🎉 Tamasha Kubwa - Live</b><p>🌍 Dunia Nzima • Watu 12k wanakuja</p></div></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400"><div><b>🏢 Duka la Kampuni</b><p>🛒 Nunua moja kwa moja</p></div></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=400"><div><b>⚽ Mechi Kubwa</b><p>🎟️ Tiketi zipo hapa</p></div></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400"><div><b>💼 Ajira Mpya</b><p>💰 Omba kazi sasa</p></div></div>
+</div>
 </div>
 
-<div id="tab-live" style="display:none">
-<div class="card"><h3>🔴 LIVE SASA</h3><div class="live-box"><span class="dot"></span> <b>LIVE</b><p>Said Kapwile anaonyesha Machungwa 🍊🔥</p><p>👀 128 • ❤️ 450 • 💬 89</p><button class="btn-pink" onclick="alert('Umeingia LIVE! Wateja wanakuona sasa 🎥')">▶️ Ingia LIVE - Video Dakika 5</button></div><br><input id="liveComment" placeholder="Andika kwenye LIVE..."><button class="btn-pink" onclick="alert('Maoni yametumwa LIVE!')">Tuma LIVE Comment 💬</button></div>
+<div class="why">
+<h2>Kwanini Makampuni Yote Yanakuja Kapapp?</h2>
+<div class="why-grid">
+<div><b>📢 1. Wateja Wako Hapa</b><br><small>Watu wote duniani wako hapa, sio kwenye vipeperushi</small></div>
+<div><b>💸 2. Kupost ni BURE</b><br><small>Weka bango lako, bidhaa yako, tukio lako - bila kulipa</small></div>
+<div><b>🌍 3. Dunia Nzima</b><br><small>Mteja wa Tokyo anaweza kuona bidhaa yako ya Dar</small></div>
+<div><b>📈 4. Unaona Nani Ameona</b><br><small>Unajua watu wangapi wameona bango lako</small></div>
+</div>
 </div>
 
-<div id="tab-profile" style="display:none">
-<div class="card" style="text-align:center">
-<div class="avatar" id="bigAvatar" onclick="document.getElementById('picInput').click()">S</div>
-<input type="file" id="picInput" accept="image/*" style="display:none">
-<h3 id="welcomeText"></h3>
-<div id="loginArea"><input id="userName" placeholder="Andika Jina Lako..."><button class="btn-pink" onclick="login()">INGIA ▶️</button></div>
-<div id="profileArea" style="display:none"><p>👆 Bonyeza picha kubadilisha</p><p id="picStatus" style="color:green"></p><a class="btn-wa" href="https://wa.me/255688472790">🟢 WhatsApp Yangu - 0688 472 790</a><br><br><button class="btn-black" style="width:100%" onclick="logout()">Toka / Logout</button><br><br><button style="background:#eee;width:100%" onclick="clearAll()">🧹 Safisha App</button></div>
+<div class="cta">
+<h2>Uko Tayari Kuona Dunia?</h2>
+<p style="color:#666;font-size:14px;margin:8px 0">Usisubiri wengine wakuambie. Ingia mwenyewe.</p>
+<button onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">JIUNGE BURE SASA 🚀</button>
 </div>
-</div>
+
+<footer>KAPAPP © 2026 - Jumba la Dunia Nzima • Imetengenezwa na Said</footer>
 
 <script>
-function showTab(t){
- var tabs={home:'tab-home',dm:'tab-dm',live:'tab-live',profile:'tab-profile'};
- var btns={home:'btnHome',dm:'btnDm',live:'btnLive',profile:'btnProfile'};
- for(var k in tabs){ var el=document.getElementById(tabs[k]); if(el) el.style.display=(k===t?'block':'none'); }
- for(var b in btns){ var be=document.getElementById(btns[b]); if(be) be.className=(b===t?'active':''); }
- if(t==='dm') renderDM();
+function join(){
+let n=document.getElementById("name").value;
+let c=document.getElementById("city").value;
+let t=document.getElementById("type").value;
+if(!n){alert("Andika jina lako kwanza");return}
+document.getElementById("msg").innerText="Karibu sana "+n+"! 🎉 Uko ndani sasa - Toka "+c+" - Kama "+t;
+localStorage.setItem("kapapp_user", JSON.stringify({name:n,city:c,type:t}));
+setTimeout(()=>{alert("Hongera "+n+"! Umeshajiunga! Sasa unaweza kupost kitu chako, kuona matukio ya "+c+" na ya Dunia Nzima!");},500);
 }
-function compressImage(file,cb){ var r=new FileReader(); r.onload=function(e){ var img=new Image(); img.onload=function(){ var w=img.width,h=img.height,max=600; if(w>max||h>max){ if(w>h){h=h*max/w;w=max;}else{w=w*max/h;h=max;} } var c=document.createElement('canvas'); c.width=w;c.height=h; c.getContext('2d').drawImage(img,0,0,w,h); cb(c.toDataURL('image/jpeg',0.6)); }; img.src=e.target.result; }; r.readAsDataURL(file); }
-function safeGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ localStorage.removeItem(k); return null; } }
-var user=safeGet('ka_user'); var posts=safeGet('ka_posts')||[]; var dms=safeGet('ka_dms')||[{name:'Asha M.',last:'Machungwa bado yapo? 🍊',msgs:[{from:'Asha M.',text:'Machungwa bado yapo? 🍊'},{from:'me',text:'Ndiyo yapo, karibu! 😍'}]},{name:'Juma K.',last:'Bei gani ya jumla? 💰',msgs:[{from:'Juma K.',text:'Bei gani ya jumla? 💰'}]}];
-var currentDM=0;
-function saveUser(){ try{localStorage.setItem('ka_user',JSON.stringify(user));}catch(e){} }
-function savePosts(){ try{localStorage.setItem('ka_posts',JSON.stringify(posts));}catch(e){ posts=posts.slice(0,4); try{localStorage.setItem('ka_posts',JSON.stringify(posts));}catch(e2){} } }
-function saveDMs(){ try{localStorage.setItem('ka_dms',JSON.stringify(dms));}catch(e){} }
-function clearAll(){ localStorage.removeItem('ka_user'); localStorage.removeItem('ka_posts'); user=null; posts=[]; alert('Imesafishwa!'); showAuth(); showTab('home'); }
-function login(){ var n=document.getElementById('userName').value.trim(); if(!n){alert('Andika jina');return;} user={name:n,pic:(user&&user.pic)?user.pic:''}; saveUser(); showAuth(); alert('Karibu '+n+'! 🎉'); }
-function logout(){ user=null; localStorage.removeItem('ka_user'); showAuth(); }
-function showAuth(){ var pa=document.getElementById('profileArea'),la=document.getElementById('loginArea'); if(user){ pa.style.display='block'; la.style.display='none'; document.getElementById('welcomeText').innerText='Umeingia kama '+user.name+' ✨'; var av=document.getElementById('bigAvatar'); av.innerHTML=user.pic?'<img src="'+user.pic+'">':user.name.charAt(0).toUpperCase(); document.getElementById('miniAva').innerHTML=user.pic?'<img src="'+user.pic+'">':user.name.charAt(0).toUpperCase(); } else { pa.style.display='none'; la.style.display='block'; document.getElementById('welcomeText').innerText='Karibu KA-PAPP 🌍'; } render(); }
-document.getElementById('picInput').addEventListener('change',function(e){ if(!user)return; var f=e.target.files[0]; if(!f)return; compressImage(f,function(s){ user.pic=s; saveUser(); showAuth(); document.getElementById('picStatus').innerText='✅ Picha imewekwa!'; }); });
-function addPost(){
- if(!user) return alert('Ingia kwanza kwenye Profile');
- var t=document.getElementById('pTitle').value.trim()||document.getElementById('quickText').value.trim();
- var pr=document.getElementById('pPrice').value, d=document.getElementById('pDesc').value;
- if(!t) return alert('Andika jina la bidhaa');
- var f=document.getElementById('pImg').files[0], vf=document.getElementById('pVideo').files[0];
- document.getElementById('postStatus').innerText='⏳ Napakia...';
- function doSave(img,vid){ posts.unshift({title:t,price:pr,desc:d,img:img||'',video:vid||'',name:user.name,pic:user.pic||'',time:new Date().toLocaleString(),likes:0,liked:false,comments:[]}); savePosts(); document.getElementById('pTitle').value=''; document.getElementById('pPrice').value=''; document.getElementById('pDesc').value=''; document.getElementById('quickText').value=''; document.getElementById('postStatus').innerText='✅ Imechapishwa! 🎉'; render(); }
- if(vf){ var vr=new FileReader(); vr.onload=function(e){ if(f) compressImage(f,function(im){ doSave(im,e.target.result); }); else doSave('',e.target.result); }; vr.readAsDataURL(vf); }
- else if(f) compressImage(f,function(im){ doSave(im,''); });
- else doSave('','');
-}
-function toggleLike(i){ posts[i].liked=!posts[i].liked; posts[i].likes+=posts[i].liked?1:-1; savePosts(); render(); }
-function addComment(i){ var inp=document.getElementById('cmt'+i); var txt=inp.value.trim(); if(!txt) return; if(!user) return alert('Ingia kwanza'); if(!posts[i].comments) posts[i].comments=[]; posts[i].comments.push({name:user.name,text:txt}); savePosts(); render(); }
-function openDM(i){ currentDM=i; document.getElementById('chatArea').style.display='block'; document.getElementById('chatWith').innerText='💬 '+dms[i].name; renderDMChat(); }
-function sendDM(){ var inp=document.getElementById('chatInput'); var txt=inp.value.trim(); if(!txt) return; dms[currentDM].msgs.push({from:'me',text:txt}); dms[currentDM].last=txt; inp.value=''; saveDMs(); renderDM(); renderDMChat(); }
-function renderDM(){ document.getElementById('dmCount').innerText='('+dms.length+')'; document.getElementById('dmList').innerHTML=dms.map(function(d,i){ return '<div class="dm-item" onclick="openDM('+i+')"><div class="small-ava">'+d.name.charAt(0)+'</div><div><b>'+d.name+'</b><br><small>'+d.last+'</small></div><span>➡️</span></div>'; }).join(''); }
-function renderDMChat(){ document.getElementById('chatBox').innerHTML=dms[currentDM].msgs.map(function(m){ return '<div class="msg '+(m.from=='me'?'me':'')+'"><b>'+(m.from=='me'?'Wewe':m.from)+':</b> '+m.text+'</div>'; }).join(''); }
-function render(){
- try{
- var q=(document.getElementById('search').value||'').toLowerCase();
- var html='';
- posts.filter(function(p){ return (p.title+' '+(p.desc||'')).toLowerCase().indexOf(q)>-1; }).forEach(function(p){
-  var ri=posts.indexOf(p); var av=p.pic?'<img src="'+p.pic+'">':(p.name||'S').charAt(0).toUpperCase();
-  var cmts=p.comments||[];
-  var waMsg=encodeURIComponent('Nahitaji '+p.title+' - '+p.price+' TSh, nimeiona KA-PAPP 😍');
-  var cmtHtml=cmts.map(function(c){ return '<p><b>'+c.name+':</b> '+c.text+'</p>'; }).join('');
-  var media=p.video?'<video class="post-video" controls src="'+p.video+'"></video>':p.img?'<img class="post-img" src="'+p.img+'">':'';
-  html+='<div class="card"><div class="flex"><div class="small-ava">'+av+'</div><b>'+p.name+'</b><small style="color:#888"> '+(p.time||'')+'</small></div>'+media+'<h3>'+p.title+' 😍</h3><p>'+(p.desc||'')+'</p><b style="color:#ff2a55;font-size:18px">'+(p.price||'')+' TSh 💰</b><div class="like-row"><button class="'+(p.liked?'liked':'')+'" onclick="toggleLike('+ri+')">❤️ Like ('+(p.likes||0)+')</button><button onclick="document.getElementById(\'cmt'+ri+'\').focus()">💬 Comment ('+cmts.length+')</button><button onclick="showTab(\'dm\');openDM(0)">💬 DM</button><button onclick="alert(\'Ume-share! ↗️\')">↗️ Share</button></div><div class="comment-box"><b>💬 Comments:</b>'+(cmtHtml||'<p style="color:#888">Hakuna comment bado. Kuwa wa kwanza! ✨</p>')+'<div class="flex"><input id="cmt'+ri+'" placeholder="Andika comment... 😍"><button class="btn-black" onclick="addComment('+ri+')">Tuma ➡️</button></div></div><a class="btn-wa" href="https://wa.me/255688472790?text='+waMsg+'">🟢 WhatsApp Muuzaji - 0688 472 790</a></div>';
- });
- document.getElementById('feed').innerHTML=html||'<div class="card" style="text-align:center;color:#888">Hakuna bidhaa bado. Weka ya kwanza 👆 🎉<br>Jaribu kuweka Video ya dakika 3 - Wateja wanapenda Video!</div>';
- }catch(e){ document.getElementById('feed').innerHTML='<div class="card">Hakuna bidhaa bado. Weka ya kwanza 👆</div>'; }
-}
-showAuth(); renderDM(); showTab('home');
 </script>
 </body>
 </html>

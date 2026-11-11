@@ -1,53 +1,138 @@
 <!DOCTYPE html>
-<html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>KAPAPP</title>
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f0f2f5;padding-bottom:80px}
-#mlango{background:#111;color:#fff;min-height:100vh;text-align:center;padding:20px}#mlango h1{font-size:45px;margin-top:5px}#mlango input,#mlango select{width:100%;padding:14px;margin:8px 0;border:0;border-radius:12px;font-size:16px}#mlango button{background:#FFD700;color:#111;border:0;padding:16px;width:100%;border-radius:12px;font-weight:900;font-size:18px}.box{background:#fff;color:#111;padding:20px;border-radius:16px;margin-top:20px;text-align:left}.avatar-big{width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid #FFD700;background:#fff}
-.logo{width:90px;height:90px;background:#FFD700;color:#111;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900;margin:10px auto 0;box-shadow:0 0 20px #FFD700}.logo-small{width:34px;height:34px;background:#FFD700;color:#111;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900}
-header{background:#111;color:#fff;padding:10px 12px}header b{color:#FFD700;font-size:20px}.avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #FFD700}.search{margin:10px;background:#fff;padding:12px;border-radius:20px}.search input{border:0;outline:0;width:100%}.chips{display:flex;gap:8px;overflow-x:auto;padding:0 10px}.chips button{background:#fff;border:0;padding:8px 14px;border-radius:20px;font-weight:700;white-space:nowrap}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}.card{background:#fff;border-radius:14px;overflow:hidden}.card img{width:100%;height:110px;object-fit:cover}.card div{padding:10px}.btn{width:100%;background:#111;color:#FFD700;border:0;padding:10px;border-radius:10px;font-weight:800}.post{background:#fff;margin:10px;padding:14px;border-radius:14px}.post input,.post textarea,.post select{width:100%;padding:11px;margin:5px 0;border:1px solid #ddd;border-radius:10px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}.bottom button{border:0;background:0;font-weight:700}.profile{background:#fff;margin:10px;padding:20px;border-radius:14px;text-align:center}.wa-float{position:fixed;bottom:75px;right:12px;background:#25D366;color:#fff;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,.4);z-index:99}.wa-btn{display:block;background:#25D366;color:#fff;text-align:center;padding:14px;border-radius:12px;font-weight:900;text-decoration:none;margin-top:10px}</style></head>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAPAPP V2 - Dunia Nzima</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f0f2f5}
+.header{background:#FFD700;padding:10px 12px;position:sticky;top:0;z-index:99}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:900;font-size:22px}
+.logo span{background:#000;color:#FFD700;padding:2px 7px;border-radius:8px}
+.dunia{font-size:13px;font-weight:700}
+.user-row{display:flex;align-items:center;gap:8px;margin-top:8px;background:#fff;padding:6px;border-radius:20px}
+.user-row img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.toka{background:#000;color:#FFD700;border:none;padding:5px 12px;border-radius:15px;font-weight:700}
+.container{max-width:500px;margin:auto;padding:10px}
+.post-box{background:#fff;padding:12px;border-radius:12px;margin-bottom:12px}
+.post-box textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;min-height:60px}
+.post-box input{width:100%;margin-top:8px;padding:9px;border:1px solid #ddd;border-radius:8px}
+.btn-post{background:#FFD700;border:none;width:100%;padding:11px;border-radius:8px;font-weight:900;margin-top:8px;cursor:pointer}
+.card{background:#fff;border-radius:12px;margin-bottom:14px;overflow:hidden}
+.card-head{display:flex;align-items:center;gap:8px;padding:10px}
+.card-head img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.card-head b{font-size:14px}
+.card-head small{color:#777;display:block}
+.card p{padding:0 12px 10px;font-size:15px}
+.card video,.card img.post-img{width:100%;max-height:400px;object-fit:cover;background:#000}
+.actions{display:flex;justify-content:space-around;padding:10px;border-top:1px solid #eee}
+.actions button{border:none;background:none;font-size:15px;cursor:pointer;font-weight:700}
+.actions button.liked{color:red}
+.comments{padding:0 12px 12px;display:none}
+.comments div{background:#f0f2f5;padding:7px 10px;border-radius:10px;margin-bottom:5px;font-size:14px}
+.comments input{width:78%;padding:8px;border:1px solid #ddd;border-radius:20px}
+.comments button{padding:8px 12px;border:none;background:#FFD700;border-radius:20px;font-weight:700}
+.dm-box{background:#e7f3ff;padding:10px;border-radius:10px;margin:10px;display:none}
+.dm-box input{width:70%;padding:8px;border-radius:20px;border:1px solid #ddd}
+.dm-box button{padding:8px 12px;background:#25D366;border:none;border-radius:20px;color:#fff;font-weight:700}
+</style>
+</head>
 <body>
-
-<div id="mlango"><div class="logo">K</div><h1 style="color:#FFD700">KAPAPP</h1><p>🌍 Dunia Nzima Katika Mfuko Wako</p><img id="prev1" class="avatar-big" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><br><button onclick="document.getElementById('pic1').click()" style="background:#FFD700;color:#111;padding:10px 16px;border-radius:20px;font-weight:800;border:0;margin-top:10px">📸 CHAGUA PICHA YAKO</button><input type="file" id="pic1" accept="image/*" style="display:none" onchange="chaguaPicha(this)"><div class="box"><h3>JIANDIKISHE - BURE</h3><input id="jina" placeholder="Jina lako kamili"><select id="aina"><option>Mtu - Nataka kuona & kununua</option><option>Kampuni - Nataka kupost & kuuza</option><option>Muuzaji - Nataka kuuza bidhaa</option><option>Msanii - Nataka kuonyesha kazi</option></select><input id="mji" placeholder="Mji wako - mfano: Dar esalam"><input id="pass" type="password" placeholder="Password"><button onclick="ingia()">INGIA KWENYE KAPAPP →</button><a class="wa-btn" href="https://wa.me/255688472790?text=Nimeona%20KAPAPP%2C%20naomba%20maelezo" target="_blank">💬 WASILIANA NASI WHATSAPP - 0688472790</a></div><p style="margin-top:15px;color:#ccc">Mmiliki: Said Kapwile • Dar esalam • 0688472790</p></div>
-
-<div id="ndani" style="display:none">
-<header><div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:8px"><div class="logo-small">K</div><b>KAPAPP</b></div><span style="font-size:13px;color:#FFD700">🌍 Dunia Nzima</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;background:#222;padding:7px 10px;border-radius:10px"><div style="display:flex;align-items:center;gap:8px"><img id="avatarTop" class="avatar" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" onclick="document.getElementById('pic2').click()"><span id="userName" style="font-size:14px;font-weight:700">Said</span></div><button onclick="toka()" style="background:#FFD700;border:0;padding:6px 12px;border-radius:8px;font-weight:800">Toka</button><input type="file" id="pic2" accept="image/*" style="display:none" onchange="chaguaPicha(this)"></div></header>
-<div style="background:#FFD700;padding:10px;text-align:center;font-weight:800">👋 Karibu Ndani! Hapa ndipo Dunia Iko!</div>
-<div class="search"><input id="search" placeholder="🔍 Tafuta popote duniani..." oninput="tafuta()"></div>
-<div class="chips" id="chips"></div>
-
-<div id="profileBox" class="profile" style="display:none"><div class="logo" style="width:60px;height:60px;font-size:30px">K</div><img id="avatarBig" class="avatar-big" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><h2 id="profName">Said</h2><p id="profCity">Dar esalam</p><p id="profType">Mtu</p><p>📞 0688472790</p><button onclick="document.getElementById('pic3').click()" style="background:#111;color:#FFD700;padding:12px 18px;border-radius:20px;font-weight:800;border:0;margin-top:10px">📸 BADILISHA PICHA</button><input type="file" id="pic3" accept="image/*" style="display:none" onchange="chaguaPicha(this)"><br><br><input id="linkPicha" placeholder="Au bandika link ya picha hapa" style="width:100%;padding:11px;border:1px solid #ddd;border-radius:10px"><button onclick="wekaLink()" style="background:#FFD700;border:0;padding:10px 16px;border-radius:10px;font-weight:800;margin-top:8px">WEKA KWA LINK →</button><br><br><a class="wa-btn" href="https://wa.me/255688472790?text=Nimeona%20KAPAPP%20yako" target="_blank">💬 NIPIGIE WHATSAPP - 0688472790</a><br><br><button onclick="toka()" style="background:red;color:#fff;border:0;padding:10px 20px;border-radius:10px;font-weight:800">TOKA / LOGOUT</button></div>
-
-<div id="mainBox">
-<div style="padding:10px"><h3>🔥 KARIBU NAWE + DUNIA NZIMA</h3></div>
-<div class="grid" id="grid"></div>
-<div class="post"><h3>➕ POST KITU CHAKO - Kama Kampuni</h3>
-<select id="aina2"><option>Tukio</option><option>Kampuni</option><option>Bidhaa</option><option>Ajira</option><option>Nyumba</option><option>Huduma</option></select>
-<input id="jina2" placeholder="Jina la kitu chako"><input id="mji2" placeholder="Mji wako"><input id="bei" placeholder="Bei + Sarafu"><input id="picha" placeholder="Link ya picha"><textarea id="maelezo" placeholder="Maelezo..."></textarea><button class="btn" onclick="weka()">POST DUNIANI 🌍</button></div>
+<div class="header">
+<div class="top"><div class="logo"><span>K</span> KAPAPP</div><div class="dunia">🌍 Dunia Nzima</div></div>
+<div class="user-row"><img src="https://i.pravatar.cc/100?img=12"><b id="myName">Said Kapwile</b><small style="flex:1">Dar esalam</small><button class="toka" onclick="alert('Umetoka!')">Toka</button></div>
 </div>
-<a class="wa-float" href="https://wa.me/255688472790?text=Nimeona%20KAPAPP%2C%20naomba%20maelezo" target="_blank">💬</a>
-<div class="bottom"><button onclick="showMain()">🏠 Nyumbani</button><button onclick="filterCat('Tukio')">🎉 Matukio</button><button onclick="filterCat('Kampuni')">🏢 Makampuni</button><button onclick="filterCat('Bidhaa')">🛒 Soko</button><button onclick="showProfile()">👤 Mimi</button></div>
+
+<div class="container">
+<div class="post-box">
+<h3>📝 Post Kitu - Watu Waone!</h3>
+<textarea id="postText" placeholder="Andika hapa... Nini kipya?"></textarea>
+<input id="postMedia" placeholder="Weka link ya Picha / Video (YouTube au picha link)">
+<input type="file" id="fileInput" accept="image/*,video/*">
+<button class="btn-post" onclick="addPost()">🚀 POST SASA - Watu Waone!</button>
+<p style="font-size:12px;color:#777;margin-top:6px">Video: Chagua file kutoka simu yako (dakika 3-5) au weka link.</p>
+</div>
+
+<div id="feed"></div>
+
+<div style="text-align:center;padding:20px;color:#777;font-size:13px">KAPAPP V2 - Said Kapwile - Dar esalam<br>WhatsApp: 0688472790</div>
 </div>
 
 <script>
-let user=JSON.parse(localStorage.getItem("kapapp_user")||'null');
-let myPic=localStorage.getItem("kapapp_pic")||"https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
-function updatePic(){document.getElementById("avatarTop").src=myPic;document.getElementById("avatarBig").src=myPic;document.getElementById("prev1").src=myPic}
-function wekaLink(){let l=document.getElementById("linkPicha").value;if(!l){alert("Bandika link kwanza");return}myPic=l;localStorage.setItem("kapapp_pic",myPic);updatePic();alert("Picha imewekwa kwa link! 📸")}
-function chaguaPicha(el){let f=el.files[0];if(!f)return;let r=new FileReader();r.onload=function(e){let img=new Image();img.onload=function(){try{let c=document.createElement("canvas");let max=300;let w=img.width,h=img.height;if(w>h){if(w>max){h=Math.round(h*max/w);w=max}}else{if(h>max){w=Math.round(w*max/h);h=max}}c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);myPic=c.toDataURL("image/jpeg",0.7);localStorage.setItem("kapapp_pic",myPic);updatePic();alert("IMEFANIKIWA! Picha imewekwa! 📸")}catch(err){alert("Imeshindikana: "+err.message)}};img.src=e.target.result};r.readAsDataURL(f)}
-function onyesha(){if(user){document.getElementById("mlango").style.display="none";document.getElementById("ndani").style.display="block";document.getElementById("userName").innerText=user.name;document.getElementById("profName").innerText=user.name;document.getElementById("profCity").innerText=user.city||"";document.getElementById("profType").innerText=user.type||""}else{document.getElementById("mlango").style.display="block";document.getElementById("ndani").style.display="none"}updatePic()}
-function ingia(){let n=document.getElementById("jina").value;let m=document.getElementById("mji").value;let a=document.getElementById("aina").value;if(!n){alert("Andika jina lako");return}user={name:n,city:m,type:a};localStorage.setItem("kapapp_user",JSON.stringify(user));alert("Karibu sana "+n+"!");onyesha()}
-function toka(){localStorage.removeItem("kapapp_user");user=null;onyesha()}
-function showProfile(){document.getElementById("mainBox").style.display="none";document.getElementById("profileBox").style.display="block"}
-function showMain(){document.getElementById("mainBox").style.display="block";document.getElementById("profileBox").style.display="none"}
-const pics=["photo-1492684223066-81342ee5ff30","photo-1501281668745-f7f57925c3b4","photo-1514525253161-7a46d19cd819","photo-1470229722913-7c0e2dbbafd3","photo-1505373877841-8d25f7d46678","photo-1540575467063-178a50c2df87","photo-1511578314322-379afb476865","photo-1493225457124-a3eb161ffa5f","photo-1526304640581-d334cdbbf45e","photo-1560472354-b33ff0c44a43"];
-function pic(i){return "https://images.unsplash.com/"+pics[i%pics.length]+"?w=400&q=80"}
-const cats=["Yote","Tukio","Kampuni","Bidhaa","Ajira","Nyumba","Huduma"];let data=[];
-for(let i=1;i<=30;i++)data.push({aina:"Tukio",jina:"Tukio la Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:pic(i),maelezo:"Tukio la kimataifa"});
-for(let i=31;i<=80;i++)data.push({aina:"Kampuni",jina:"Kampuni ya Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:pic(i),maelezo:"Kampuni"});
-for(let i=81;i<=130;i++)data.push({aina:"Bidhaa",jina:"Bidhaa ya Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:pic(i),maelezo:"Bidhaa"});
-data.unshift({aina:"Kampuni",jina:"Kapapp - Said Kapwile",mji:"Dar esalam",bei:"Mmiliki",img:pic(0),maelezo:"Kampuni ya kwanza - Mmiliki wa Jumba!"});
-function render(l){document.getElementById("grid").innerHTML=l.map(d=>`<div class="card"><img src="${d.img}"><div><b>${d.jina}</b><p>📍 ${d.mji} • ${d.aina}</p><p>${d.maelezo}</p><b>${d.bei}</b><button class="btn">FUNGUA</button></div></div>`).join("")}
-function filterCat(c){showMain();if(c=="Yote")render(data);else render(data.filter(d=>d.aina==c))}
-function showAll(){showMain();render(data)}function tafuta(){let q=document.getElementById("search").value.toLowerCase();render(data.filter(d=>(d.jina+d.mji).toLowerCase().includes(q)))}
-function weka(){let d={aina:document.getElementById("aina2").value,jina:document.getElementById("jina2").value,mji:document.getElementById("mji2").value||"Dunia Nzima",bei:document.getElementById("bei").value||"Tazama",img:document.getElementById("picha").value||pic(1),maelezo:document.getElementById("maelezo").value};if(!d.jina){alert("Andika jina");return}data.unshift(d);render(data);alert("Imepostwa Duniani! 🌍")}
-document.getElementById("chips").innerHTML=cats.map(c=>`<button onclick="filterCat('${c}')">${c}</button>`).join("");render(data);onyesha();
-</script></body></html>
+let posts = JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+if(posts.length==0){
+posts=[
+{id:1,name:"Said Kapwile",time:"Sasa hivi",text:"🔥 Karibu KAPAPP V2! Sasa unaweza ku-Post, ku-Like, ku-Comment, ku-Share na ku-DM! Jaribu sasa!",img:"https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500",likes:12,comments:[{n:"Mteja",t:"Hongera mkuu! App kali!"}]},
+{id:2,name:"Kapapp Soko",time:"Dakika 5",text:"🏢 Kampuni ya kwanza Dar esalam! Tuna bidhaa kali! DM kwa oda!",img:"https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500",likes:25,comments:[]}
+];
+save();
+}
+function save(){localStorage.setItem('kapapp_posts',JSON.stringify(posts))}
+function render(){
+let h='';
+posts.slice().reverse().forEach(p=>{
+h+=`<div class="card">
+<div class="card-head"><img src="https://i.pravatar.cc/100?img=12"><div><b>${p.name}</b><small>${p.time} • Dar esalam</small></div><button onclick="openDM('${p.name}')" style="margin-left:auto;background:#25D366;color:#fff;border:none;padding:6px 10px;border-radius:15px">📩 DM</button></div>
+<p>${p.text}</p>
+${p.img?`<img class="post-img" src="${p.img}">`:''}
+${p.video?`<video controls src="${p.video}"></video>`:''}
+<div class="actions">
+<button id="like-${p.id}" onclick="likePost(${p.id})">❤️ Like (${p.likes})</button>
+<button onclick="toggleC(${p.id})">💬 Comment (${p.comments.length})</button>
+<button onclick="sharePost('${p.text}')">🔁 Share</button>
+</div>
+<div class="comments" id="c-${p.id}">
+${p.comments.map(c=>`<div><b>${c.n}:</b> ${c.t}</div>`).join('')}
+<div style="display:flex;gap:5px"><input id="in-${p.id}" placeholder="Andika comment..."><button onclick="addComment(${p.id})">Tuma</button></div>
+</div>
+<div class="dm-box" id="dm-${p.id}"><b>DM kwa ${p.name}</b><br><br><input id="dmIn-${p.id}" placeholder="Andika meseji..."><button onclick="sendDM(${p.id})">Tuma WhatsApp</button></div>
+</div>`;
+});
+document.getElementById('feed').innerHTML=h;
+}
+function addPost(){
+let t=document.getElementById('postText').value;
+let m=document.getElementById('postMedia').value;
+let f=document.getElementById('fileInput').files[0];
+if(!t && !m && !f){alert('Andika kitu kwanza!');return;}
+let newPost={id:Date.now(),name:"Said Kapwile",time:"Sasa hivi",text:t||"Video mpya!",img:"",video:"",likes:0,comments:[]};
+if(f){
+let url=URL.createObjectURL(f);
+if(f.type.startsWith('video')) newPost.video=url; else newPost.img=url;
+} else if(m){
+if(m.includes('.mp4')) newPost.video=m; else newPost.img=m;
+}
+posts.push(newPost); save(); render();
+document.getElementById('postText').value=''; document.getElementById('postMedia').value='';
+alert('✅ Imepostiwa! Watu sasa wanaiona!');
+}
+function likePost(id){
+let p=posts.find(x=>x.id==id); p.likes++; save(); render();
+}
+function toggleC(id){let e=document.getElementById('c-'+id); e.style.display=e.style.display=='block'?'none':'block';}
+function addComment(id){
+let v=document.getElementById('in-'+id).value; if(!v) return;
+let p=posts.find(x=>x.id==id); p.comments.push({n:"Wewe",t:v}); save(); render();
+}
+function sharePost(t){
+let link="https://kapapptz.github.io/Kapapp/";
+let txt=encodeURIComponent(t+" - Tazama kwenye KAPAPP: "+link);
+window.open("https://wa.me/?text="+txt,"_blank");
+}
+function openDM(name){
+let all=document.querySelectorAll('.dm-box'); all.forEach(e=>e.style.display='none');
+let p=posts.find(x=>x.name==name);
+if(p){let e=document.getElementById('dm-'+p.id); e.style.display='block';}
+}
+function sendDM(id){
+let p=posts.find(x=>x.id==id);
+let msg=document.getElementById('dmIn-'+id).value;
+if(!msg){alert('Andika meseji');return;}
+window.open("https://wa.me/255688472790?text="+encodeURIComponent("Habari "+p.name+"! Kuhusu post yako: "+msg),"_blank");
+}
+render();
+</script>
+</body>
+</html>

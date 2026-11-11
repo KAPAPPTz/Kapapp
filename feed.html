@@ -26,25 +26,62 @@ button{background:#1877f2;color:white;border:0;padding:10px 20px;border-radius:8
 </div>
 
 <div id="feed"></div>
+<p style="text-align:center;color:#888" id="status">Inapakia post...</p>
 
-<script>
-function tuma(){
-let jina=document.getElementById('jina').value || 'KAPAPP';
-let wazo=document.getElementById('wazo').value;
-let file=document.getElementById('picha').files[0];
-if(!wazo && !file){alert('Andika kitu kwanza!');return;}
-let div=document.createElement('div');
-div.className='post';
-let imgTag='';
-if(file){imgTag='<img src="'+URL.createObjectURL(file)+'">';}
-div.innerHTML='<b>'+jina+'</b><p>'+wazo+'</p>'+imgTag+'<div class="actions"><span onclick="like(this)">👍 Like (<b>0</b>)</span><span>💬 Comment</span><span>↗️ Share</span></div>';
-document.getElementById('feed').prepend(div);
-document.getElementById('wazo').value='';
-document.getElementById('picha').value='';
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// === WEKA CONFIG YAKO HAPA - kutoka Firebase > Project Settings ===
+const firebaseConfig = {
+  apiKey: "WEKA_HAPA_API_KEY",
+  authDomain: "WEKA_HAPA_AUTH_DOMAIN",
+  projectId: "WEKA_HAPA_PROJECT_ID",
+  storageBucket: "WEKA_HAPA_STORAGE_BUCKET",
+  messagingSenderId: "WEKA_HAPA_SENDER_ID",
+  appId: "WEKA_HAPA_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const postsRef = collection(db, "posts");
+
+// Soma post LIVE kutoka Firebase
+const q = query(postsRef, orderBy("time", "desc"));
+onSnapshot(q, (snap) => {
+  document.getElementById('status').innerText = snap.empty ? 'Hakuna post bado. Kuwa wa kwanza!' : '';
+  let feed = document.getElementById('feed');
+  feed.innerHTML = '';
+  snap.forEach((d) => {
+    let p = d.data();
+    let div = document.createElement('div');
+    div.className = 'post';
+    div.innerHTML = '<b>'+(p.jina||'KAPAPP')+'</b><p>'+(p.wazo||'')+'</p>' + (p.img ? '<img src="'+p.img+'">' : '') + '<div class="actions"><span onclick="likePost(\''+d.id+'\', this)">👍 Like (<b>'+(p.likes||0)+'</b>)</span><span>💬 Comment</span><span>↗️ Share</span></div>';
+    feed.appendChild(div);
+  });
+});
+
+window.tuma = async function(){
+  let jina = document.getElementById('jina').value || 'KAPAPP';
+  let wazo = document.getElementById('wazo').value;
+  let file = document.getElementById('picha').files[0];
+  if(!wazo && !file){ alert('Andika kitu kwanza!'); return; }
+  document.getElementById('status').innerText = 'Inatuma...';
+  let imgData = '';
+  if(file){
+    imgData = await new Promise(res => {
+      let r = new FileReader();
+      r.onload = e => res(e.target.result);
+      r.readAsDataURL(file);
+    });
+  }
+  await addDoc(postsRef, { jina, wazo, img: imgData, likes: 0, time: serverTimestamp() });
+  document.getElementById('wazo').value = '';
+  document.getElementById('picha').value = '';
 }
-function like(el){
-let b=el.querySelector('b');
-b.innerText=parseInt(b.innerText)+1;
+
+window.likePost = async function(id, el){
+  await updateDoc(doc(db, "posts", id), { likes: increment(1) });
 }
 </script>
 </body>

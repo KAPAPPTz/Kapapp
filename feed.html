@@ -17,22 +17,17 @@ button{background:#1877f2;color:white;border:0;padding:10px 20px;border-radius:8
 </head>
 <body>
 <div class="top">KAPAPP</div>
-
 <div class="box">
 <input id="jina" placeholder="Jina lako...">
 <textarea id="wazo" rows="3" placeholder="Una wazo gani leo?"></textarea>
 <input type="file" id="picha" accept="image/*">
 <button onclick="tuma()">Post</button>
 </div>
-
 <div id="feed"></div>
 <p style="text-align:center;color:#888" id="status">Inapakia post...</p>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// === WEKA CONFIG YAKO HAPA - kutoka Firebase > Project Settings ===
 const firebaseConfig = {
   apiKey: "WEKA_HAPA_API_KEY",
   authDomain: "WEKA_HAPA_AUTH_DOMAIN",
@@ -41,12 +36,9 @@ const firebaseConfig = {
   messagingSenderId: "WEKA_HAPA_SENDER_ID",
   appId: "WEKA_HAPA_APP_ID"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const postsRef = collection(db, "posts");
-
-// Soma post LIVE kutoka Firebase
 const q = query(postsRef, orderBy("time", "desc"));
 onSnapshot(q, (snap) => {
   document.getElementById('status').innerText = snap.empty ? 'Hakuna post bado. Kuwa wa kwanza!' : '';
@@ -60,7 +52,6 @@ onSnapshot(q, (snap) => {
     feed.appendChild(div);
   });
 });
-
 window.tuma = async function(){
   let jina = document.getElementById('jina').value || 'KAPAPP';
   let wazo = document.getElementById('wazo').value;
@@ -79,7 +70,6 @@ window.tuma = async function(){
   document.getElementById('wazo').value = '';
   document.getElementById('picha').value = '';
 }
-
 window.likePost = async function(id, el){
   await updateDoc(doc(db, "posts", id), { likes: increment(1) });
 }

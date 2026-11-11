@@ -1,26 +1,30 @@
 <!DOCTYPE html>
-<html lang="sw">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>KAPAPP - Ndani</title>
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f0f2f5;padding-bottom:80px}header{background:#111;color:#fff;padding:14px;display:flex;justify-content:space-between}header b{color:#FFD700;font-size:22px}.search{margin:10px;background:#fff;padding:12px;border-radius:20px}.search input{border:0;outline:0;width:100%}.chips{display:flex;gap:8px;overflow-x:auto;padding:0 10px}.chips button{background:#fff;border:0;padding:8px 14px;border-radius:20px;font-weight:700;white-space:nowrap}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}.card{background:#fff;border-radius:14px;overflow:hidden}.card img{width:100%;height:110px;object-fit:cover}.card div{padding:10px}.btn{width:100%;background:#111;color:#FFD700;border:0;padding:10px;border-radius:10px;font-weight:800}.post{background:#fff;margin:10px;padding:14px;border-radius:14px}.post input,.post textarea,.post select{width:100%;padding:11px;margin:5px 0;border:1px solid #ddd;border-radius:10px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}.bottom button{border:0;background:0;font-weight:700}</style>
-</head>
+<html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>KAPAPP</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f0f2f5;padding-bottom:80px}
+#mlango{background:#111;color:#fff;min-height:100vh;text-align:center;padding:20px}#mlango h1{color:#FFD700;font-size:45px;margin-top:30px}#mlango input,#mlango select{width:100%;padding:14px;margin:8px 0;border:0;border-radius:12px;font-size:16px}#mlango button{background:#FFD700;color:#111;border:0;padding:16px;width:100%;border-radius:12px;font-weight:900;font-size:18px}.box{background:#fff;color:#111;padding:20px;border-radius:16px;margin-top:20px;text-align:left}
+header{background:#111;color:#fff;padding:14px;display:flex;justify-content:space-between}header b{color:#FFD700;font-size:22px}.search{margin:10px;background:#fff;padding:12px;border-radius:20px}.search input{border:0;outline:0;width:100%}.chips{display:flex;gap:8px;overflow-x:auto;padding:0 10px}.chips button{background:#fff;border:0;padding:8px 14px;border-radius:20px;font-weight:700;white-space:nowrap}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}.card{background:#fff;border-radius:14px;overflow:hidden}.card img{width:100%;height:110px;object-fit:cover}.card div{padding:10px}.btn{width:100%;background:#111;color:#FFD700;border:0;padding:10px;border-radius:10px;font-weight:800}.post{background:#fff;margin:10px;padding:14px;border-radius:14px}.post input,.post textarea,.post select{width:100%;padding:11px;margin:5px 0;border:1px solid #ddd;border-radius:10px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}.bottom button{border:0;background:0;font-weight:700}</style></head>
 <body>
-<header><b>KAPAPP</b><div>👤 <span id="userName">Said</span> • 🌍 Dunia</div></header>
+
+<div id="mlango"><h1>KAPAPP</h1><p>🌍 Dunia Nzima Katika Mfuko Wako</p><p>Matukio • Makampuni • Soko • Ajira • Nyumba • Huduma</p><div class="box"><h3>JIANDIKISHE - BURE</h3><input id="jina" placeholder="Jina lako kamili"><select id="aina"><option>Mtu - Nataka kuona & kununua</option><option>Kampuni - Nataka kupost & kuuza</option><option>Muuzaji - Nataka kuuza bidhaa</option><option>Msanii - Nataka kuonyesha kazi</option></select><input id="mji" placeholder="Mji wako - mfano: Dar esalam"><input id="pass" type="password" placeholder="Password"><button onclick="ingia()">INGIA KWENYE KAPAPP →</button></div><p style="margin-top:15px;color:#ccc">Mmiliki: Said Kapwile • Dar esalam</p></div>
+
+<div id="ndani" style="display:none">
+<header><b>KAPAPP</b><div>👤 <span id="userName">Said</span> • 🌍 Dunia <button onclick="toka()" style="background:#FFD700;border:0;padding:4px 8px;border-radius:8px;font-weight:800">Toka</button></div></header>
 <div style="background:#FFD700;padding:10px;text-align:center;font-weight:800">👋 Karibu Ndani! Hapa ndipo Dunia Iko!</div>
 <div class="search"><input id="search" placeholder="🔍 Tafuta popote duniani..." oninput="tafuta()"></div>
 <div class="chips" id="chips"></div>
 <div style="padding:10px"><h3>🔥 KARIBU NAWE + DUNIA NZIMA</h3></div>
 <div class="grid" id="grid"></div>
 <div class="post"><h3>➕ POST KITU CHAKO - Kama Kampuni</h3>
-<select id="aina"><option>Tukio</option><option>Kampuni</option><option>Bidhaa</option><option>Ajira</option><option>Nyumba</option><option>Huduma</option></select>
-<input id="jina" placeholder="Jina la kitu chako">
-<input id="mji" placeholder="Mji wako - mfano: Dar esalam, London">
-<input id="bei" placeholder="Bei + Sarafu">
-<input id="picha" placeholder="Link ya picha">
-<textarea id="maelezo" placeholder="Maelezo..."></textarea>
-<button class="btn" onclick="weka()">POST DUNIANI 🌍</button></div>
+<select id="aina2"><option>Tukio</option><option>Kampuni</option><option>Bidhaa</option><option>Ajira</option><option>Nyumba</option><option>Huduma</option></select>
+<input id="jina2" placeholder="Jina la kitu chako"><input id="mji2" placeholder="Mji wako"><input id="bei" placeholder="Bei + Sarafu"><input id="picha" placeholder="Link ya picha"><textarea id="maelezo" placeholder="Maelezo..."></textarea><button class="btn" onclick="weka()">POST DUNIANI 🌍</button></div>
 <div class="bottom"><button onclick="showAll()">🏠 Nyumbani</button><button onclick="filterCat('Tukio')">🎉 Matukio</button><button onclick="filterCat('Kampuni')">🏢 Makampuni</button><button onclick="filterCat('Bidhaa')">🛒 Soko</button><button>👤 Mimi</button></div>
+</div>
+
 <script>
-let user=JSON.parse(localStorage.getItem("kapapp_user")||'{"name":"Said Kapwile"}');document.getElementById("userName").innerText=user.name;
+let user=JSON.parse(localStorage.getItem("kapapp_user")||'null');
+function onyesha(){if(user){document.getElementById("mlango").style.display="none";document.getElementById("ndani").style.display="block";document.getElementById("userName").innerText=user.name}else{document.getElementById("mlango").style.display="block";document.getElementById("ndani").style.display="none"}}
+function ingia(){let n=document.getElementById("jina").value;let m=document.getElementById("mji").value;let a=document.getElementById("aina").value;if(!n){alert("Andika jina lako");return}user={name:n,city:m,type:a};localStorage.setItem("kapapp_user",JSON.stringify(user));alert("Karibu sana "+n+"!");onyesha()}
+function toka(){localStorage.removeItem("kapapp_user");user=null;onyesha()}
 const pics=["photo-1492684223066-81342ee5ff30","photo-1501281668745-f7f57925c3b4","photo-1514525253161-7a46d19cd819","photo-1470229722913-7c0e2dbbafd3","photo-1505373877841-8d25f7d46678","photo-1540575467063-178a50c2df87","photo-1511578314322-379afb476865","photo-1493225457124-a3eb161ffa5f","photo-1526304640581-d334cdbbf45e","photo-1560472354-b33ff0c44a43"];
 function pic(i){return "https://images.unsplash.com/"+pics[i%pics.length]+"?w=400&q=80"}
 const cats=["Yote","Tukio","Kampuni","Bidhaa","Ajira","Nyumba","Huduma"];let data=[];
@@ -31,6 +35,6 @@ data.unshift({aina:"Kampuni",jina:"Kapapp - Said Kapwile",mji:"Dar esalam",bei:"
 function render(l){document.getElementById("grid").innerHTML=l.map(d=>`<div class="card"><img src="${d.img}"><div><b>${d.jina}</b><p>📍 ${d.mji} • ${d.aina}</p><p>${d.maelezo}</p><b>${d.bei}</b><button class="btn">FUNGUA</button></div></div>`).join("")}
 function filterCat(c){if(c=="Yote")render(data);else render(data.filter(d=>d.aina==c))}
 function showAll(){render(data)}function tafuta(){let q=document.getElementById("search").value.toLowerCase();render(data.filter(d=>(d.jina+d.mji).toLowerCase().includes(q)))}
-function weka(){let d={aina:document.getElementById("aina").value,jina:document.getElementById("jina").value,mji:document.getElementById("mji").value||"Dunia Nzima",bei:document.getElementById("bei").value||"Tazama",img:document.getElementById("picha").value||pic(1),maelezo:document.getElementById("maelezo").value};if(!d.jina){alert("Andika jina");return}data.unshift(d);render(data);alert("Imepostwa Duniani! 🌍")}
-document.getElementById("chips").innerHTML=cats.map(c=>`<button onclick="filterCat('${c}')">${c}</button>`).join("");render(data);
+function weka(){let d={aina:document.getElementById("aina2").value,jina:document.getElementById("jina2").value,mji:document.getElementById("mji2").value||"Dunia Nzima",bei:document.getElementById("bei").value||"Tazama",img:document.getElementById("picha").value||pic(1),maelezo:document.getElementById("maelezo").value};if(!d.jina){alert("Andika jina");return}data.unshift(d);render(data);alert("Imepostwa Duniani! 🌍")}
+document.getElementById("chips").innerHTML=cats.map(c=>`<button onclick="filterCat('${c}')">${c}</button>`).join("");render(data);onyesha();
 </script></body></html>

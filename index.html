@@ -1,124 +1,34 @@
 <!DOCTYPE html>
 <html lang="sw">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAPAPP - Dunia Nzima Iko Hapa</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#0a0a0a;color:#fff;overflow-x:hidden}
-.hero{background:linear-gradient(135deg,#111 0%,#FFD700 180%),url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800');background-size:cover;background-blend-mode:overlay;min-height:100vh;padding:20px;text-align:center;display:flex;flex-direction:column;justify-content:center}
-.logo{font-size:48px;font-weight:900;letter-spacing:2px}
-.logo span{color:#FFD700}
-.tag{font-size:20px;margin:10px 0;color:#FFD700;font-weight:800}
-.sub{font-size:15px;color:#ddd;line-height:1.6;max-width:500px;margin:0 auto}
-.stats{display:flex;justify-content:center;gap:12px;margin:18px 0;flex-wrap:wrap}
-.stats div{background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);padding:12px 16px;border-radius:14px;text-align:center;border:1px solid rgba(255,215,0,0.3)}
-.stats b{font-size:20px;color:#FFD700;display:block}
-.stats small{font-size:11px}
-.form{background:#fff;color:#111;padding:20px;border-radius:20px;max-width:420px;margin:20px auto;text-align:left;box-shadow:0 20px 50px rgba(0,0,0,0.5)}
-.form h3{text-align:center;margin-bottom:4px}
-.form p{text-align:center;font-size:13px;color:#666;margin-bottom:12px}
-.form input,.form select{width:100%;padding:13px;margin:6px 0;border:1px solid #ddd;border-radius:12px;font-size:15px}
-.form button{width:100%;padding:15px;background:#111;color:#FFD700;border:0;border-radius:12px;font-size:17px;font-weight:900;margin-top:8px}
-.form button:hover{background:#FFD700;color:#111}
-.or{text-align:center;margin:10px 0;font-size:13px;color:#888}
-.google{width:100%;padding:12px;background:#fff;border:1px solid #ddd;border-radius:12px;font-weight:700}
-.showcase{padding:20px;background:#fff;color:#111}
-.showcase h2{text-align:center}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.card{border-radius:16px;overflow:hidden;background:#f5f5f5}
-.card img{width:100%;height:110px;object-fit:cover}
-.card div{padding:10px}
-.card b{font-size:13px}
-.card p{font-size:11px;color:#666}
-.why{background:#111;padding:20px;text-align:center}
-.why h2{color:#FFD700}
-.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;text-align:left}
-.why-grid div{background:#222;padding:14px;border-radius:14px}
-.why-grid b{color:#FFD700}
-.cta{padding:20px;text-align:center}
-.cta button{padding:16px 30px;background:#FFD700;border:0;border-radius:30px;font-weight:900;font-size:17px}
-footer{padding:16px;text-align:center;font-size:12px;color:#888}
-.badge{display:inline-block;background:#FFD700;color:#111;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:800;margin:4px}
-</style>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>KAPAPP - Ndani</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f0f2f5;padding-bottom:80px}header{background:#111;color:#fff;padding:14px;display:flex;justify-content:space-between}header b{color:#FFD700;font-size:22px}.search{margin:10px;background:#fff;padding:12px;border-radius:20px}.search input{border:0;outline:0;width:100%}.chips{display:flex;gap:8px;overflow-x:auto;padding:0 10px}.chips button{background:#fff;border:0;padding:8px 14px;border-radius:20px;font-weight:700;white-space:nowrap}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}.card{background:#fff;border-radius:14px;overflow:hidden}.card img{width:100%;height:110px;object-fit:cover}.card div{padding:10px}.btn{width:100%;background:#111;color:#FFD700;border:0;padding:10px;border-radius:10px;font-weight:800}.post{background:#fff;margin:10px;padding:14px;border-radius:14px}.post input,.post textarea,.post select{width:100%;padding:11px;margin:5px 0;border:1px solid #ddd;border-radius:10px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}.bottom button{border:0;background:0;font-weight:700}</style>
 </head>
 <body>
-
-<div class="hero">
-<div class="logo">KAP<span>APP</span></div>
-<div class="badge">🌍 DUNIA NZIMA • 100% BURE</div>
-<div class="tag">Dunia Nzima Iko Hapa. Wewe Uko Wapi?</div>
-<p class="sub">Matukio, Makampuni, Biashara, Ajira, Soko, Burudani - <b>kila kitu, kutoka popote duniani, kwenye app moja.</b><br>Usibaki nje. Ingia uone kuna nini ndani!</p>
-
-<div class="stats">
-<div><b>130+</b><small>MATUKIO LIVE</small></div>
-<div><b>50+</b><small>MAKAMPUNI</small></div>
-<div><b>50+</b><small>BIDHAA</small></div>
-<div><b>🌍</b><small>DUNIA NZIMA</small></div>
-</div>
-
-<div class="form" id="signup">
-<h3>🚀 JIUNGE SASA - BURE</h3>
-<p>Chukua sekunde 10 tu. Hakuna malipo.</p>
-<select id="type">
-<option value="Mtu">👤 Mimi ni Mtu - Nataka kuona & kununua</option>
-<option value="Kampuni">🏢 Mimi ni Kampuni - Nataka kupost & kuuza</option>
-<option value="Muuzaji">🛒 Mimi ni Muuzaji - Nataka kuuza bidhaa</option>
-<option value="Msanii">🎤 Mimi ni Msanii - Nataka kuonyesha kazi</option>
-</select>
-<input id="name" placeholder="👤 Jina lako kamili - mfano: Said">
-<input id="phone" placeholder="📱 Namba ya simu / WhatsApp">
-<input id="city" placeholder="📍 Uko wapi? Mji wako - mfano: Dar, London, New York">
-<input id="pass" type="password" placeholder="🔒 Weka password">
-<button onclick="join()">INGIA KWENYE KAPAPP →</button>
-<div class="or">au</div>
-<button class="google" onclick="join()">🔍 Ingia na Google</button>
-<p style="font-size:11px;margin-top:10px">Ukijiunga unakubali Masharti ya Kapapp. Tunakulinda, hatuuzi data yako.</p>
-<p id="msg" style="color:green;font-weight:800;text-align:center"></p>
-</div>
-<p style="font-size:12px;color:#ccc">Watu 2,347 wamejiunga leo • Usibaki nyuma</p>
-</div>
-
-<div class="showcase">
-<h2>👀 Angalia Kile Kilichopo Ndani</h2>
-<p style="text-align:center;font-size:13px;color:#666">Hii ndiyo watu wanaiona wakishaingia</p>
-<div class="grid">
-<div class="card"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400"><div><b>🎉 Tamasha Kubwa - Live</b><p>🌍 Dunia Nzima • Watu 12k wanakuja</p></div></div>
-<div class="card"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400"><div><b>🏢 Duka la Kampuni</b><p>🛒 Nunua moja kwa moja</p></div></div>
-<div class="card"><img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=400"><div><b>⚽ Mechi Kubwa</b><p>🎟️ Tiketi zipo hapa</p></div></div>
-<div class="card"><img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400"><div><b>💼 Ajira Mpya</b><p>💰 Omba kazi sasa</p></div></div>
-</div>
-</div>
-
-<div class="why">
-<h2>Kwanini Makampuni Yote Yanakuja Kapapp?</h2>
-<div class="why-grid">
-<div><b>📢 1. Wateja Wako Hapa</b><br><small>Watu wote duniani wako hapa, sio kwenye vipeperushi</small></div>
-<div><b>💸 2. Kupost ni BURE</b><br><small>Weka bango lako, bidhaa yako, tukio lako - bila kulipa</small></div>
-<div><b>🌍 3. Dunia Nzima</b><br><small>Mteja wa Tokyo anaweza kuona bidhaa yako ya Dar</small></div>
-<div><b>📈 4. Unaona Nani Ameona</b><br><small>Unajua watu wangapi wameona bango lako</small></div>
-</div>
-</div>
-
-<div class="cta">
-<h2>Uko Tayari Kuona Dunia?</h2>
-<p style="color:#666;font-size:14px;margin:8px 0">Usisubiri wengine wakuambie. Ingia mwenyewe.</p>
-<button onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">JIUNGE BURE SASA 🚀</button>
-</div>
-
-<footer>KAPAPP © 2026 - Jumba la Dunia Nzima • Imetengenezwa na Said</footer>
-
+<header><b>KAPAPP</b><div>👤 <span id="userName">Said</span> • 🌍 Dunia</div></header>
+<div style="background:#FFD700;padding:10px;text-align:center;font-weight:800">👋 Karibu Ndani! Hapa ndipo Dunia Iko!</div>
+<div class="search"><input id="search" placeholder="🔍 Tafuta popote duniani..." oninput="tafuta()"></div>
+<div class="chips" id="chips"></div>
+<div style="padding:10px"><h3>🔥 KARIBU NAWE + DUNIA NZIMA</h3></div>
+<div class="grid" id="grid"></div>
+<div class="post"><h3>➕ POST KITU CHAKO - Kama Kampuni</h3>
+<select id="aina"><option>Tukio</option><option>Kampuni</option><option>Bidhaa</option><option>Ajira</option><option>Nyumba</option><option>Huduma</option></select>
+<input id="jina" placeholder="Jina la kitu chako">
+<input id="mji" placeholder="Mji wako - mfano: Dar esalam, London">
+<input id="bei" placeholder="Bei + Sarafu">
+<input id="picha" placeholder="Link ya picha">
+<textarea id="maelezo" placeholder="Maelezo..."></textarea>
+<button class="btn" onclick="weka()">POST DUNIANI 🌍</button></div>
+<div class="bottom"><button onclick="showAll()">🏠 Nyumbani</button><button onclick="filterCat('Tukio')">🎉 Matukio</button><button onclick="filterCat('Kampuni')">🏢 Makampuni</button><button onclick="filterCat('Bidhaa')">🛒 Soko</button><button>👤 Mimi</button></div>
 <script>
-function join(){
-let n=document.getElementById("name").value;
-let c=document.getElementById("city").value;
-let t=document.getElementById("type").value;
-if(!n){alert("Andika jina lako kwanza");return}
-document.getElementById("msg").innerText="Karibu sana "+n+"! 🎉 Uko ndani sasa - Toka "+c+" - Kama "+t;
-localStorage.setItem("kapapp_user", JSON.stringify({name:n,city:c,type:t}));
-setTimeout(()=>{alert("Hongera "+n+"! Umeshajiunga! Sasa unaweza kupost kitu chako, kuona matukio ya "+c+" na ya Dunia Nzima!");},500);
-}
-</script>
-</body>
-</html>
+let user=JSON.parse(localStorage.getItem("kapapp_user")||'{"name":"Said Kapwile"}');document.getElementById("userName").innerText=user.name;
+const cats=["Yote","Tukio","Kampuni","Bidhaa","Ajira","Nyumba","Huduma"];let data=[];
+for(let i=1;i<=30;i++)data.push({aina:"Tukio",jina:"Tukio la Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:"https://picsum.photos/400/300?random="+i,maelezo:"Tukio la kimataifa"});
+for(let i=31;i<=80;i++)data.push({aina:"Kampuni",jina:"Kampuni ya Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:"https://picsum.photos/400/300?random="+(i+100),maelezo:"Kampuni"});
+for(let i=81;i<=130;i++)data.push({aina:"Bidhaa",jina:"Bidhaa ya Dunia #"+i,mji:"Dunia Nzima",bei:"Tazama",img:"https://picsum.photos/400/300?random="+(i+200),maelezo:"Bidhaa"});
+data.unshift({aina:"Kampuni",jina:"Kapapp - Said Kapwile",mji:"Dar esalam",bei:"Mmiliki",img:"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400",maelezo:"Kampuni ya kwanza - Mmiliki wa Jumba!"});
+function render(l){document.getElementById("grid").innerHTML=l.map(d=>`<div class="card"><img src="${d.img}"><div><b>${d.jina}</b><p>📍 ${d.mji} • ${d.aina}</p><p>${d.maelezo}</p><b>${d.bei}</b><button class="btn">FUNGUA</button></div></div>`).join("")}
+function filterCat(c){if(c=="Yote")render(data);else render(data.filter(d=>d.aina==c))}
+function showAll(){render(data)}function tafuta(){let q=document.getElementById("search").value.toLowerCase();render(data.filter(d=>(d.jina+d.mji).toLowerCase().includes(q)))}
+function weka(){let d={aina:document.getElementById("aina").value,jina:document.getElementById("jina").value,mji:document.getElementById("mji").value||"Dunia Nzima",bei:document.getElementById("bei").value||"Tazama",img:document.getElementById("picha").value||"https://picsum.photos/400/300?random=999",maelezo:document.getElementById("maelezo").value};if(!d.jina){alert("Andika jina");return}data.unshift(d);render(data);alert("Imepostwa Duniani! 🌍")}
+document.getElementById("chips").innerHTML=cats.map(c=>`<button onclick="filterCat('${c}')">${c}</button>`).join("");render(data);
+</script></body></html>

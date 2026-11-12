@@ -18,6 +18,12 @@ header p{font-size:11px;color:#aaa}
 .search{margin:10px;display:flex;gap:6px}
 .search input{flex:1;padding:11px;border-radius:20px;border:0;background:#222;color:#fff}
 .search button{padding:11px;border-radius:20px;border:0;background:#fe2c55;color:#fff;font-weight:bold}
+.trend{display:flex;gap:6px;overflow:auto;padding:0 10px}
+.trend span{background:#1a1a1a;border:1px solid #25f4ee;padding:7px 11px;border-radius:20px;font-size:12px;white-space:nowrap;cursor:pointer;color:#25f4ee;font-weight:bold}
+.stories{display:flex;gap:10px;overflow:auto;padding:10px}
+.story{min-width:70px;text-align:center}
+.story .c{width:60px;height:60px;border-radius:50%;border:3px solid #fe2c55;display:flex;align-items:center;justify-content:center;font-size:28px;background:#222;margin:auto}
+.story small{font-size:11px}
 .post{background:#111;margin:10px;border-radius:16px;overflow:hidden;border:1px solid #222}
 .head{display:flex;align-items:center;gap:10px;padding:10px}
 .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(45deg,#fe2c55,#25f4ee);display:flex;align-items:center;justify-content:center;font-size:24px;min-width:44px}
@@ -26,9 +32,8 @@ header p{font-size:11px;color:#aaa}
 .post img,.post video{width:100%;max-height:440px;object-fit:cover;display:block;background:#111}
 .body{padding:12px}
 .hashtag{color:#25f4ee;font-weight:bold;cursor:pointer}
-.actions{display:flex;gap:16px;padding:10px 12px;font-size:19px;align-items:center;flex-wrap:wrap}
+.actions{display:flex;gap:14px;padding:10px 12px;font-size:19px;align-items:center;flex-wrap:wrap}
 .actions span{cursor:pointer}
-.liked{color:#fe2c55}
 .comments{padding:0 12px 12px;font-size:13px;color:#ccc}
 .comments input{width:72%;padding:9px;border-radius:20px;border:0;background:#222;color:#fff}
 .comments button{padding:9px 12px;border-radius:20px;border:0;background:#fe2c55;color:#fff;font-weight:bold}
@@ -43,79 +48,134 @@ header p{font-size:11px;color:#aaa}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#000;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #222;z-index:99}
 .bottom div{text-align:center;font-size:22px;cursor:pointer}.bottom small{display:block;font-size:10px}
 .hidden{display:none}
-.wa{position:fixed;bottom:90px;right:12px;background:#25D366;width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;z-index:99;box-shadow:0 4px 15px rgba(0,0,0,.5);cursor:pointer}
+.wa{position:fixed;bottom:90px;right:12px;background:#25D366;width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;z-index:99;cursor:pointer}
+#authScreen{position:fixed;inset:0;background:#000;z-index:999;overflow:auto;padding:20px;text-align:center}
+#authScreen h1{font-size:40px;margin-top:20px} #authScreen h1 b{color:#fe2c55}
+.authBox{background:#111;padding:18px;border-radius:18px;margin-top:18px;border:1px solid #fe2c55;text-align:left}
+.authBox input{width:100%;padding:13px;margin:7px 0;border-radius:12px;border:0;background:#222;color:#fff;font-size:15px}
+.authBox button{width:100%;padding:13px;border:0;border-radius:12px;font-weight:bold;font-size:16px;margin-top:8px}
+.btnPink{background:#fe2c55;color:#fff} .btnGreen{background:#25D366;color:#fff} .btnGray{background:#222;color:#fff}
+.topUser{display:flex;justify-content:space-between;align-items:center;background:#111;margin:118px 10px 0;padding:10px 12px;border-radius:12px;border:1px solid #222}
+.topUser button{background:#333;color:#fff;border:0;padding:7px 12px;border-radius:20px;font-weight:bold}
+.badge{background:#fe2c55;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px}
+.notif{background:#1a1a1a;padding:12px;border-radius:12px;margin:8px 0;display:flex;gap:10px;align-items:center}
 </style>
 </head>
 <body>
-<header><h1>KAP<b>APP</b> 👑</h1><p>CEO: KAPWILE | Tanzania 🇹🇿 | Kulipwa kwa Views 💰</p>
+
+<div id="authScreen">
+<h1>KAP<b>APP</b> 👑</h1>
+<p>CEO: KAPWILE | Tanzania 🇹🇿 | App ya Kijamii</p>
+<p style="margin-top:10px;color:#aaa;font-size:13px">Post, Pata Views, Lipwa kwa Juhudi Zako! 🔥💰<br>Kama Facebook - Jiunge BURE, Hakuna Bonus. Juhudi Ndio Pesa.</p>
+<div class="authBox" id="loginBox">
+<h2>🔐 LOGIN - Ingia</h2>
+<input id="loginPhone" placeholder="📱 Namba ya simu... mf: 0755000000">
+<input id="loginPass" type="password" placeholder="🔑 Password yako">
+<button class="btnPink" onclick="doLogin()">🚀 INGIA KAPAPP</button>
+<button class="btnGray" onclick="showRegister()">Sina account? 👉 JIUNGE HAPA - BURE</button>
+<p style="text-align:center;margin-top:10px;color:#aaa;font-size:12px">CEO - Namba: 0755CEO • Pass: kapapp123</p>
+</div>
+<div class="authBox hidden" id="registerBox">
+<h2>📝 REGISTER - Jiunge Mpya</h2>
+<input id="regName" placeholder="👤 Jina Kamili... mf: Said Kapwile">
+<input id="regPhone" placeholder="📱 Namba ya simu... mf: 0755000000">
+<input id="regPass" type="password" placeholder="🔑 Tengeneza Password">
+<input id="regPass2" type="password" placeholder="🔑 Rudia Password">
+<button class="btnGreen" onclick="doRegister()">✅ JIUNGE SASA - BURE!</button>
+<button class="btnGray" onclick="showLogin()">Nina account? 👉 LOGIN HAPA</button>
+<small style="color:#aaa">Kujiunga ni BURE kama Facebook. Unalipwa kwa Views na Likes unazopata kwa kupost.</small>
+</div>
+</div>
+
+<header><h1>KAP<b>APP</b> 👑</h1><p>CEO: KAPWILE | Tanzania 🇹🇿 | App ya Kijamii - Lipwa kwa Juhudi</p>
 <div class="nav">
 <button class="active" onclick="show('home',this)">🏠 Home</button>
 <button onclick="show('reels',this)">🎬 Reels</button>
 <button onclick="show('postPage',this)">➕ Post</button>
 <button onclick="show('pages',this)">📄 Pages</button>
 <button onclick="show('dmPage',this)">💬 DM</button>
+<button onclick="show('notifPage',this)">🔔 Notif <span class="badge" id="notifCount">3</span></button>
 <button onclick="show('profile',this)">👤 Profile</button>
 <button onclick="show('ceo',this)">👑 CEO</button>
 </div></header>
 
 <div class="wa" onclick="openWA()">💬</div>
+<div class="topUser"><span>👋 Karibu, <b id="currentUserName">Mgeni</b> <span id="currentUserBadge"></span></span><button onclick="doLogout()">🚪 Log Out</button></div>
 
-<div class="wallet">💰 <b>PESA YAKO:</b> <span id="money">TSh 0</span> | 👀 Views: <span id="views">0</span> | ❤️ Likes: <span id="totalLikes">0</span><br><small>1000 Views = TSh 5,000 • 10,000 Views = TSh 50,000 • Kila Like = TSh 10</small><br><button onclick="withdraw()">💸 TOA PESA - M-Pesa / Tigo Pesa</button></div>
+<div class="wallet">💰 <b>PESA YAKO:</b> <span id="money">TSh 0</span> | 👀 Views: <span id="views">0</span> | ❤️ Likes: <span id="totalLikes">0</span><br><small>1000 Views = TSh 5,000 • 10,000 Views = TSh 50,000 • Kila Like = TSh 10<br>⚠️ Hakuna Bonus. Pesa ni kwa Juhudi Zako Tu.</small><br><button onclick="withdraw()">💸 TOA PESA - M-Pesa / Tigo Pesa</button></div>
 
 <div class="search"><input id="searchInput" placeholder="🔍 Tafuta #Hashtag, jina, video..."><button onclick="doSearch()">Tafuta</button></div>
+<div class="trend"><span onclick="filterTag('Kapwile')">🔥 #Kapwile</span><span onclick="filterTag('Tanzania')">🇹🇿 #Tanzania</span><span onclick="filterTag('Trending')">🔥 #Trending</span><span onclick="filterTag('Music')">🎵 #Music</span><span onclick="filterTag('Dance')">💃 #Dance</span><span onclick="filterTag('KAPAPP')">👑 #KAPAPP</span></div>
 
-<!-- HOME -->
-<div id="home"><div id="feed"></div></div>
-
-<!-- REELS -->
+<div id="home">
+<div class="stories">
+<div class="story" onclick="alert('Story yako! 📱')"><div class="c">➕</div><small>Story Yako</small></div>
+<div class="story" onclick="alert('Story ya Kapwile 👑')"><div class="c">👑</div><small>Kapwile</small></div>
+<div class="story"><div class="c">💎</div><small>Diamond</small></div>
+<div class="story"><div class="c">🎤</div><small>Zuchu</small></div>
+<div class="story"><div class="c">⚽</div><small>Simba</small></div>
+<div class="story"><div class="c">👸</div><small>Samia</small></div>
+</div>
+<div id="feed"></div>
+</div>
 <div id="reels" class="hidden"><div id="reelFeed"></div></div>
 
-<!-- POST PAGE - WATU WAPOST -->
 <div id="postPage" class="hidden">
-<div class="box"><h2>➕ Post Kitu Chako - Kila Mtu Ataona!</h2>
-<input id="myName" placeholder="Jina lako... mf: Juma" value="Kapwile TV">
+<div class="box"><h2>➕ Post Kitu Chako - Pata Views, Pata Pesa!</h2>
+<input id="myName" placeholder="Jina lako...">
 <input id="pTitle" placeholder="Kichwa... mf: Video yangu mpya 🔥">
 <textarea id="pDesc" placeholder="Andika hapa + #Hashtag #Kapwile #Tanzania"></textarea>
-<div class="emoji-row" onclick="addEmoji(event)"> <span>🔥</span><span>❤️</span><span>😍</span><span>😂</span><span>👑</span><span>🇹🇿</span><span>🎬</span><span>🎵</span><span>💰</span><span>🙏</span> </div>
+<div class="emoji-row" onclick="addEmoji(event)"><span>🔥</span><span>❤️</span><span>😍</span><span>😂</span><span>👑</span><span>🇹🇿</span><span>🎬</span><span>🎵</span><span>💰</span><span>🙏</span></div>
 <select id="pType"><option value="video">🎬 Video / Reels</option><option value="image">🖼️ Picha</option></select>
-<input id="pUrl" placeholder="Weka Link ya Video/Picha (au chagua faili chini)">
+<input id="pUrl" placeholder="Weka Link ya Video/Picha (au chagua faili)">
 <input type="file" id="pFile" accept="image/*,video/*" onchange="readFile(this)">
-<button onclick="addPost()">🚀 POST SASA KWA KAPAPP</button>
-<small style="color:#aaa">Watu wakiona post yako, unalipwa! 💰</small></div>
+<button onclick="addPost()">🚀 POST SASA</button>
+<small style="color:#aaa">Ukishapost, watu wakiona na kulike, unapata pesa. Kadri Views zinavyoongezeka, ndivyo pesa inavyoongezeka.</small></div>
 </div>
 
-<!-- PAGES -->
 <div id="pages" class="hidden">
-<div class="box"><h2>📄 Pages - Fuata Pages Mbalimbali</h2>
-<input id="pageName" placeholder="Jina la Page mpya... mf: Kapwile Music"><button onclick="addPage()">➕ TENGENEZA PAGE YANGU</button>
+<div class="box"><h2>📄 Pages</h2>
+<input id="pageName" placeholder="Jina la Page mpya..."><button onclick="addPage()">➕ TENGENEZA PAGE</button>
 <div id="pageList"></div></div>
 </div>
 
-<!-- DM -->
 <div id="dmPage" class="hidden"><div class="box"><h3>💬 DM - Chat na Watu</h3>
 <select id="dmUser"><option>Kapwile 👑</option><option>Samia 👸</option><option>Diamond 💎</option><option>Zuchu 🎤</option></select>
-<div class="dm-box" id="dmBox"><p><b>Kapwile 👑:</b> Karibu KAPAPP! Wewe ni mgeni gani? 😍</p></div>
+<div class="dm-box" id="dmBox"><p><b>Kapwile 👑:</b> Karibu KAPAPP! 😍 Post, pata Views, lipwa!</p></div>
 <input id="dmInput" placeholder="Andika ujumbe..." style="width:72%;padding:10px;border-radius:20px;border:0;background:#222;color:#fff"><button onclick="sendDM()" style="width:24%;padding:10px;background:#fe2c55;color:#fff;border:0;border-radius:20px">Tuma</button>
 <button onclick="openWA()" style="background:#25D366;margin-top:8px">💚 ENDELEA WHATSAPP</button></div></div>
 
-<!-- PROFILE -->
+<div id="notifPage" class="hidden"><div class="box"><h2>🔔 Notifications</h2>
+<div id="notifList">
+<div class="notif">❤️ <div><b>Diamond</b> amekulike post yako! <br><small>Sasa hivi</small></div></div>
+<div class="notif">👥 <div><b>Zuchu</b> amekufollow! <br><small>Dakika 5 zilizopita</small></div></div>
+<div class="notif">💬 <div><b>Samia</b> amecomment: Hongera CEO! 👑 <br><small>Dakika 12 zilizopita</small></div></div>
+<div class="notif">👀 <div>Post yako imefikisha <b>10,000 Views!</b> Umeingiza TSh 50,000! 💰 <br><small>Saa 1 iliyopita</small></div></div>
+</div>
+<button onclick="clearNotif()">🗑️ Futa Zote</button></div></div>
+
 <div id="profile" class="hidden"><div class="box"><h2>👤 Profile Yangu</h2>
 <div style="text-align:center;font-size:70px">👑</div>
-<input id="profName" value="Kapwile TV" placeholder="Jina lako">
-<textarea id="profBio" placeholder="Bio yako...">CEO wa KAPAPP 👑 | Tanzania 🇹🇿 | Mungu Kwanza 🙏 | #Kapwile</textarea>
-<input id="profPhone" placeholder="Namba ya WhatsApp... mf: 255...">
+<input id="profName" value="Kapwile TV" placeholder="Jina Kamili">
+<textarea id="profBio">CEO wa KAPAPP 👑 | Tanzania 🇹🇿 | Mungu Kwanza 🙏 | #Kapwile</textarea>
+<input id="profPhone" placeholder="Namba ya WhatsApp...">
+<input id="profPass" type="password" placeholder="Badilisha Password (hiari)">
 <button onclick="saveProfile()">💾 HIFADHI PROFILE</button>
-<p style="margin-top:10px">👥 Wafuasi: <b id="followers">12,450</b> | 📄 Posts: <b id="myPosts">0</b> | 👀 Views: <b id="myViews">0</b></p></div></div>
+<button onclick="doLogout()" style="background:#333">🚪 LOG OUT</button>
+<p style="margin-top:10px">👥 Wafuasi: <b id="followers">12,450</b> | 👤 Ninaowafuata: <b>320</b> | 📄 Posts: <b id="myPosts">0</b> | 👀 Views: <b id="myViews">0</b></p>
+<p>📱 Namba: <b id="profilePhoneShow"></b> | 📅 Mwanachama tangu: <b id="joinDate"></b></p>
+<p>💰 <b>Jumla Uliyolipwa:</b> <span id="profMoney">TSh 0</span> - Kwa Juhudi Zako!</p>
+<p>🔖 <b>Saved Posts:</b> <span id="savedCount">0</span></p>
+</div></div>
 
-<!-- CEO DASHBOARD -->
 <div id="ceo" class="hidden"><div class="admin"><h2>👑 CEO DASHBOARD - KAPWILE TU!</h2>
 <p><b>Jina:</b> Kapwile - CEO wa KAPAPP</p>
 <p>💰 <b>Jumla Pesa:</b> <span id="ceoMoney">TSh 0</span></p>
 <p>👀 <b>Jumla Views:</b> <span id="ceoViews">0</span></p>
-<p>👥 <b>Watumiaji:</b> 12,450 | 📄 <b>Pages:</b> <span id="ceoPages">5</span> | 🎬 <b>Reels:</b> <span id="ceoReels">0</span></p>
-<button onclick="alert('Hongera CEO! Watayarishaji wote wamelipwa! 💰')" style="padding:12px;background:#000;color:#fff;border:0;border-radius:10px;width:100%;margin-top:10px">💰 LIPA WATAYARISHAJI WOTE</button>
+<p>👥 <b>Watumiaji Waliojiunga:</b> <span id="ceoUsers">0</span> | 📄 <b>Pages:</b> <span id="ceoPages">5</span> | 🎬 <b>Reels:</b> <span id="ceoReels">0</span></p>
+<div id="usersList" style="margin-top:10px;background:#f0f0f0;padding:10px;border-radius:10px"></div>
+<button onclick="alert('Hongera CEO! Watayarishaji wote wamelipwa kwa juhudi zao! 💰')" style="padding:12px;background:#000;color:#fff;border:0;border-radius:10px;width:100%;margin-top:10px">💰 LIPA WATAYARISHAJI WOTE</button>
 <button onclick="alert('Post imeenda TRENDING #1 Tanzania! 🔥')" style="padding:12px;background:#fe2c55;color:#fff;border:0;border-radius:10px;width:100%;margin-top:8px">🔥 WEKA TRENDING #1</button>
-<button onclick="alert('KAPAPP imefunguliwa kwa watu wote! 🌍')" style="padding:12px;background:#25D366;color:#fff;border:0;border-radius:10px;width:100%;margin-top:8px">🌍 TANGAZA KAPAPP</button>
 </div></div>
 
 <div class="bottom">
@@ -123,32 +183,71 @@ header p{font-size:11px;color:#aaa}
 <div onclick="show('reels',document.querySelectorAll('.nav button')[1])">🎬<small>Reels</small></div>
 <div onclick="show('postPage',document.querySelectorAll('.nav button')[2])" style="font-size:32px;color:#fe2c55">➕</div>
 <div onclick="show('dmPage',document.querySelectorAll('.nav button')[4])">💬<small>DM</small></div>
-<div onclick="show('profile',document.querySelectorAll('.nav button')[5])">👤<small>Profile</small></div>
+<div onclick="show('profile',document.querySelectorAll('.nav button')[6])">👤<small>Profile</small></div>
 </div>
 
 <script>
-let tempFile="";
+let tempFile=""; let savedPosts=[];
 let posts=[
-{user:"Kapwile TV 👑",emoji:"👑",title:"KAPAPP IMERUDI! 🔥 Tanzania Tupo!",desc:"Karibu KAPAPP mpya! Kila view unalipwa! #Kapwile #Tanzania #Trending #KAPAPP",type:"image",url:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600",likes:1250,views:25400,comments:["Samia: Hongera CEO! 👑","Dogo: Hii ni kali 🔥"]},
-{user:"Samia Suluhu",emoji:"👸",title:"Tanzania Yetu Nzuri 🇹🇿",desc:"Amani na Umoja #Tanzania #Samia #Amani",type:"image",url:"https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600",likes:890,views:18200,comments:["Kapwile: Asante! 🙏"]},
-{user:"Diamond Platnumz",emoji:"💎",title:"Wimbo Mpya - KAPAPP Exclusive 🎵",desc:"Sikiliza hapa kwanza! #Diamond #Music #KAPAPP #Trending",type:"video",url:"https://www.w3schools.com/html/mov_bbb.mp4",likes:3400,views:89000,comments:["Mashabiki: Motooo 🔥🔥","Zuchu: Kali sana ❤️"]},
+{user:"Kapwile TV 👑",emoji:"👑",title:"KAPAPP IMERUDI! 🔥 Tanzania Tupo!",desc:"Karibu KAPAPP mpya! #Kapwile #Tanzania #Trending #KAPAPP",type:"image",url:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600",likes:1250,views:25400,comments:["Samia: Hongera CEO! 👑","Dogo: Hii ni kali 🔥"]},
+{user:"Diamond Platnumz",emoji:"💎",title:"Wimbo Mpya - KAPAPP Exclusive 🎵",desc:"Sikiliza hapa kwanza! #Diamond #Music #KAPAPP",type:"video",url:"https://www.w3schools.com/html/mov_bbb.mp4",likes:3400,views:89000,comments:["Mashabiki: Motooo 🔥🔥"]},
 {user:"Zuchu",emoji:"🎤",title:"Reels Mpya - Dance 💃",desc:"Nichezeeni hii! #Zuchu #Dance #Reels #Tanzania",type:"video",url:"https://www.w3schools.com/html/mov_bbb.mp4",likes:2100,views:45000,comments:["Fan: Umekaa poa 😍"]}
 ];
-let pages=[
-{name:"Kapwile Music 🎵",emoji:"🎵",followers:8450},
-{name:"Kapwile News 📰",emoji:"📰",followers:5200},
-{name:"Tanzania Trending 🔥",emoji:"🔥",followers:12300},
-{name:"Michezo Tanzania ⚽",emoji:"⚽",followers:6700},
-{name:"Chakula cha Kitanzania 🍲",emoji:"🍲",followers:3400}
-];
+let pages=[{name:"Kapwile Music 🎵",emoji:"🎵",followers:8450},{name:"Kapwile News 📰",emoji:"📰",followers:5200},{name:"Tanzania Trending 🔥",emoji:"🔥",followers:12300},{name:"Michezo Tanzania ⚽",emoji:"⚽",followers:6700}];
+function getUsers(){try{return JSON.parse(localStorage.getItem('kapapp_users')||'[]')}catch(e){return[]}}
+function saveUsers(u){localStorage.setItem('kapapp_users',JSON.stringify(u))}
+function getCurrent(){try{return JSON.parse(localStorage.getItem('kapapp_current')||'null')}catch(e){return null}}
+function setCurrent(u){localStorage.setItem('kapapp_current',JSON.stringify(u))}
+if(getUsers().length===0){saveUsers([{name:"Kapwile - CEO 👑",phone:"0755CEO",pass:"kapapp123",role:"CEO",date:new Date().toLocaleDateString()}]);}
+function showRegister(){document.getElementById('loginBox').classList.add('hidden'); document.getElementById('registerBox').classList.remove('hidden');}
+function showLogin(){document.getElementById('registerBox').classList.add('hidden'); document.getElementById('loginBox').classList.remove('hidden');}
+function doRegister(){
+let name=document.getElementById('regName').value.trim();
+let phone=document.getElementById('regPhone').value.trim();
+let p1=document.getElementById('regPass').value;
+let p2=document.getElementById('regPass2').value;
+if(!name||!phone||!p1) return alert('❌ Jaza Jina Kamili, Namba na Password!');
+if(p1!==p2) return alert('❌ Password hazifanani! Rudia!');
+if(p1.length<4) return alert('❌ Password iwe angalau herufi 4');
+let users=getUsers();
+if(users.find(u=>u.phone===phone)) return alert('❌ Hii namba imesha jiunga! Ingia na LOGIN.');
+let nu={name:name,phone:phone,pass:p1,role:"User",date:new Date().toLocaleDateString()};
+users.push(nu); saveUsers(users); setCurrent(nu);
+alert('🎉 Hongera '+name+'! Umejiunga KAPAPP! Karibu kwenye familia! 👑\n\nPost, pata Views wengi, lipwa kwa juhudi zako!');
+enterApp();
+}
+function doLogin(){
+let phone=document.getElementById('loginPhone').value.trim();
+let pass=document.getElementById('loginPass').value;
+if(!phone||!pass) return alert('Weka namba na password!');
+let found=getUsers().find(u=>u.phone===phone && u.pass===pass);
+if(!found) return alert('❌ Namba au Password sio sahihi! Kama ni mpya, bonyeza "JIUNGE HAPA"');
+setCurrent(found); alert('Karibu tena '+found.name+'! 👑🔥'); enterApp();
+}
+function doLogout(){if(confirm('Unataka kutoka KAPAPP? 🚪')){localStorage.removeItem('kapapp_current'); location.reload();}}
+function enterApp(){
+let cur=getCurrent(); if(!cur){document.getElementById('authScreen').style.display='block'; return;}
+document.getElementById('authScreen').style.display='none';
+document.getElementById('currentUserName').innerText=cur.name;
+document.getElementById('currentUserBadge').innerText=cur.role==='CEO'?'👑 CEO':'✅';
+document.getElementById('profName').value=cur.name;
+document.getElementById('profPhone').value=cur.phone;
+document.getElementById('profilePhoneShow').innerText=cur.phone;
+document.getElementById('joinDate').innerText=cur.date||'Leo';
+document.getElementById('myName').value=cur.name;
+let users=getUsers();
+document.getElementById('ceoUsers').innerText=users.length.toLocaleString();
+document.getElementById('usersList').innerHTML='<b>👥 Watu Waliojiunga ('+users.length+'):</b><br>'+users.map(u=>'• '+u.name+' - '+u.phone+' - '+u.role).join('<br>');
+render();
+}
 function render(filter=""){
 let feed=document.getElementById('feed'); feed.innerHTML='';
 let reel=document.getElementById('reelFeed'); reel.innerHTML='';
 let list=posts.filter(p=>!filter||(p.title+p.desc+p.user).toLowerCase().includes(filter.toLowerCase()));
-if(list.length==0) feed.innerHTML='<div class="box">Hakuna kilichopatikana kwa "'+filter+'" 😢 Jaribu #Kapwile</div>';
+if(list.length==0) feed.innerHTML='<div class="box">Hakuna kilichopatikana 😢</div>';
 list.forEach((p)=>{
 let idx=posts.indexOf(p);
-let html=`<div class="post"><div class="head"><div class="avatar">${p.emoji}</div><div><b>${p.user}</b><br><small>@${p.user.replace(/[^a-zA-Z]/g,'').toLowerCase()} • Sasa hivi • <span style="color:#25f4ee">KAPAPP</span></small></div><button class="follow" onclick="follow(this)">Follow</button></div>${p.type==='video'?`<video controls src="${p.url}"></video>`:`<img src="${p.url}">`}<div class="actions"><span onclick="like(${idx},this)">❤️ <b>${p.likes}</b></span><span onclick="document.getElementById('c${idx}').focus()">💬 ${p.comments.length}</span><span onclick="sharePost('${p.title}')">↗️ Share</span><span onclick="openWA()">💚 WhatsApp</span><span onclick="addView(${idx})">👀 ${p.views}</span></div><div class="body"><b>${p.title}</b><br><span>${formatHashtag(p.desc)}</span><br><div class="emoji-row" onclick="quickComment(${idx},event)"><span>🔥</span><span>❤️</span><span>😍</span><span>😂</span><span>👑</span></div></div><div class="comments"><div id="list${idx}">${p.comments.map(c=>'<p>'+c+'</p>').join('')}</div><br><input id="c${idx}" placeholder="Andika comment..."><button onclick="comment(${idx})">Tuma</button></div></div>`;
+let html=`<div class="post"><div class="head"><div class="avatar">${p.emoji}</div><div><b>${p.user}</b><br><small>@${p.user.replace(/[^a-zA-Z]/g,'').toLowerCase()} • Sasa hivi • KAPAPP</small></div><button class="follow" onclick="follow(this)">Follow</button></div>${p.type==='video'?`<video controls src="${p.url}"></video>`:`<img src="${p.url}">`}<div class="actions"><span onclick="like(${idx},this)">❤️ <b>${p.likes}</b></span><span onclick="document.getElementById('c${idx}').focus()">💬 ${p.comments.length}</span><span onclick="sharePost('${p.title}')">↗️ Share</span><span onclick="savePost(${idx})">🔖 Save</span><span onclick="openWA()">💚 WhatsApp</span><span>👀 ${p.views}</span><span onclick="reportPost()" style="font-size:14px">🚨</span></div><div class="body"><b>${p.title}</b><br><span>${formatHashtag(p.desc)}</span><br><div class="emoji-row" onclick="quickComment(${idx},event)"><span>🔥</span><span>❤️</span><span>😍</span><span>😂</span><span>👑</span></div></div><div class="comments"><div>${p.comments.map(c=>'<p>'+c+'</p>').join('')}</div><br><input id="c${idx}" placeholder="Andika comment..."><button onclick="comment(${idx})">Tuma</button></div></div>`;
 feed.innerHTML+=html; if(p.type==='video') reel.innerHTML+=html;
 });
 renderPages();
@@ -156,35 +255,39 @@ let v=posts.reduce((a,b)=>a+b.views,0); let money=Math.floor(v/1000)*5000 + post
 document.getElementById('views').innerText=v.toLocaleString();
 document.getElementById('totalLikes').innerText=posts.reduce((a,b)=>a+b.likes,0).toLocaleString();
 document.getElementById('money').innerText='TSh '+money.toLocaleString();
+document.getElementById('profMoney').innerText='TSh '+money.toLocaleString();
 document.getElementById('ceoMoney').innerText='TSh '+money.toLocaleString();
 document.getElementById('ceoViews').innerText=v.toLocaleString();
 document.getElementById('myPosts').innerText=posts.length;
 document.getElementById('myViews').innerText=v.toLocaleString();
 document.getElementById('ceoReels').innerText=posts.filter(p=>p.type==='video').length;
 document.getElementById('ceoPages').innerText=pages.length;
+document.getElementById('savedCount').innerText=savedPosts.length;
 }
 function formatHashtag(t){return t.replace(/#(\w+)/g,'<span class="hashtag" onclick="filterTag(\'$1\')">#$1</span>')}
 function filterTag(tag){document.getElementById('searchInput').value='#'+tag; doSearch();}
 function doSearch(){let v=document.getElementById('searchInput').value.replace('#',''); render(v); show('home',document.querySelectorAll('.nav button')[0]);}
 function renderPages(){let el=document.getElementById('pageList'); el.innerHTML=''; pages.forEach((pg,i)=>{el.innerHTML+=`<div class="page-card"><div class="avatar">${pg.emoji}</div><div><b>${pg.name}</b><br><small>${pg.followers.toLocaleString()} wafuasi</small></div><button class="follow" onclick="followPage(this,${i})">Follow</button></div>`})}
-function followPage(btn,i){btn.classList.toggle('on'); if(btn.classList.contains('on')){btn.innerText='Following ✓'; pages[i].followers++;} else {btn.innerText='Follow'; pages[i].followers--;} renderPages();}
-function like(i,el){posts[i].likes++; render(); }
-function addView(i){posts[i].views+=100; render();}
-function comment(i){let inp=document.getElementById('c'+i); if(!inp.value) return; posts[i].comments.push('Wewe: '+inp.value); render();}
-function quickComment(i,e){if(e.target.tagName==='SPAN'){posts[i].comments.push('Wewe: '+e.target.innerText); render();}}
-function follow(btn){btn.classList.toggle('on'); btn.innerText=btn.classList.contains('on')?'Following ✓':'Follow'; let f=document.getElementById('followers'); let n=parseInt(f.innerText.replace(/,/g,''))+(btn.classList.contains('on')?1:-1); f.innerText=n.toLocaleString();}
-function sharePost(t){let link='https://kapapp.github.io - '+t; if(navigator.share){navigator.share({title:'KAPAPP 👑',text:t,url:'https://kapapp.github.io'})} else {alert('Link Imecopiwa! ↗️\n'+link+'\nTuma WhatsApp / TikTok / Instagram');}}
-function openWA(){let phone=document.getElementById('profPhone')?.value||'255'; let msg=encodeURIComponent('Nimeona KAPAPP 👑 ya CEO Kapwile! Nataka kujiunga! 🔥 https://kapapp.github.io'); window.open('https://wa.me/'+phone.replace(/\D/g,'')+'?text='+msg,'_blank');}
-function addEmoji(e){if(e.target.tagName==='SPAN'){let d=document.getElementById('pDesc'); d.value+= ' '+e.target.innerText;}}
-function readFile(input){let f=input.files[0]; if(!f) return; let r=new FileReader(); r.onload=e=>{tempFile=e.target.result; alert('Faili imepakuliwa! ✅ Sasa bonyeza POST SASA');}; r.readAsDataURL(f);}
-function addPost(){let name=document.getElementById('myName').value||'Mgeni'; let t=document.getElementById('pTitle').value||'Post Mpya KAPAPP 🔥'; let d=document.getElementById('pDesc').value||'#Kapwile #Tanzania #Trending'; let ty=document.getElementById('pType').value; let u=document.getElementById('pUrl').value||tempFile||'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600'; posts.unshift({user:name,emoji:'😍',title:t,desc:d,type:ty,url:u,likes:0,views:10,comments:[]}); render(); alert('Hongera '+name+'! Post yako imeonekana KAPAPP! 🚀💰'); show('home',document.querySelectorAll('.nav button')[0]);}
-function addPage(){let n=document.getElementById('pageName').value; if(!n) return alert('Andika jina la Page kwanza'); pages.unshift({name:n,emoji:'📄',followers:1}); renderPages(); alert('Page "'+n+'" imetengenezwa! 🎉');}
+function followPage(btn,i){btn.classList.toggle('on'); btn.innerText=btn.classList.contains('on')?'Following ✓':'Follow';}
+function like(i,el){posts[i].likes++; posts[i].views+=10; render();}
+function comment(i){let inp=document.getElementById('c'+i); if(!inp.value) return; let cur=getCurrent(); posts[i].comments.push((cur?cur.name:'Wewe')+': '+inp.value); render();}
+function quickComment(i,e){if(e.target.tagName==='SPAN'){let cur=getCurrent(); posts[i].comments.push((cur?cur.name:'Wewe')+': '+e.target.innerText); render();}}
+function follow(btn){btn.classList.toggle('on'); btn.innerText=btn.classList.contains('on')?'Following ✓':'Follow';}
+function sharePost(t){alert('Link Imecopiwa! ↗️\nhttps://kapapptz.github.io/Kapapp/ - '+t);}
+function savePost(i){if(!savedPosts.includes(i)){savedPosts.push(i); alert('Post Imehifadhiwa! 🔖 Utaiona kwenye Profile > Saved');} else alert('Umesha save hii! 🔖'); render();}
+function reportPost(){alert('Asante! Post imeripotiwa kwa CEO. Tutaichunguza. 🚨');}
+function clearNotif(){document.getElementById('notifList').innerHTML='<p>Hakuna notifications mpya.</p>'; document.getElementById('notifCount').innerText='0';}
+function openWA(){window.open('https://wa.me/255000000000?text='+encodeURIComponent('Nimeona KAPAPP 👑 ya CEO Kapwile!'),'_blank');}
+function addEmoji(e){if(e.target.tagName==='SPAN'){let d=document.getElementById('pDesc'); d.value+=' '+e.target.innerText;}}
+function readFile(input){let f=input.files[0]; if(!f) return; let r=new FileReader(); r.onload=e=>{tempFile=e.target.result; alert('Faili imepakuliwa! ✅');}; r.readAsDataURL(f);}
+function addPost(){let cur=getCurrent(); let name=cur?cur.name:document.getElementById('myName').value; let t=document.getElementById('pTitle').value||'Post Mpya KAPAPP 🔥'; let d=document.getElementById('pDesc').value||'#Kapwile #Tanzania'; let ty=document.getElementById('pType').value; let u=document.getElementById('pUrl').value||tempFile||'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600'; posts.unshift({user:name,emoji:'😍',title:t,desc:d,type:ty,url:u,likes:0,views:10,comments:[]}); render(); alert('Hongera '+name+'! Post yako imeonekana! 🚀\nWatu wakiona na kulike, pesa yako inaongezeka!'); show('home',document.querySelectorAll('.nav button')[0]);}
+function addPage(){let n=document.getElementById('pageName').value; if(!n) return alert('Andika jina la Page'); pages.unshift({name:n,emoji:'📄',followers:1}); renderPages(); alert('Page "'+n+'" imetengenezwa! 🎉');}
 function sendDM(){let v=document.getElementById('dmInput').value; if(!v) return; document.getElementById('dmBox').innerHTML+='<p><b>Wewe:</b> '+v+'</p>'; document.getElementById('dmInput').value=''; setTimeout(()=>{document.getElementById('dmBox').innerHTML+='<p><b>'+document.getElementById('dmUser').value+':</b> Sawa mkuu, nimepokea! 👑❤️</p>';},800);}
-function saveProfile(){alert('Profile imehifadhiwa! ✅ Jina: '+document.getElementById('profName').value);}
-function withdraw(){let m=document.getElementById('money').innerText; alert('Hongera CEO! '+m+' imetumwa kwa M-Pesa yako! 💸💰');}
-function show(id,btn){['home','reels','postPage','pages','dmPage','profile','ceo'].forEach(x=>document.getElementById(x).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); window.scrollTo(0,0);}
+function saveProfile(){let cur=getCurrent(); let newName=document.getElementById('profName').value; if(cur){cur.name=newName; let users=getUsers(); let idx=users.findIndex(u=>u.phone===cur.phone); if(idx>=0) users[idx]=cur; saveUsers(users); setCurrent(cur);} alert('Profile imehifadhiwa! ✅'); enterApp();}
+function withdraw(){let m=document.getElementById('money').innerText; alert('Hongera! '+m+' imetumwa kwa M-Pesa yako! 💸\nHii ni kwa juhudi zako za kupost!');}
+function show(id,btn){['home','reels','postPage','pages','dmPage','notifPage','profile','ceo'].forEach(x=>document.getElementById(x).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); window.scrollTo(0,0);}
 function goHome(){render(''); show('home',document.querySelectorAll('.nav button')[0]);}
-render();
+enterApp();
 </script>
 </body>
 </html>

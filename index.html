@@ -39,12 +39,10 @@ input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border
 <div class="top"><b>KAPAPP</b><div><span onclick="alert('DM: Una ujumbe 2 mpya!')">💬 DM 2</span><span onclick="showProfile()">👤 Profile</span></div></div>
 <div class="search" onclick="let s=prompt('Tafuta mtu / biashara / #hashtag:'); if(s) alert('Unatafuta: '+s)">🔍 Tafuta mtu, biashara, #hashtag...</div>
 </header>
-
 <div class="balance">
 <p>Pointi Zako Leo</p><b id="points">0 Pointi</b><p id="money">Tsh 0</p>
 <p style="font-size:12px;color:#666">Pointi 100 = Tsh 1,000 • Like=5 • Comment=10 • Share=15 • Post=20 • Follow=2</p>
 </div>
-
 <div class="card">
 <div class="profile-row">
 <div class="avatar" id="myAvatar">S</div>
@@ -53,21 +51,17 @@ input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border
 </div>
 <h3 style="margin-top:12px">Andika Post Mpya</h3>
 <textarea id="postText" placeholder="Andika hapa... Mfano: Viatu kali #Biashara @Said"></textarea>
-
 <div class="upload-box">
 <b>📸 Chagua Picha au 🎥 Video kutoka simu yako</b><br>
 <input type="file" id="fileInput" accept="image/*,video/*" onchange="previewFile()">
 <p id="previewText" style="font-size:12px;margin-top:4px;color:#1877f2"></p>
 </div>
-
 <input type="text" id="postImg" placeholder="AU weka link ya Picha (hiari)">
 <input type="text" id="postVideo" placeholder="AU weka link ya Video (hiari) mfano .mp4">
 <input type="text" id="postWA" placeholder="Namba yako ya WhatsApp mfano 0755000000">
 <button class="post-btn" onclick="addPost()">POST SASA +20 POINTI</button>
 </div>
-
 <div id="feed"></div>
-
 <div class="nav">
 <button onclick="location.reload()">🏠 Home</button>
 <button onclick="showProfile()">👤 Profile</button>
@@ -75,7 +69,6 @@ input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border
 <button onclick="alert('Pointi zako: '+points)">⭐ Pointi</button>
 <button onclick="window.open('https://wa.me/255755000000?text=Nataka kujiunga na KAPAPP','_blank')">🟢 WhatsApp</button>
 </div>
-
 <script>
 let points = parseInt(localStorage.getItem('kap_points')||'0');
 let myName = localStorage.getItem('kap_name') || 'Said Kapwile';
@@ -83,7 +76,6 @@ let myPic = localStorage.getItem('kap_pic') || '';
 let tempFile = ''; let tempFileType = '';
 document.getElementById('myName').innerText = myName;
 if(myPic){document.getElementById('myAvatar').innerHTML='<img src="'+myPic+'">';} else {document.getElementById('myAvatar').innerText=myName.charAt(0);}
-
 function previewFile(){
 let f=document.getElementById('fileInput').files[0];
 if(!f) return;

@@ -2,142 +2,78 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAPAPP - Post • Like • Kusanya Pointi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KAPAPP - Pointi</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f0f2f5;padding-bottom:90px}
-header{background:#1877f2;color:#fff;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-header b{font-size:20px}
-header span{font-size:14px;background:#fff;color:#1877f2;padding:4px 10px;border-radius:20px;font-weight:bold}
-.balance{background:#fff;margin:10px;padding:12px;border-radius:10px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.balance b{color:#0a9e3f;font-size:22px}
-.card{background:#fff;margin:10px;padding:12px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.user-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.avatar{width:38px;height:38px;border-radius:50%;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:18px;overflow:hidden;flex-shrink:0}
-.avatar img{width:100%;height:100%;object-fit:cover}
-input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ddd;border-radius:8px}
-button{background:#1877f2;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:bold}
-.actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.actions button{background:#eef2ff;color:#1877f2;padding:7px 10px;font-size:13px}
-.actions button.wa{background:#e6ffe9;color:#0a9e3f}
-.comment{background:#f0f2f5;padding:7px 10px;border-radius:8px;margin-top:6px;font-size:14px}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd}
-.nav button{background:none;color:#333}
-.nav button.active{color:#1877f2}
-.hidden{display:none}
-.login{max-width:400px;margin:40px auto;padding:20px;background:#fff;border-radius:12px}
-.login h2{text-align:center;color:#1877f2;margin-bottom:15px}
-.prof-big{width:100px;height:100px;border-radius:50%;object-fit:cover;margin:0 auto;display:block;border:3px solid #1877f2}
-.wa-btn{background:#25D366!important;color:#fff!important;width:100%;margin-top:8px;font-size:15px}
-.wa-float{position:fixed;bottom:75px;right:12px;background:#25D366;color:#fff;width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 3px 10px rgba(0,0,0,.3);z-index:20;border:none}
-.notice{background:#fff3cd;border:1px solid #ffc107;padding:10px;border-radius:8px;margin:10px;font-size:13px;color:#664d03}
+*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
+body{background:#f0f2f5;padding-bottom:80px}
+header{background:#1877f2;color:#fff;padding:14px;text-align:center}
+header b{font-size:22px}
+.balance{background:#fff;margin:12px;padding:16px;border-radius:12px;text-align:center;box-shadow:0 1px 4px #ccc}
+.balance b{color:#0a9e3f;font-size:30px}
+.card{background:#fff;margin:12px;padding:14px;border-radius:12px;box-shadow:0 1px 4px #ccc}
+input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px}
+button{background:#1877f2;color:#fff;border:none;padding:12px;border-radius:8px;width:100%;font-weight:bold}
+.actions{display:flex;gap:6px;margin-top:8px}
+.actions button{background:#eef2ff;color:#1877f2;padding:8px}
+.post-img{width:100%;border-radius:10px;margin-top:8px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #ddd}
+.nav button{background:none;color:#333;width:auto}
 </style>
 </head>
 <body>
-<header><b>KAPAPP</b><span id="headerName">Karibu</span></header>
-<div id="loginPage" class="login">
-<h2>KAPAPP 🇹🇿</h2><p style="text-align:center;margin-bottom:10px">Post • Like • Kusanya Pointi • Pata Zawadi</p>
-<input id="loginName" placeholder="Andika jina lako - mfano Said">
-<input id="loginPhone" placeholder="Namba ya simu (hiari)">
-<button onclick="login()" style="width:100%">INGIA / JISAJILI</button>
-<p style="font-size:12px;color:#666;text-align:center;margin-top:10px">Post = 50 Pointi • Like = 10 Pointi • Comment = 5 Pointi<br>1000 Pointi = Zawadi ya Bando 500</p>
+<header><b>KAPAPP</b><br><span>Post • Like • Pointi • Pesa</span></header>
+
+<div class="balance">
+<p>Pointi Zako Leo</p>
+<b id="points">0 Pointi</b>
+<p id="money">Tsh 0</p>
+<p style="font-size:12px;color:#666">Pointi 100 = Tsh 1,000 • Like = 5 Pointi • Comment = 10 Pointi</p>
 </div>
-<div id="appPage" class="hidden">
-<div class="balance">👋 Habari, <b id="welcomeName"></b><br>Pointi Zako: <b id="myBalance">0 Pointi</b><br><span id="myStats" style="font-size:13px;color:#666"></span>
-<button class="wa-btn" onclick="shareAppWhatsApp()">📲 ALIKA MARAFIKI WHATSAPP</button>
-</div>
-<div class="notice">ℹ️ <b>Tangazo muhimu:</b> KAPAPP ni mfumo wa Pointi na Zawadi. Pointi sio pesa taslimu. Kusanya 1000 Pointi ili kubadilisha kuwa zawadi ya Bando kutoka kwa Admin.</div>
-<div id="feedPage">
+
 <div class="card">
-<textarea id="caption" placeholder="Andika kitu... #Kapapp #Michezo"></textarea>
-<input id="postUrl" placeholder="Link ya picha/video (hiari)">
-<input type="file" id="postFile" accept="image/*,video/*">
-<button id="postBtn" onclick="createPost()" style="width:100%">POST • +50 POINTI</button>
-<p id="uploadStatus" style="font-size:13px;color:#1877f2;text-align:center;margin-top:6px"></p>
+<h3>Andika Post Mpya</h3>
+<textarea id="postText" placeholder="Andika biashara yako hapa..."></textarea>
+<input type="text" id="postImg" placeholder="Weka link ya picha (hiari)">
+<button onclick="addPost()">POST SASA +20 POINTI</button>
 </div>
-<input id="searchInput" placeholder="🔍 Tafuta #hashtag au jina..." oninput="loadFeed()" style="margin:10px">
-<div id="feedList"></div>
+
+<div id="feed"></div>
+
+<div class="nav">
+<button onclick="location.reload()">🏠 Home</button>
+<button onclick="alert('Pointi zako: '+localStorage.getItem('kap_points'))">⭐ Pointi</button>
+<button onclick="alert('Ukitaka kutoa pesa, tuma WhatsApp 0755...')">💰 Toa Pesa</button>
 </div>
-<div id="dmPage" class="hidden">
-<div class="card"><h3>DM 💬</h3><input id="dmTo" placeholder="Tuma kwa nani? Andika jina"><input id="dmText" placeholder="Andika ujumbe..."><button onclick="sendDM()" style="width:100%">TUMA DM</button></div>
-<div id="dmList"></div>
-</div>
-<div id="profilePage" class="hidden">
-<div class="card" style="text-align:center">
-<div id="profAvatarWrap"></div>
-<h3 id="profName" style="margin-top:8px"></h3>
-<p id="profStats"></p>
-<p style="font-size:13px;color:#666;margin:8px 0">👇 Badilisha picha yako mwenyewe hapa:</p>
-<input type="file" id="profFile" accept="image/*">
-<button onclick="changeProfilePic()" style="width:100%;background:#0a9e3f">📸 BADILISHA PICHA YANGU</button>
-<p id="profStatus" style="font-size:13px;color:#1877f2;margin-top:5px"></p>
-<hr style="margin:12px 0">
-<h3>🎁 BADILISHA POINTI KUWA ZAWADI</h3>
-<p style="font-size:13px;color:#666">1000 Pointi = Zawadi ya Bando 500<br>Zawadi zinatolewa kulingana na matangazo yaliyopo.</p>
-<input id="withdrawAmount" type="number" placeholder="Pointi - mfano 1000">
-<input id="withdrawNumber" placeholder="Namba ya simu ya kupokea Bando">
-<button onclick="requestWithdraw()" style="width:100%;background:#0a9e3f;font-size:16px">🎁 TUMA OMBI LA ZAWADI</button>
-<p id="withdrawStatus" style="font-size:13px;color:#666;margin-top:5px"></p>
-<button class="wa-btn" onclick="shareAppWhatsApp()">💚 SHARE KAPAPP WHATSAPP</button>
-<button onclick="logout()" style="margin-top:10px;width:100%">TOKA / BADILISHA JINA</button>
-</div>
-<div id="myPosts"></div>
-</div>
-</div>
-<button class="wa-float" onclick="shareAppWhatsApp()">💬</button>
-<div class="nav" id="bottomNav" style="display:none">
-<button id="btnFeed" class="active" onclick="show('feed')">🏠 Feed</button>
-<button id="btnDm" onclick="show('dm')">💬 DM</button>
-<button id="btnProfile" onclick="show('profile')">👤 Mimi</button>
-</div>
+
 <script>
-const CLOUD_NAME = 'izgmg90u';
-const UPLOAD_PRESET = 'kapapp';
-const ADMIN_PHONE = '255700000000';
-let me = ""; let myPhone = "";
-function getData(k, def){ try{ return JSON.parse(localStorage.getItem(k)) || def }catch(e){ return def } }
-function saveData(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
-function getAvatar(name){ let all = getData('kapappAvatars', {}); return all[name] || ""; }
-function saveAvatar(name, url){ let all = getData('kapappAvatars', {}); all[name]=url; saveData('kapappAvatars', all); }
-function avatarHTML(name){ let av = getAvatar(name); if(av) return `<div class="avatar"><img src="${av}"></div>`; return `<div class="avatar">${(name||'?').charAt(0).toUpperCase()}</div>`; }
-async function uploadToCloudinary(file){
-  const formData = new FormData(); formData.append('file', file); formData.append('upload_preset', UPLOAD_PRESET);
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, {method:'POST', body:formData});
-  const data = await res.json(); if(!data.secure_url) throw new Error(data.error?.message || 'Upload imeshindwa'); return data.secure_url;
+let points = parseInt(localStorage.getItem('kap_points')||'0');
+function updatePoints(){
+document.getElementById('points').innerText = points + ' Pointi';
+document.getElementById('money').innerText = 'Tsh ' + (points*10);
+localStorage.setItem('kap_points', points);
 }
-function loadUser(){ let saved = localStorage.getItem('kapappUser'); if(!saved) return false; try{ let u = JSON.parse(saved); if(typeof u === 'object' && u !== null){ me = u.name || u.username || ""; } else { me = u; } }catch(e){ me = saved.replace(/[{}\"]/g,'').replace('name:','').replace(':', ''); } if(me.includes('{') || me.includes('"')){ let m = me.match(/"name":"([^"]+)"/); if(m) me = m[1]; } return me ? true : false; }
-function updateHeader(){ document.getElementById('headerName').textContent = me || "Karibu"; document.getElementById('welcomeName').textContent = me || ""; document.getElementById('profName').textContent = me || ""; let av = getAvatar(me); if(av){ document.getElementById('profAvatarWrap').innerHTML = `<img src="${av}" class="prof-big">`; } else { document.getElementById('profAvatarWrap').innerHTML = `<div class="avatar" style="margin:0 auto;width:90px;height:90px;font-size:35px;border:3px solid #1877f2">${me?me.charAt(0).toUpperCase():"S"}</div>`; } }
-function login(){ let n = document.getElementById('loginName').value.trim(); if(!n) return alert('Andika jina lako kwanza!'); me = n; myPhone = document.getElementById('loginPhone').value.trim(); saveData('kapappUser', {name: me, phone: myPhone}); startApp(); }
-function logout(){ localStorage.removeItem('kapappUser'); location.reload(); }
-function startApp(){ document.getElementById('loginPage').style.display='none'; document.getElementById('appPage').classList.remove('hidden'); document.getElementById('bottomNav').style.display='flex'; updateHeader(); loadFeed(); loadDM(); loadProfile(); }
-function show(page){ document.getElementById('feedPage').classList.add('hidden'); document.getElementById('dmPage').classList.add('hidden'); document.getElementById('profilePage').classList.add('hidden'); document.getElementById('btnFeed').classList.remove('active'); document.getElementById('btnDm').classList.remove('active'); document.getElementById('btnProfile').classList.remove('active'); if(page==='feed'){ document.getElementById('feedPage').classList.remove('hidden'); document.getElementById('btnFeed').classList.add('active'); loadFeed(); } if(page==='dm'){ document.getElementById('dmPage').classList.remove('hidden'); document.getElementById('btnDm').classList.add('active'); loadDM(); } if(page==='profile'){ document.getElementById('profilePage').classList.remove('hidden'); document.getElementById('btnProfile').classList.add('active'); loadProfile(); } }
-function getBalance(){ return getData('kapappBalance_'+me, 0); }
-function addMoney(amount){ let b = getBalance() + amount; saveData('kapappBalance_'+me, b); document.getElementById('myBalance').textContent = b + " Pointi"; }
-function requestWithdraw(){
-  let amount = parseInt(document.getElementById('withdrawAmount').value);
-  let number = document.getElementById('withdrawNumber').value.trim();
-  let balance = getBalance();
-  if(!amount || !number) return alert('Andika Pointi na namba ya simu!');
-  if(amount < 1000) return alert('Kiwango cha chini ni 1000 Pointi. Una ' + balance + ' Pointi. Endelea kupost!');
-  if(amount > balance) return alert('Huna Pointi za kutosha! Una ' + balance + ' Pointi tu.');
-  let msg = "🎁 OMBI LA ZAWADI - KAPAPP\n\nJina: " + me + "\nAnataka kubadilisha: " + amount + " Pointi\nNamba ya kupokea Bando: " + number + "\nPointi zake: " + balance + "\n\nTafadhali mpe zawadi yake.";
-  window.open("https://wa.me/" + ADMIN_PHONE + "?text=" + encodeURIComponent(msg), "_blank");
-  document.getElementById('withdrawStatus').textContent = '✅ Ombi limetumwa kwa Admin! Subiri zawadi yako.';
+let posts = JSON.parse(localStorage.getItem('kap_posts')||'[]');
+function render(){
+let h='';
+posts.forEach((p,i)=>{
+h+=`<div class="card"><b>${p.name||'KAPAPP User'}</b><p style="margin:8px 0">${p.text}</p>${p.img?`<img class="post-img" src="${p.img}">`:''}<div class="actions"><button onclick="like(${i})">👍 Like +5</button><button onclick="comment(${i})">💬 Comment +10</button><button onclick="share(${i})">↗️ Share +15</button></div><p style="font-size:12px;color:#888;margin-top:6px">❤️ ${p.likes||0} • 💬 ${p.comments||0}</p></div>`;
+});
+document.getElementById('feed').innerHTML = h || '<div class="card"><p>Hakuna post bado. Anza ku-post kupata pointi!</p></div>';
 }
-async function changeProfilePic(){ let file = document.getElementById('profFile').files[0]; if(!file) return alert('Chagua picha kwanza!'); document.getElementById('profStatus').textContent = '⏳ Inapakia picha yako...'; try{ let url = await uploadToCloudinary(file); saveAvatar(me, url); document.getElementById('profStatus').textContent='✅ Picha yako imebadilika!'; document.getElementById('profFile').value=''; updateHeader(); loadFeed(); loadProfile(); alert('Hongera '+me+'! Picha yako ya profile imebadilika ✅'); }catch(e){ alert('Imeshindwa: '+e.message); document.getElementById('profStatus').textContent='❌ Imeshindwa'; } }
-async function createPost(){ let caption = document.getElementById('caption').value.trim(); let url = document.getElementById('postUrl').value.trim(); let file = document.getElementById('postFile').files[0]; if(!caption && !url && !file) return alert('Andika kitu kwanza!'); let btn = document.getElementById('postBtn'); let status = document.getElementById('uploadStatus'); btn.disabled=true; btn.textContent='INAPAKIA...'; try{ let finalUrl = url; if(file){ status.textContent='⏳ Inapakia picha Cloudinary...'; finalUrl = await uploadToCloudinary(file); status.textContent='✅ Picha imepakiwa!'; } let posts = getData('kapappPosts', []); let hashtags = (caption.match(/#\w+/g) || []).join(' '); posts.unshift({id: Date.now(), user: me, caption: caption, media: finalUrl, type: '', tags: hashtags, likes: 0, likedBy: [], comments: [], time: new Date().toLocaleString()}); saveData('kapappPosts', posts); addMoney(50); alert('Post imetumwa! ✅ +50 Pointi'); document.getElementById('caption').value=''; document.getElementById('postUrl').value=''; document.getElementById('postFile').value=''; status.textContent=''; show('feed'); }catch(err){ alert('Picha haikupakiwa: '+err.message); status.textContent='❌ Imeshindwa'; } btn.disabled=false; btn.textContent='POST • +50 POINTI'; }
-function formatText(t){ return (t||'').replace(/#(\w+)/g, '<b style="color:#1877f2">#$1</b>'); }
-function shareAppWhatsApp(){ let link = window.location.href; let text = "Karibu KAPAPP 🇹🇿 Post • Like • Kusanya Pointi • Pata Zawadi! Jiunge sasa: " + link; window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank"); }
-function sharePostWhatsApp(caption, user){ let link = window.location.href; let text = (user||"") + ": " + (caption||"") + " - Kupitia KAPAPP 🇹🇿 " + link; window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank"); }
-function loadFeed(){ let posts = getData('kapappPosts', []); let search = (document.getElementById('searchInput')?.value || '').toLowerCase(); let html=''; if(posts.length===0) html='<div class="card" style="text-align:center">Hakuna post bado.<br>Kuwa wa kwanza kupost!</div>'; posts.forEach(p=>{ if(search && !(p.caption||'').toLowerCase().includes(search) && !(p.user||'').toLowerCase().includes(search)) return; let media=''; if(p.media){ if(p.media.startsWith('data:video') || p.media.includes('.mp4') || p.media.includes('/video/')) media=`<video src="${p.media}" controls style="width:100%;border-radius:8px;margin-top:8px"></video>`; else if(p.media.startsWith('http')) media=`<img src="${p.media}" style="width:100%;border-radius:8px;margin-top:8px">`; else if(p.media.startsWith('data:image')) media=`<img src="${p.media}" style="width:100%;border-radius:8px;margin-top:8px">`; } let comments=(p.comments||[]).map(c=>`<div class="comment"><b>${c.user}:</b> ${c.text}</div>`).join(''); let safeCap = (p.caption||'').replace(/'/g,"").replace(/"/g,""); html+=`<div class="card"><div class="user-row">${avatarHTML(p.user)}<div><b>${p.user}</b><br><small style="color:#666">${p.time||''}</small></div></div><p>${formatText(p.caption||'')}</p>${media}<div class="actions"><button onclick="likePost(${p.id}, ${p.likes})">❤️ Like (${p.likes})</button><button onclick="addComment(${p.id})">💬 Comment</button><button class="wa" onclick="sharePostWhatsApp('${safeCap}','${p.user}')">💚 WhatsApp</button><button onclick="sharePost('${safeCap}')">🔗 Share</button></div>${comments}</div>`; }); document.getElementById('feedList').innerHTML=html; document.getElementById('myBalance').textContent=getBalance()+" Pointi"; let myPosts=posts.filter(p=>p.user===me).length; document.getElementById('myStats').textContent=`Posts zako: ${myPosts}`; }
-function likePost(id, likes){ let posts=getData('kapappPosts', []); let p=posts.find(x=>x.id===id); if(!p) return; if((p.likedBy||[]).includes(me)) return alert('Umesha-like hii!'); p.likedBy.push(me); p.likes=(p.likes||0)+1; saveData('kapappPosts', posts); if(p.user!==me){ let bal=getData('kapappBalance_'+p.user,0)+10; saveData('kapappBalance_'+p.user,bal); } else { addMoney(0); } loadFeed(); }
-function addComment(id){ let txt=prompt('Andika comment yako:'); if(!txt) return; let posts=getData('kapappPosts', []); let p=posts.find(x=>x.id===id); if(!p) return; p.comments.push({user:me, text:txt}); saveData('kapappPosts', posts); if(p.user!==me){ let bal=getData('kapappBalance_'+p.user,0)+5; saveData('kapappBalance_'+p.user,bal); } loadFeed(); }
-function sharePost(caption){ navigator.clipboard.writeText(caption+" - Kupitia KAPAPP").then(()=>alert('Imecopywa! Share WhatsApp ✅')); }
-function sendDM(){ let to=document.getElementById('dmTo').value.trim(); let txt=document.getElementById('dmText').value.trim(); if(!to||!txt) return alert('Jaza kwa nani na ujumbe!'); let dms=getData('kapappDMs', []); dms.unshift({from:me, to:to, text:txt, time:new Date().toLocaleString()}); saveData('kapappDMs', dms); document.getElementById('dmText').value=''; loadDM(); }
-function loadDM(){ let dms=getData('kapappDMs', []); let html=''; dms.forEach(m=>{ if(m.to===me||m.from===me){ html+=`<div class="card"><b>${m.from} → ${m.to}</b><br>${m.text}<br><small>${m.time}</small></div>`; } }); if(!html) html='<div class="card">Hakuna DM bado.</div>'; document.getElementById('dmList').innerHTML=html; }
-function loadProfile(){ let posts=getData('kapappPosts', []); let my=posts.filter(p=>p.user===me); let totalLikes=0; my.forEach(p=>totalLikes+=(p.likes||0)); document.getElementById('profStats').textContent=`Pointi: ${getBalance()} • Posts: ${my.length} • Likes: ${totalLikes}`; updateHeader(); let html=my.map(p=>`<div class="card"><p>${formatText(p.caption)}</p><small>❤️ ${p.likes} • 💬 ${(p.comments||[]).length}</small></div>`).join(''); if(!html) html='<div class="card">Hujapost bado.</div>'; document.getElementById('myPosts').innerHTML=html; document.getElementById('myBalance').textContent=getBalance()+" Pointi"; }
-if(loadUser()){ startApp(); }
+function addPost(){
+let t=document.getElementById('postText').value;
+if(!t) return alert('Andika kitu kwanza');
+posts.unshift({text:t, img:document.getElementById('postImg').value, likes:0, comments:0, name:'Wewe'});
+localStorage.setItem('kap_posts', JSON.stringify(posts));
+points+=20; updatePoints(); render();
+document.getElementById('postText').value='';
+alert('Hongera! Umepata +20 Pointi');
+}
+function like(i){posts[i].likes++; points+=5; localStorage.setItem('kap_posts', JSON.stringify(posts)); updatePoints(); render();}
+function comment(i){let c=prompt('Andika comment yako:'); if(c){posts[i].comments++; points+=10; localStorage.setItem('kap_posts', JSON.stringify(posts)); updatePoints(); render();}}
+function share(i){points+=15; updatePoints(); alert('Umepata +15 Pointi kwa Share!');}
+updatePoints(); render();
 </script>
 </body>
 </html>

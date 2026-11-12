@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KAPAPP 👑 - CEO Kapwile - LIVE</title>
+<title>KAPAPP 👑 - CEO Kapwile - LIVE - APP YA KUAMINIKA</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#000;color:#fff;padding-bottom:90px}
@@ -72,12 +72,13 @@ header p{font-size:11px;color:#aaa}
 .giftBtn{background:#222 !important;width:auto !important;padding:10px 12px !important;font-size:20px !important;margin:4px !important}
 @keyframes blink{0%{opacity:1}50%{opacity:0.3}100%{opacity:1}}
 .blink{animation:blink 1s infinite}
+.trust{background:#0a2a12;border:1px solid #25D366;padding:10px;border-radius:12px;margin:10px;text-align:center;font-size:12px}
 </style>
 </head>
 <body>
 <div id="authScreen">
 <h1>KAP<b>APP</b> 👑</h1>
-<p>CEO: KAPWILE | Tanzania 🇹🇿 | App ya Kijamii + LIVE 🔴</p>
+<p>CEO: KAPWILE | Tanzania 🇹🇿 | App ya Kijamii + LIVE 🔴 | ✅ APP YA KUAMINIKA</p>
 <p style="margin-top:10px;color:#aaa;font-size:13px">Post, LIVE, Pata Views, Lipwa kwa Juhudi Zako! 🔥💰<br>Kama Facebook + TikTok - Jiunge BURE. Hakuna Bonus.</p>
 <div class="authBox" id="loginBox">
 <h2>🔐 LOGIN - Ingia</h2>
@@ -98,7 +99,7 @@ header p{font-size:11px;color:#aaa}
 <small style="color:#aaa">Kujiunga ni BURE. Unalipwa kwa Views, Likes na Zawadi za LIVE.</small>
 </div>
 </div>
-<header><h1>KAP<b>APP</b> 👑</h1><p>CEO: KAPWILE | Tanzania 🇹🇿 | Post + LIVE + Lipwa</p>
+<header><h1>KAP<b>APP</b> 👑</h1><p>CEO: KAPWILE | Tanzania 🇹🇿 | Post + LIVE + Lipwa | ✅ KUAMINIKA</p>
 <div class="nav">
 <button class="active" onclick="show('home',this)">🏠 Home</button>
 <button onclick="show('livePage',this)">🔴 LIVE</button>
@@ -113,6 +114,7 @@ header p{font-size:11px;color:#aaa}
 </div></header>
 <div class="wa" onclick="openWA()">💬</div>
 <div class="topUser"><span>👋 Karibu, <b id="currentUserName">Mgeni</b> <span id="currentUserBadge"></span></span><button onclick="doLogout()">🚪 Log Out</button></div>
+<div class="trust">✅ <b>APP YA KUAMINIKA</b> - Picha zinajipunguza zenyewe • Posts zinabaki • Pages zinabaki • Pesa ni kwa Juhudi Zako Tu • Hakuna Bonus • CEO Kapwile 👑</div>
 <div class="wallet">💰 <b>PESA YAKO:</b> <span id="money">TSh 0</span> | 👀 Views: <span id="views">0</span> | ❤️ Likes: <span id="totalLikes">0</span> | 🎁 Zawadi LIVE: <span id="giftMoney">TSh 0</span><br><small>1000 Views = TSh 5,000 • 10,000 Views = TSh 50,000 • Kila Like = TSh 10 • Zawadi za LIVE = Pesa Papo Hapo!<br>⚠️ Hakuna Bonus. Pesa ni kwa Juhudi Zako Tu.</small><br>
 <select id="withdrawCountry"><option value="TZ">🇹🇿 Tanzania - TSh</option><option value="CN">🇨🇳 China - Yuan (CNY)</option><option value="US">🇺🇸 Marekani - Dola (USD)</option><option value="EU">🇪🇺 Ulaya - Euro (EUR)</option><option value="KE">🇰🇪 Kenya - KSh</option><option value="UG">🇺🇬 Uganda - USh</option></select>
 <select id="withdrawMethod"><option>M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option><option>HaloPesa</option><option>PayPal</option><option>WeChat Pay</option><option>Alipay</option><option>Bank Transfer</option></select>
@@ -166,6 +168,7 @@ header p{font-size:11px;color:#aaa}
 <select id="pType"><option value="video">🎬 Video / Reels</option><option value="image">🖼️ Picha</option></select>
 <input id="pUrl" placeholder="Weka Link ya Video/Picha (au chagua faili)">
 <input type="file" id="pFile" accept="image/*,video/*" onchange="readFile(this)">
+<small style="color:#25D366">✅ Picha kubwa itajipunguza yenyewe automatically ili iingie vizuri - App ya Kuaminika!</small>
 <button onclick="addPost()">🚀 POST SASA</button>
 <small style="color:#aaa">Post yako itabaki hata ukitoka na kuingia tena!</small></div>
 </div>
@@ -247,9 +250,9 @@ function showLogin(){document.getElementById('registerBox').classList.add('hidde
 function doRegister(){let name=document.getElementById('regName').value.trim();let phone=document.getElementById('regPhone').value.trim();let p1=document.getElementById('regPass').value;let p2=document.getElementById('regPass2').value;if(!name||!phone||!p1)return alert('❌ Jaza Jina Kamili, Namba na Password!');if(p1!==p2)return alert('❌ Password hazifanani!');if(p1.length<4)return alert('❌ Password iwe angalau herufi 4');let users=getUsers();if(users.find(u=>u.phone===phone))return alert('❌ Hii namba imesha jiunga! Ingia na LOGIN.');let nu={name:name,phone:phone,pass:p1,role:"User",date:new Date().toLocaleDateString()};users.push(nu);saveUsers(users);setCurrent(nu);alert('🎉 Hongera '+name+'! Umejiunga KAPAPP! Karibu! 👑');enterApp();}
 function doLogin(){let phone=document.getElementById('loginPhone').value.trim();let pass=document.getElementById('loginPass').value;if(!phone||!pass)return alert('Weka namba na password!');let found=getUsers().find(u=>u.phone===phone&&u.pass===pass);if(!found)return alert('❌ Namba au Password sio sahihi! Kama ni mpya, bonyeza JIUNGE HAPA');setCurrent(found);alert('Karibu tena '+found.name+'! 👑🔥');enterApp();}
 function doLogout(){if(confirm('Unataka kutoka KAPAPP? 🚪')){localStorage.removeItem('kapapp_current');location.reload();}}
-function changeProfilePic(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{let url=e.target.result;document.getElementById('profPicShow').src=url;document.getElementById('profPicShow').style.display='block';document.getElementById('profEmojiShow').style.display='none';localStorage.setItem('kapapp_pic',url);alert('Hongera! Picha yako ya Profile imewekwa! 👑📸');};r.readAsDataURL(f);}
+function changeProfilePic(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{let img=new Image();img.onload=()=>{let canvas=document.createElement('canvas');let max=400;let w=img.width,h=img.height;if(w>max){h=h*max/w;w=max;}if(h>max){w=w*max/h;h=max;}canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);let url=canvas.toDataURL('image/jpeg',0.8);document.getElementById('profPicShow').src=url;document.getElementById('profPicShow').style.display='block';document.getElementById('profEmojiShow').style.display='none';localStorage.setItem('kapapp_pic',url);alert('Hongera! Picha yako ya Profile imewekwa na imepunguzwa yenyewe! 👑📸');};img.src=e.target.result;};r.readAsDataURL(f);}
 function removeProfilePic(){document.getElementById('profPicShow').style.display='none';document.getElementById('profEmojiShow').style.display='block';localStorage.removeItem('kapapp_pic');alert('Picha imefutwa!');}
-function changeStory(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{document.getElementById('myStoryCircle').innerHTML='<img src="'+e.target.result+'">';alert('Story yako imewekwa! 📸');};r.readAsDataURL(f);}
+function changeStory(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{let img=new Image();img.onload=()=>{let canvas=document.createElement('canvas');let max=500;let w=img.width,h=img.height;if(w>max){h=h*max/w;w=max;}canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);document.getElementById('myStoryCircle').innerHTML='<img src="'+canvas.toDataURL('image/jpeg',0.7)+'">';alert('Story yako imewekwa na imepunguzwa yenyewe! 📸');};img.src=e.target.result;};r.readAsDataURL(f);}
 function startLive(){let cur=getCurrent();let title=document.getElementById('liveTitle').value||'Nipo LIVE na nyinyi! 🔥';document.getElementById('myLiveSetup').classList.add('hidden');document.getElementById('myLiveRoom').classList.remove('hidden');document.getElementById('liveTitleShow').innerText=title+' - '+(cur?cur.name:'Wewe');liveViewerCount=1;liveGiftTotal=0;document.getElementById('liveChat').innerHTML='<p>🎉 <b>System:</b> '+(cur?cur.name:'Wewe')+' ameanza LIVE! Karibu wote! 🔴</p>';alert('🔴 Uko LIVE sasa! Watu wanakuona! Ongea nao, watakutumia zawadi!');liveInterval=setInterval(()=>{liveViewerCount+=Math.floor(Math.random()*5);document.getElementById('liveViewers').innerText=liveViewerCount;let fakeNames=['Dogo','Mama Ntilie','Samia','Fan wa Kapwile','Zuchu Fan'];let fakeMsgs=['Hongera CEO! 👑','Motooo 🔥🔥','Nakupenda sana 😍','Upo wapi leo?','Tuma wimbo mpya 🎵'];let n=fakeNames[Math.floor(Math.random()*fakeNames.length)];let m=fakeMsgs[Math.floor(Math.random()*fakeMsgs.length)];let chat=document.getElementById('liveChat');chat.innerHTML+='<p><b>'+n+':</b> '+m+'</p>';chat.scrollTop=chat.scrollHeight;},6000);}
 function sendLiveComment(){let v=document.getElementById('liveCommentInput').value;if(!v)return;let cur=getCurrent();let chat=document.getElementById('liveChat');chat.innerHTML+='<p><b>'+(cur?cur.name:'Wewe')+':</b> '+v+'</p>';chat.scrollTop=chat.scrollHeight;document.getElementById('liveCommentInput').value='';}
 function sendGift(name,amount){liveGiftTotal+=amount;document.getElementById('liveGifts').innerText='TSh '+liveGiftTotal.toLocaleString();document.getElementById('giftMoney').innerText='TSh '+liveGiftTotal.toLocaleString();let chat=document.getElementById('liveChat');let cur=getCurrent();chat.innerHTML+='<p>🎁 <b>'+(cur?cur.name:'Wewe')+'</b> ametuma '+name+' - TSh '+amount.toLocaleString()+'! 🔥</p>';chat.scrollTop=chat.scrollHeight;alert('Asante! Umetuma '+name+' - TSh '+amount.toLocaleString()+' 🎁');}
@@ -273,7 +276,27 @@ function deletePost(i){if(confirm('Futa post yako hii? 🗑️')){posts.splice(i
 function clearNotif(){document.getElementById('notifList').innerHTML='<p>Hakuna notifications mpya.</p>';document.getElementById('notifCount').innerText='0';}
 function openWA(){window.open('https://wa.me/255000000000?text='+encodeURIComponent('Nimeona KAPAPP 👑 ya CEO Kapwile!'),'_blank');}
 function addEmoji(e){if(e.target.tagName==='SPAN'){let d=document.getElementById('pDesc');d.value+=' '+e.target.innerText;}}
-function readFile(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{tempFile=e.target.result;alert('Faili imepakuliwa! ✅');};r.readAsDataURL(f);}
+function readFile(input){
+let f=input.files[0];if(!f)return;
+if(f.type.startsWith('video/')){let r=new FileReader();r.onload=e=>{tempFile=e.target.result;alert('Video imepakuliwa! ✅ Itaonekana vizuri!');};r.readAsDataURL(f);return;}
+let r=new FileReader();
+r.onload=e=>{
+let img=new Image();
+img.onload=()=>{
+let canvas=document.createElement('canvas');
+let max=800;
+let w=img.width, h=img.height;
+if(w>max){h=h*max/w; w=max;}
+if(h>max){w=w*max/h; h=max;}
+canvas.width=w; canvas.height=h;
+canvas.getContext('2d').drawImage(img,0,0,w,h);
+tempFile=canvas.toDataURL('image/jpeg',0.7);
+alert('Picha imepunguzwa yenyewe! ✅ Sasa ni ndogo, inaingia vizuri, inapakia haraka!');
+};
+img.src=e.target.result;
+};
+r.readAsDataURL(f);
+}
 function addPost(){let cur=getCurrent();let name=cur?cur.name:document.getElementById('myName').value;if(!name)return alert('Weka jina lako!');let t=document.getElementById('pTitle').value||'Post Mpya KAPAPP 🔥';let d=document.getElementById('pDesc').value||'#Kapwile #Tanzania';let ty=document.getElementById('pType').value;let u=document.getElementById('pUrl').value||tempFile||'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600';posts.unshift({user:name,emoji:'😍',title:t,desc:d,type:ty,url:u,likes:0,views:10,comments:[]});savePosts();render();alert('Hongera '+name+'! Post yako imeonekana! 🚀');document.getElementById('pTitle').value='';document.getElementById('pDesc').value='';document.getElementById('pUrl').value='';show('home',document.querySelectorAll('.nav button')[0]);}
 function addPage(){let n=document.getElementById('pageName').value;if(!n)return alert('Andika jina la Page');pages.unshift({name:n,emoji:'📄',followers:1});savePages();renderPages();alert('Page "'+n+'" imetengenezwa na IMEHIFADHIWA! 🎉 Hutapotea tena!');document.getElementById('pageName').value='';}
 function sendDM(){let v=document.getElementById('dmInput').value;if(!v)return;document.getElementById('dmBox').innerHTML+='<p><b>Wewe:</b> '+v+'</p>';document.getElementById('dmInput').value='';setTimeout(()=>{document.getElementById('dmBox').innerHTML+='<p><b>'+document.getElementById('dmUser').value+':</b> Sawa mkuu, nimepokea! 👑❤️</p>';},800);}

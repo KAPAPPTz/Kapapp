@@ -68,79 +68,27 @@ input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border
 <button onclick="alert('DM: Una ujumbe 2')">💬 DM</button>
 <button onclick="alert('Pointi zako: '+points)">⭐ Pointi</button>
 <button onclick="window.open('https://wa.me/255755000000?text=Nataka kujiunga na KAPAPP','_blank')">🟢 WhatsApp</button>
-</div>
-<script>
-let points = parseInt(localStorage.getItem('kap_points')||'0');
-let myName = localStorage.getItem('kap_name') || 'Said Kapwile';
-let myPic = localStorage.getItem('kap_pic') || '';
-let tempFile = ''; let tempFileType = '';
-document.getElementById('myName').innerText = myName;
-if(myPic){document.getElementById('myAvatar').innerHTML='<img src="'+myPic+'">';} else {document.getElementById('myAvatar').innerText=myName.charAt(0);}
-function previewFile(){
-let f=document.getElementById('fileInput').files[0];
-if(!f) return;
-let r=new FileReader();
-r.onload=function(e){tempFile=e.target.result; tempFileType=f.type; document.getElementById('previewText').innerText='✅ Imechaguliwa: '+f.name+' - Tayari ku-post!';};
-r.readAsDataURL(f);
-}
-function updatePoints(){
-document.getElementById('points').innerText=points+' Pointi';
-document.getElementById('money').innerText='Tsh '+(points*10);
-localStorage.setItem('kap_points',points);
-}
-function formatText(t){return t.replace(/#(\w+)/g,'<span class="hashtag">#$1</span>').replace(/@(\w+)/g,'<span class="tag">@$1</span>');}
-let posts = JSON.parse(localStorage.getItem('kap_posts_v3')||'[]');
-if(posts.length==0){
-posts=[
-{text:'🔥 HILI NDIO GROUP LA SIMBA SC 🔥 Karibu sana! #SimbaSC #Michezo @SimbaSC', name:'Said Kapwile', handle:'@said_kapwile', likes:12, comments:3, wa:'255755000000', img:'', video:'', pic:''},
-{text:'Niko na viatu kali sana bei poa! Nicheki WhatsApp #Biashara #Viatu', name:'Juma Shop', handle:'@juma_shop', likes:8, comments:2, wa:'255765000000', img:'', video:'', pic:''},
-{text:'Video mpya ya biashara yangu! Angalia 👇 #Biashara', name:'Amina Store', handle:'@amina_store', likes:20, comments:5, wa:'255713000000', img:'', video:'', pic:''}
-];
-localStorage.setItem('kap_posts_v3', JSON.stringify(posts));
-}
-function render(){
-let h='';
-posts.forEach((p,i)=>{
-h+=`<div class="card">
-<div class="profile-row"><div class="avatar">${p.pic?`<img src="${p.pic}">`:p.name.charAt(0)}</div><div style="flex:1"><b>${p.name}</b><br><span style="font-size:12px;color:#888">${p.handle} • Dar es Salaam • Sasa hivi</span></div><button class="follow-btn" onclick="follow('${p.name}')">+ Follow</button></div>
-<p style="margin:10px 0">${formatText(p.text||'')}</p>
-${p.img?`<img class="post-img" src="${p.img}">`:''}
-${p.video?`<video class="post-video" controls src="${p.video}"></video>`:''}
-<p style="font-size:12px;color:#888">❤️ ${p.likes||0} Likes • 💬 ${p.comments||0} Comments • 👁️ ${100+(p.likes||0)*5} Views</p>
-<div class="actions"><button onclick="like(${i})">👍 Like +5</button><button onclick="comment(${i})">💬 Comment +10</button><button onclick="share(${i})">↗️ Share +15</button></div>
-<div class="actions"><button class="dm-btn" onclick="dm('${p.name}')">💬 DM</button><button class="wa-btn" onclick="window.open('https://wa.me/${p.wa||'255755000000'}?text=Nimekuona KAPAPP, naitaka bidhaa yako','_blank')">🟢 WhatsApp</button><button onclick="savePost(${i})">🔖 Save</button></div>
-</div>`;
-});
-document.getElementById('feed').innerHTML=h;
-}
-function addPost(){
-let t=document.getElementById('postText').value;
-if(!t) return alert('Andika kitu kwanza');
-let img=document.getElementById('postImg').value;
-let vid=document.getElementById('postVideo').value;
-if(tempFile && tempFileType.startsWith('video')) vid=tempFile;
-if(tempFile && tempFileType.startsWith('image')) img=tempFile;
-let wa=document.getElementById('postWA').value || '255755000000';
-posts.unshift({text:t, img:img, video:vid, likes:0, comments:0, name:myName, handle:'@'+myName.toLowerCase().replace(/ /g,'_'), wa:wa, pic:myPic});
-localStorage.setItem('kap_posts_v3', JSON.stringify(posts));
-points+=20; updatePoints(); render();
-document.getElementById('postText').value=''; document.getElementById('postImg').value=''; document.getElementById('postVideo').value=''; tempFile='';
-alert('Hongera! Post yako na Picha/Video imetumwa! +20 Pointi');
-}
-function like(i){posts[i].likes++; points+=5; localStorage.setItem('kap_posts_v3', JSON.stringify(posts)); updatePoints(); render();}
-function comment(i){let c=prompt('Andika comment yako:'); if(c){posts[i].comments++; points+=10; localStorage.setItem('kap_posts_v3', JSON.stringify(posts)); updatePoints(); render(); alert('Comment imetumwa! +10 Pointi');}}
-function share(i){points+=15; updatePoints(); alert('Umepata +15 Pointi kwa Share!');}
-function savePost(i){alert('Ume-save post ya '+posts[i].name+' ✅ Utaiangalia baadaye');}
-function follow(n){points+=2; updatePoints(); alert('Umemfollow '+n+'! +2 Pointi');}
-function dm(n){let m=prompt('Tuma DM kwa '+n+':'); if(m){points+=5; updatePoints(); alert('DM imetumwa kwa '+n+' ✅ +5 Pointi');}}
-function showProfile(){
-let n=prompt('Jina lako la Profile?', myName);
-if(n){myName=n; localStorage.setItem('kap_name',n); document.getElementById('myName').innerText=n; if(!myPic) document.getElementById('myAvatar').innerText=n.charAt(0);}
-let p=prompt('Weka link ya Picha yako ya Profile (hiari):', myPic);
-if(p){myPic=p; localStorage.setItem('kap_pic',p); document.getElementById('myAvatar').innerHTML='<img src="'+p+'">';}
-alert('Profile: '+myName+'\nPointi: '+points+'\nPosts: '+posts.length);
-}
+</div><script>
+let points=parseInt(localStorage.getItem('kap_points')||'0');
+let posts=JSON.parse(localStorage.getItem('kap_posts')||'[]');
+let myName=localStorage.getItem('kap_name')||'Said Kapwile';
+let myWA=localStorage.getItem('kap_wa')||'255755000000';
+let currentFile=''; let currentFileType='';
+function updatePoints(){document.getElementById('points').innerText=points+' Pointi'; document.getElementById('money').innerText='Tsh '+(points*10).toLocaleString(); localStorage.setItem('kap_points',points)}
+function formatText(t){if(!t) return ''; return t.replace(/#(\w+)/g,'<span class="hashtag">#$1</span>').replace(/@(\w+)/g,'<span class="tag">@$1</span>')}
+function previewFile(){let f=document.getElementById('fileInput').files[0]; if(!f) return; let r=new FileReader(); r.onload=function(e){currentFile=e.target.result; currentFileType=f.type.startsWith('video')?'video':'image'; document.getElementById('previewText').innerText='✅ Imechaguliwa: '+f.name+' - iko tayari kupost!'}; r.readAsDataURL(f)}
+function addPost(){let t=document.getElementById('postText').value; let img=document.getElementById('postImg').value; let vid=document.getElementById('postVideo').value; let wa=document.getElementById('postWA').value||myWA; if(!t && !img && !vid && !currentFile){alert('Andika kitu kwanza!');return} let media=''; let mtype=''; if(currentFile){media=currentFile; mtype=currentFileType} else if(img){media=img; mtype='image'} else if(vid){media=vid; mtype='video'} posts.unshift({name:myName,wa:wa,text:t,media:media,mtype:mtype,likes:0,comments:[],time:'Sasa hivi'}); points+=20; updatePoints(); localStorage.setItem('kap_posts',JSON.stringify(posts)); document.getElementById('postText').value=''; document.getElementById('postImg').value=''; document.getElementById('postVideo').value=''; document.getElementById('fileInput').value=''; currentFile=''; document.getElementById('previewText').innerText=''; render(); alert('Hongera! +20 Pointi!')}
+function likePost(i){posts[i].likes++; points+=5; updatePoints(); localStorage.setItem('kap_posts',JSON.stringify(posts)); render()}
+function commentPost(i){let c=prompt('Andika comment yako:'); if(!c) return; posts[i].comments.push(myName+': '+c); points+=10; updatePoints(); localStorage.setItem('kap_posts',JSON.stringify(posts)); render()}
+function sharePost(i){points+=15; updatePoints(); let p=posts[i]; let url='https://wa.me/?text='+encodeURIComponent(p.text+' - Angalia KAPAPP!'); window.open(url,'_blank'); localStorage.setItem('kap_posts',JSON.stringify(posts)); render(); alert('Ume-share! +15 Pointi')}
+function waPost(i){let p=posts[i]; window.open('https://wa.me/'+p.wa.replace(/[^0-9]/g,'')+'?text=Nimeona post yako KAPAPP: '+encodeURIComponent(p.text),'_blank')}
+function dmPost(i){let p=posts[i]; let m=prompt('Tuma DM kwa '+p.name+':'); if(m) alert('DM imetumwa kwa '+p.name+'!')}
+function followPost(i){points+=2; updatePoints(); alert('Umemfollow! +2 Pointi')}
+function showProfile(){let n=prompt('Jina lako:',myName); if(n){myName=n; localStorage.setItem('kap_name',n); document.getElementById('myName').innerText=n; document.getElementById('myAvatar').innerText=n.charAt(0)} let w=prompt('Namba yako ya WhatsApp:',myWA); if(w){myWA=w; localStorage.setItem('kap_wa',w)} render()}
+function render(){let f=document.getElementById('feed'); document.getElementById('myName').innerText=myName; document.getElementById('myAvatar').innerText=myName.charAt(0); if(posts.length==0){f.innerHTML='<div class="card"><p>Karibu KAPAPP! Hakuna post bado. Andika post ya kwanza juu uanze kupata Pointi!</p><div style="margin-top:10px;padding:10px;background:#f0f8ff;border-radius:8px"><b>🔥 Mifano ya Post:</b><br>• Viatu kali sana Tsh 25,000 #Biashara<br>• Nyumba ya kupanga Sinza #Nyumba<br>• Natafuta kazi ya bodaboda #Kazi</div></div>'; return} f.innerHTML=posts.map((p,i)=>{let mediaHtml=''; if(p.media){if(p.mtype=='video'){mediaHtml='<video class="post-video" controls src="'+p.media+'"></video>'} else {mediaHtml='<img class="post-img" src="'+p.media+'">'}} let comm=p.comments.map(c=>'<div style="background:#f0f2f5;padding:6px;border-radius:8px;margin-top:4px;font-size:13px">'+c+'</div>').join(''); return '<div class="card"><div class="profile-row"><div class="avatar">'+p.name.charAt(0)+'</div><div style="flex:1"><b>'+p.name+'</b><br><span style="font-size:12px;color:#888">'+p.time+'</span></div><button class="follow-btn" onclick="followPost('+i+')">+ Follow</button></div><p style="margin-top:8px">'+formatText(p.text)+'</p>'+mediaHtml+'<div class="actions"><button onclick="likePost('+i+')">👍 Like '+p.likes+'</button><button onclick="commentPost('+i+')">💬 Comment '+p.comments.length+'</button><button onclick="sharePost('+i+')">↗️ Share</button></div><div class="actions"><button class="wa-btn" onclick="waPost('+i+')">🟢 WhatsApp</button><button class="dm-btn" onclick="dmPost('+i+')">💬 DM</button></div>'+comm+'</div>'}).join('')}
 updatePoints(); render();
 </script>
 </body>
 </html>
+ 
+

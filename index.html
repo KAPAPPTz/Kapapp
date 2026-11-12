@@ -6,73 +6,148 @@
 <title>KAPAPP - Pointi</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
-body{background:#f0f2f5;padding-bottom:80px}
-header{background:#1877f2;color:#fff;padding:14px;text-align:center}
-header b{font-size:22px}
+body{background:#f0f2f5;padding-bottom:90px}
+header{background:#1877f2;color:#fff;padding:12px;position:sticky;top:0;z-index:10}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top b{font-size:24px}
+.top span{background:#fff;color:#1877f2;padding:6px 10px;border-radius:20px;font-size:13px;font-weight:bold;margin-left:4px}
+.search{background:#fff;border-radius:20px;padding:8px 12px;margin-top:8px;color:#888;font-size:14px}
 .balance{background:#fff;margin:12px;padding:16px;border-radius:12px;text-align:center;box-shadow:0 1px 4px #ccc}
 .balance b{color:#0a9e3f;font-size:30px}
 .card{background:#fff;margin:12px;padding:14px;border-radius:12px;box-shadow:0 1px 4px #ccc}
+.profile-row{display:flex;gap:10px;align-items:center}
+.avatar{width:48px;height:48px;border-radius:50%;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:22px;flex-shrink:0;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.follow-btn{background:#1877f2;color:#fff;border:none;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:bold}
 input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px}
-button{background:#1877f2;color:#fff;border:none;padding:12px;border-radius:8px;width:100%;font-weight:bold}
-.actions{display:flex;gap:6px;margin-top:8px}
-.actions button{background:#eef2ff;color:#1877f2;padding:8px}
+.post-btn{background:#1877f2;color:#fff;border:none;padding:12px;border-radius:8px;width:100%;font-weight:bold;font-size:16px}
+.actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.actions button{background:#eef2ff;color:#1877f2;border:none;padding:9px;border-radius:20px;font-size:13px;font-weight:bold;flex:1}
+.wa-btn{background:#25D366!important;color:#fff!important}
+.dm-btn{background:#ffeb3b!important;color:#333!important}
 .post-img{width:100%;border-radius:10px;margin-top:8px}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #ddd}
-.nav button{background:none;color:#333;width:auto}
+.post-video{width:100%;border-radius:10px;margin-top:8px;max-height:400px}
+.hashtag{color:#1877f2;font-weight:bold}
+.tag{color:#0a9e3f;font-weight:bold}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #ddd;z-index:10}
+.nav button{background:none;border:none;font-size:13px;font-weight:bold}
+.upload-box{background:#f9f9f9;border:1px dashed #ccc;padding:10px;border-radius:8px;margin:6px 0;text-align:center;font-size:13px;color:#555}
 </style>
 </head>
 <body>
-<header><b>KAPAPP</b><br><span>Post • Like • Pointi • Pesa</span></header>
+<header>
+<div class="top"><b>KAPAPP</b><div><span onclick="alert('DM: Una ujumbe 2 mpya!')">💬 DM 2</span><span onclick="showProfile()">👤 Profile</span></div></div>
+<div class="search" onclick="let s=prompt('Tafuta mtu / biashara / #hashtag:'); if(s) alert('Unatafuta: '+s)">🔍 Tafuta mtu, biashara, #hashtag...</div>
+</header>
 
 <div class="balance">
-<p>Pointi Zako Leo</p>
-<b id="points">0 Pointi</b>
-<p id="money">Tsh 0</p>
-<p style="font-size:12px;color:#666">Pointi 100 = Tsh 1,000 • Like = 5 Pointi • Comment = 10 Pointi</p>
+<p>Pointi Zako Leo</p><b id="points">0 Pointi</b><p id="money">Tsh 0</p>
+<p style="font-size:12px;color:#666">Pointi 100 = Tsh 1,000 • Like=5 • Comment=10 • Share=15 • Post=20 • Follow=2</p>
 </div>
 
 <div class="card">
-<h3>Andika Post Mpya</h3>
-<textarea id="postText" placeholder="Andika biashara yako hapa..."></textarea>
-<input type="text" id="postImg" placeholder="Weka link ya picha (hiari)">
-<button onclick="addPost()">POST SASA +20 POINTI</button>
+<div class="profile-row">
+<div class="avatar" id="myAvatar">S</div>
+<div style="flex:1"><b id="myName">Said Kapwile</b><br><span style="font-size:12px;color:#888">@said_kapwile • Dar es Salaam • Followers 128</span></div>
+<button class="follow-btn" onclick="showProfile()">Edit Profile</button>
+</div>
+<h3 style="margin-top:12px">Andika Post Mpya</h3>
+<textarea id="postText" placeholder="Andika hapa... Mfano: Viatu kali #Biashara @Said"></textarea>
+
+<div class="upload-box">
+<b>📸 Chagua Picha au 🎥 Video kutoka simu yako</b><br>
+<input type="file" id="fileInput" accept="image/*,video/*" onchange="previewFile()">
+<p id="previewText" style="font-size:12px;margin-top:4px;color:#1877f2"></p>
+</div>
+
+<input type="text" id="postImg" placeholder="AU weka link ya Picha (hiari)">
+<input type="text" id="postVideo" placeholder="AU weka link ya Video (hiari) mfano .mp4">
+<input type="text" id="postWA" placeholder="Namba yako ya WhatsApp mfano 0755000000">
+<button class="post-btn" onclick="addPost()">POST SASA +20 POINTI</button>
 </div>
 
 <div id="feed"></div>
 
 <div class="nav">
 <button onclick="location.reload()">🏠 Home</button>
-<button onclick="alert('Pointi zako: '+localStorage.getItem('kap_points'))">⭐ Pointi</button>
-<button onclick="alert('Ukitaka kutoa pesa, tuma WhatsApp 0755...')">💰 Toa Pesa</button>
+<button onclick="showProfile()">👤 Profile</button>
+<button onclick="alert('DM: Una ujumbe 2')">💬 DM</button>
+<button onclick="alert('Pointi zako: '+points)">⭐ Pointi</button>
+<button onclick="window.open('https://wa.me/255755000000?text=Nataka kujiunga na KAPAPP','_blank')">🟢 WhatsApp</button>
 </div>
 
 <script>
 let points = parseInt(localStorage.getItem('kap_points')||'0');
-function updatePoints(){
-document.getElementById('points').innerText = points + ' Pointi';
-document.getElementById('money').innerText = 'Tsh ' + (points*10);
-localStorage.setItem('kap_points', points);
+let myName = localStorage.getItem('kap_name') || 'Said Kapwile';
+let myPic = localStorage.getItem('kap_pic') || '';
+let tempFile = ''; let tempFileType = '';
+document.getElementById('myName').innerText = myName;
+if(myPic){document.getElementById('myAvatar').innerHTML='<img src="'+myPic+'">';} else {document.getElementById('myAvatar').innerText=myName.charAt(0);}
+
+function previewFile(){
+let f=document.getElementById('fileInput').files[0];
+if(!f) return;
+let r=new FileReader();
+r.onload=function(e){tempFile=e.target.result; tempFileType=f.type; document.getElementById('previewText').innerText='✅ Imechaguliwa: '+f.name+' - Tayari ku-post!';};
+r.readAsDataURL(f);
 }
-let posts = JSON.parse(localStorage.getItem('kap_posts')||'[]');
+function updatePoints(){
+document.getElementById('points').innerText=points+' Pointi';
+document.getElementById('money').innerText='Tsh '+(points*10);
+localStorage.setItem('kap_points',points);
+}
+function formatText(t){return t.replace(/#(\w+)/g,'<span class="hashtag">#$1</span>').replace(/@(\w+)/g,'<span class="tag">@$1</span>');}
+let posts = JSON.parse(localStorage.getItem('kap_posts_v3')||'[]');
+if(posts.length==0){
+posts=[
+{text:'🔥 HILI NDIO GROUP LA SIMBA SC 🔥 Karibu sana! #SimbaSC #Michezo @SimbaSC', name:'Said Kapwile', handle:'@said_kapwile', likes:12, comments:3, wa:'255755000000', img:'', video:'', pic:''},
+{text:'Niko na viatu kali sana bei poa! Nicheki WhatsApp #Biashara #Viatu', name:'Juma Shop', handle:'@juma_shop', likes:8, comments:2, wa:'255765000000', img:'', video:'', pic:''},
+{text:'Video mpya ya biashara yangu! Angalia 👇 #Biashara', name:'Amina Store', handle:'@amina_store', likes:20, comments:5, wa:'255713000000', img:'', video:'', pic:''}
+];
+localStorage.setItem('kap_posts_v3', JSON.stringify(posts));
+}
 function render(){
 let h='';
 posts.forEach((p,i)=>{
-h+=`<div class="card"><b>${p.name||'KAPAPP User'}</b><p style="margin:8px 0">${p.text}</p>${p.img?`<img class="post-img" src="${p.img}">`:''}<div class="actions"><button onclick="like(${i})">👍 Like +5</button><button onclick="comment(${i})">💬 Comment +10</button><button onclick="share(${i})">↗️ Share +15</button></div><p style="font-size:12px;color:#888;margin-top:6px">❤️ ${p.likes||0} • 💬 ${p.comments||0}</p></div>`;
+h+=`<div class="card">
+<div class="profile-row"><div class="avatar">${p.pic?`<img src="${p.pic}">`:p.name.charAt(0)}</div><div style="flex:1"><b>${p.name}</b><br><span style="font-size:12px;color:#888">${p.handle} • Dar es Salaam • Sasa hivi</span></div><button class="follow-btn" onclick="follow('${p.name}')">+ Follow</button></div>
+<p style="margin:10px 0">${formatText(p.text||'')}</p>
+${p.img?`<img class="post-img" src="${p.img}">`:''}
+${p.video?`<video class="post-video" controls src="${p.video}"></video>`:''}
+<p style="font-size:12px;color:#888">❤️ ${p.likes||0} Likes • 💬 ${p.comments||0} Comments • 👁️ ${100+(p.likes||0)*5} Views</p>
+<div class="actions"><button onclick="like(${i})">👍 Like +5</button><button onclick="comment(${i})">💬 Comment +10</button><button onclick="share(${i})">↗️ Share +15</button></div>
+<div class="actions"><button class="dm-btn" onclick="dm('${p.name}')">💬 DM</button><button class="wa-btn" onclick="window.open('https://wa.me/${p.wa||'255755000000'}?text=Nimekuona KAPAPP, naitaka bidhaa yako','_blank')">🟢 WhatsApp</button><button onclick="savePost(${i})">🔖 Save</button></div>
+</div>`;
 });
-document.getElementById('feed').innerHTML = h || '<div class="card"><p>Hakuna post bado. Anza ku-post kupata pointi!</p></div>';
+document.getElementById('feed').innerHTML=h;
 }
 function addPost(){
 let t=document.getElementById('postText').value;
 if(!t) return alert('Andika kitu kwanza');
-posts.unshift({text:t, img:document.getElementById('postImg').value, likes:0, comments:0, name:'Wewe'});
-localStorage.setItem('kap_posts', JSON.stringify(posts));
+let img=document.getElementById('postImg').value;
+let vid=document.getElementById('postVideo').value;
+if(tempFile && tempFileType.startsWith('video')) vid=tempFile;
+if(tempFile && tempFileType.startsWith('image')) img=tempFile;
+let wa=document.getElementById('postWA').value || '255755000000';
+posts.unshift({text:t, img:img, video:vid, likes:0, comments:0, name:myName, handle:'@'+myName.toLowerCase().replace(/ /g,'_'), wa:wa, pic:myPic});
+localStorage.setItem('kap_posts_v3', JSON.stringify(posts));
 points+=20; updatePoints(); render();
-document.getElementById('postText').value='';
-alert('Hongera! Umepata +20 Pointi');
+document.getElementById('postText').value=''; document.getElementById('postImg').value=''; document.getElementById('postVideo').value=''; tempFile='';
+alert('Hongera! Post yako na Picha/Video imetumwa! +20 Pointi');
 }
-function like(i){posts[i].likes++; points+=5; localStorage.setItem('kap_posts', JSON.stringify(posts)); updatePoints(); render();}
-function comment(i){let c=prompt('Andika comment yako:'); if(c){posts[i].comments++; points+=10; localStorage.setItem('kap_posts', JSON.stringify(posts)); updatePoints(); render();}}
+function like(i){posts[i].likes++; points+=5; localStorage.setItem('kap_posts_v3', JSON.stringify(posts)); updatePoints(); render();}
+function comment(i){let c=prompt('Andika comment yako:'); if(c){posts[i].comments++; points+=10; localStorage.setItem('kap_posts_v3', JSON.stringify(posts)); updatePoints(); render(); alert('Comment imetumwa! +10 Pointi');}}
 function share(i){points+=15; updatePoints(); alert('Umepata +15 Pointi kwa Share!');}
+function savePost(i){alert('Ume-save post ya '+posts[i].name+' ✅ Utaiangalia baadaye');}
+function follow(n){points+=2; updatePoints(); alert('Umemfollow '+n+'! +2 Pointi');}
+function dm(n){let m=prompt('Tuma DM kwa '+n+':'); if(m){points+=5; updatePoints(); alert('DM imetumwa kwa '+n+' ✅ +5 Pointi');}}
+function showProfile(){
+let n=prompt('Jina lako la Profile?', myName);
+if(n){myName=n; localStorage.setItem('kap_name',n); document.getElementById('myName').innerText=n; if(!myPic) document.getElementById('myAvatar').innerText=n.charAt(0);}
+let p=prompt('Weka link ya Picha yako ya Profile (hiari):', myPic);
+if(p){myPic=p; localStorage.setItem('kap_pic',p); document.getElementById('myAvatar').innerHTML='<img src="'+p+'">';}
+alert('Profile: '+myName+'\nPointi: '+points+'\nPosts: '+posts.length);
+}
 updatePoints(); render();
 </script>
 </body>

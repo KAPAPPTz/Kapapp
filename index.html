@@ -2,93 +2,232 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KAPAPP - Pointi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAPAPP - Jukwaa la Watanzania</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
-body{background:#f0f2f5;padding-bottom:90px}
-header{background:#1877f2;color:#fff;padding:12px;position:sticky;top:0;z-index:10}
-.top{display:flex;justify-content:space-between;align-items:center}
-.top b{font-size:24px}
-.top span{background:#fff;color:#1877f2;padding:6px 10px;border-radius:20px;font-size:13px;font-weight:bold;margin-left:4px}
-.search{background:#fff;border-radius:20px;padding:8px 12px;margin-top:8px;color:#888;font-size:14px}
-.balance{background:#fff;margin:12px;padding:16px;border-radius:12px;text-align:center;box-shadow:0 1px 4px #ccc}
-.balance b{color:#0a9e3f;font-size:30px}
-.card{background:#fff;margin:12px;padding:14px;border-radius:12px;box-shadow:0 1px 4px #ccc}
-.profile-row{display:flex;gap:10px;align-items:center}
-.avatar{width:48px;height:48px;border-radius:50%;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:22px;flex-shrink:0;overflow:hidden}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.follow-btn{background:#1877f2;color:#fff;border:none;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:bold}
-input,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px}
-.post-btn{background:#1877f2;color:#fff;border:none;padding:12px;border-radius:8px;width:100%;font-weight:bold;font-size:16px}
-.actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.actions button{background:#eef2ff;color:#1877f2;border:none;padding:9px;border-radius:20px;font-size:13px;font-weight:bold;flex:1}
-.wa-btn{background:#25D366!important;color:#fff!important}
-.dm-btn{background:#ffeb3b!important;color:#333!important}
-.post-img{width:100%;border-radius:10px;margin-top:8px}
-.post-video{width:100%;border-radius:10px;margin-top:8px;max-height:400px}
-.hashtag{color:#1877f2;font-weight:bold}
-.tag{color:#0a9e3f;font-weight:bold}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #ddd;z-index:10}
-.nav button{background:none;border:none;font-size:13px;font-weight:bold}
-.upload-box{background:#f9f9f9;border:1px dashed #ccc;padding:10px;border-radius:8px;margin:6px 0;text-align:center;font-size:13px;color:#555}
+body{font-family:Arial;margin:0;background:#f0f2f5}
+.header{background:#1877f2;color:#fff;padding:15px;text-align:center;position:sticky;top:0;z-index:10}
+.header h1{margin:0}
+.earn{background:#fff;margin:10px;padding:15px;border-radius:10px;border:2px solid #1877f2}
+.earn h3{margin:0;color:#1877f2}
+.earn p{font-size:14px}
+.box{background:#fff;margin:10px;padding:15px;border-radius:10px}
+input,textarea,select{width:100%;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
+button{background:#1877f2;color:#fff;border:none;padding:10px 15px;border-radius:8px;margin:3px;cursor:pointer;font-weight:bold}
+.green{background:#25D366} .orange{background:#ff9800} .red{background:#e91e63}
+.post{background:#fff;margin:10px;padding:15px;border-radius:10px}
+.post img,.post video{width:100%;border-radius:10px;margin-top:10px}
+.actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.actions button{flex:1;font-size:13px}
+.comment-box{background:#f0f2f5;padding:8px;border-radius:8px;margin-top:8px;font-size:13px}
+.tabs{display:flex;background:#fff;margin:10px;border-radius:10px;overflow:hidden}
+.tabs button{flex:1;background:#fff;color:#000;border-radius:0}
+.tabs button.active{background:#1877f2;color:#fff}
+.hidden{display:none}
 </style>
 </head>
 <body>
-<header>
-<div class="top"><b>KAPAPP</b><div><span onclick="alert('DM: Una ujumbe 2 mpya!')">💬 DM 2</span><span onclick="showProfile()">👤 Profile</span></div></div>
-<div class="search" onclick="let s=prompt('Tafuta mtu / biashara / #hashtag:'); if(s) alert('Unatafuta: '+s)">🔍 Tafuta mtu, biashara, #hashtag...</div>
-</header>
-<div class="balance">
-<p>Pointi Zako Leo</p><b id="points">0 Pointi</b><p id="money">Tsh 0</p>
-<p style="font-size:12px;color:#666">Pointi 100 = Tsh 1,000 • Like=5 • Comment=10 • Share=15 • Post=20 • Follow=2</p>
+
+<div class="header">
+<h1>KAPAPP 🇹🇿</h1>
+<p style="margin:0;font-size:13px">Post. Angaliwa. Ingiza kupitia Viewers & Matangazo</p>
 </div>
-<div class="card">
-<div class="profile-row">
-<div class="avatar" id="myAvatar">S</div>
-<div style="flex:1"><b id="myName">Said Kapwile</b><br><span style="font-size:12px;color:#888">@said_kapwile • Dar es Salaam • Followers 128</span></div>
-<button class="follow-btn" onclick="showProfile()">Edit Profile</button>
+
+<!-- MAPATO 70/30 -->
+<div class="earn">
+<h3>💰 Mapato Yangu - Mfumo wa 70/30</h3>
+<p><b>Hakuna kulipwa mfukoni.</b> Unalipwa kutokana na <b>Viewers wako + Matangazo</b> kwenye post zako tu.</p>
+<p>👀 Viewers Wangu: <b id="viewers">0</b> | ❤️ Likes: <b id="totalLikes">0</b></p>
+<p>💵 Pesa Imeingia Kwenye Post Zangu: <b>Tsh <span id="totalEarned">0</span></b></p>
+<p>✅ Sehemu Yangu (70%): <b style="color:green">Tsh <span id="myShare">0</span></b></p>
+<p>🏢 Sehemu ya KAPAPP (30%): <b>Tsh <span id="kapShare">0</span></b></p>
+<p style="font-size:12px;color:#666">Mfano: Tangazo Tsh 100,000 = Wewe 70,000, KAPAPP 30,000. Ukina Viewers 0 = Tsh 0. KAPAPP hailipi mtu yeyote mfukoni.</p>
+<button class="orange" onclick="wekaTangazo()">📢 Weka Tangazo - Kwa Biashara</button>
+<button class="green" onclick="tumaZawadi()">🎁 Tuma Zawadi kwa Msanii</button>
 </div>
-<h3 style="margin-top:12px">Andika Post Mpya</h3>
-<textarea id="postText" placeholder="Andika hapa... Mfano: Viatu kali #Biashara @Said"></textarea>
-<div class="upload-box">
-<b>📸 Chagua Picha au 🎥 Video kutoka simu yako</b><br>
-<input type="file" id="fileInput" accept="image/*,video/*" onchange="previewFile()">
-<p id="previewText" style="font-size:12px;margin-top:4px;color:#1877f2"></p>
+
+<!-- TABS -->
+<div class="tabs">
+<button id="tabPost" class="active" onclick="showTab('postTab')">🏠 Post</button>
+<button id="tabReel" onclick="showTab('reelTab')">🎬 Reels</button>
+<button id="tabDM" onclick="showTab('dmTab')">💬 DM</button>
+<button id="tabProfile" onclick="showTab('profileTab')">👤 Profile</button>
 </div>
-<input type="text" id="postImg" placeholder="AU weka link ya Picha (hiari)">
-<input type="text" id="postVideo" placeholder="AU weka link ya Video (hiari) mfano .mp4">
-<input type="text" id="postWA" placeholder="Namba yako ya WhatsApp mfano 0755000000">
-<button class="post-btn" onclick="addPost()">POST SASA +20 POINTI</button>
+
+<!-- POST TAB -->
+<div id="postTab">
+<div class="box">
+<h3>Andika Post Mpya</h3>
+<input id="userName" placeholder="Jina lako (mf: Said Kapwile)" value="Said Kapwile">
+<textarea id="postText" placeholder="Andika kitu... unaweza kumtag mtu @Said"></textarea>
+<input id="tagInput" placeholder="Tag mtu: @Jina">
+<select id="postType">
+<option value="post">Post ya Kawaida</option>
+<option value="video">Video</option>
+<option value="reel">Reel</option>
+</select>
+<input type="file" id="mediaInput" accept="image/*,video/*">
+<button onclick="addPost()">📤 Post Sasa</button>
+<p style="font-size:12px">Ukipost, watu wakikuona ndio unapata viewers. Viewers wengi = Tangazo nyingi = Mapato.</p>
 </div>
 <div id="feed"></div>
-<div class="nav">
-<button onclick="location.reload()">🏠 Home</button>
-<button onclick="showProfile()">👤 Profile</button>
-<button onclick="alert('DM: Una ujumbe 2')">💬 DM</button>
-<button onclick="alert('Pointi zako: '+points)">⭐ Pointi</button>
-<button onclick="window.open('https://wa.me/255755000000?text=Nataka kujiunga na KAPAPP','_blank')">🟢 WhatsApp</button>
-</div><script>
-let points=parseInt(localStorage.getItem('kap_points')||'0');
-let posts=JSON.parse(localStorage.getItem('kap_posts')||'[]');
-let myName=localStorage.getItem('kap_name')||'Said Kapwile';
-let myWA=localStorage.getItem('kap_wa')||'255755000000';
-let currentFile=''; let currentFileType='';
-function updatePoints(){document.getElementById('points').innerText=points+' Pointi'; document.getElementById('money').innerText='Tsh '+(points*10).toLocaleString(); localStorage.setItem('kap_points',points)}
-function formatText(t){if(!t) return ''; return t.replace(/#(\w+)/g,'<span class="hashtag">#$1</span>').replace(/@(\w+)/g,'<span class="tag">@$1</span>')}
-function previewFile(){let f=document.getElementById('fileInput').files[0]; if(!f) return; let r=new FileReader(); r.onload=function(e){currentFile=e.target.result; currentFileType=f.type.startsWith('video')?'video':'image'; document.getElementById('previewText').innerText='✅ Imechaguliwa: '+f.name+' - iko tayari kupost!'}; r.readAsDataURL(f)}
-function addPost(){let t=document.getElementById('postText').value; let img=document.getElementById('postImg').value; let vid=document.getElementById('postVideo').value; let wa=document.getElementById('postWA').value||myWA; if(!t && !img && !vid && !currentFile){alert('Andika kitu kwanza!');return} let media=''; let mtype=''; if(currentFile){media=currentFile; mtype=currentFileType} else if(img){media=img; mtype='image'} else if(vid){media=vid; mtype='video'} posts.unshift({name:myName,wa:wa,text:t,media:media,mtype:mtype,likes:0,comments:[],time:'Sasa hivi'}); points+=20; updatePoints(); localStorage.setItem('kap_posts',JSON.stringify(posts)); document.getElementById('postText').value=''; document.getElementById('postImg').value=''; document.getElementById('postVideo').value=''; document.getElementById('fileInput').value=''; currentFile=''; document.getElementById('previewText').innerText=''; render(); alert('Hongera! +20 Pointi!')}
-function likePost(i){posts[i].likes++; points+=5; updatePoints(); localStorage.setItem('kap_posts',JSON.stringify(posts)); render()}
-function commentPost(i){let c=prompt('Andika comment yako:'); if(!c) return; posts[i].comments.push(myName+': '+c); points+=10; updatePoints(); localStorage.setItem('kap_posts',JSON.stringify(posts)); render()}
-function sharePost(i){points+=15; updatePoints(); let p=posts[i]; let url='https://wa.me/?text='+encodeURIComponent(p.text+' - Angalia KAPAPP!'); window.open(url,'_blank'); localStorage.setItem('kap_posts',JSON.stringify(posts)); render(); alert('Ume-share! +15 Pointi')}
-function waPost(i){let p=posts[i]; window.open('https://wa.me/'+p.wa.replace(/[^0-9]/g,'')+'?text=Nimeona post yako KAPAPP: '+encodeURIComponent(p.text),'_blank')}
-function dmPost(i){let p=posts[i]; let m=prompt('Tuma DM kwa '+p.name+':'); if(m) alert('DM imetumwa kwa '+p.name+'!')}
-function followPost(i){points+=2; updatePoints(); alert('Umemfollow! +2 Pointi')}
-function showProfile(){let n=prompt('Jina lako:',myName); if(n){myName=n; localStorage.setItem('kap_name',n); document.getElementById('myName').innerText=n; document.getElementById('myAvatar').innerText=n.charAt(0)} let w=prompt('Namba yako ya WhatsApp:',myWA); if(w){myWA=w; localStorage.setItem('kap_wa',w)} render()}
-function render(){let f=document.getElementById('feed'); document.getElementById('myName').innerText=myName; document.getElementById('myAvatar').innerText=myName.charAt(0); if(posts.length==0){f.innerHTML='<div class="card"><p>Karibu KAPAPP! Hakuna post bado. Andika post ya kwanza juu uanze kupata Pointi!</p><div style="margin-top:10px;padding:10px;background:#f0f8ff;border-radius:8px"><b>🔥 Mifano ya Post:</b><br>• Viatu kali sana Tsh 25,000 #Biashara<br>• Nyumba ya kupanga Sinza #Nyumba<br>• Natafuta kazi ya bodaboda #Kazi</div></div>'; return} f.innerHTML=posts.map((p,i)=>{let mediaHtml=''; if(p.media){if(p.mtype=='video'){mediaHtml='<video class="post-video" controls src="'+p.media+'"></video>'} else {mediaHtml='<img class="post-img" src="'+p.media+'">'}} let comm=p.comments.map(c=>'<div style="background:#f0f2f5;padding:6px;border-radius:8px;margin-top:4px;font-size:13px">'+c+'</div>').join(''); return '<div class="card"><div class="profile-row"><div class="avatar">'+p.name.charAt(0)+'</div><div style="flex:1"><b>'+p.name+'</b><br><span style="font-size:12px;color:#888">'+p.time+'</span></div><button class="follow-btn" onclick="followPost('+i+')">+ Follow</button></div><p style="margin-top:8px">'+formatText(p.text)+'</p>'+mediaHtml+'<div class="actions"><button onclick="likePost('+i+')">👍 Like '+p.likes+'</button><button onclick="commentPost('+i+')">💬 Comment '+p.comments.length+'</button><button onclick="sharePost('+i+')">↗️ Share</button></div><div class="actions"><button class="wa-btn" onclick="waPost('+i+')">🟢 WhatsApp</button><button class="dm-btn" onclick="dmPost('+i+')">💬 DM</button></div>'+comm+'</div>'}).join('')}
-updatePoints(); render();
+</div>
+
+<!-- REELS TAB -->
+<div id="reelTab" class="hidden">
+<div class="box"><h3>🎬 Reels - Video Fupi</h3><p>Reels zenye viewers wengi ndizo zinazopata matangazo makubwa.</p></div>
+<div id="reelFeed"></div>
+</div>
+
+<!-- DM TAB -->
+<div id="dmTab" class="hidden">
+<div class="box">
+<h3>💬 DM - Message za Siri</h3>
+<input id="dmTo" placeholder="Tuma kwa nani? @Jina">
+<textarea id="dmText" placeholder="Andika ujumbe..."></textarea>
+<button onclick="sendDM()">Tuma DM</button>
+<button class="green" onclick="openWhatsApp()">🟢 Fungua WhatsApp</button>
+<div id="dmList"></div>
+</div>
+</div>
+
+<!-- PROFILE TAB -->
+<div id="profileTab" class="hidden">
+<div class="box">
+<h3>👤 Profile Yangu</h3>
+<p><b>Jina:</b> <span id="pName">Said Kapwile</span></p>
+<p><b>Followers:</b> <span id="followers">0</span> | <b>Following:</b> 0</p>
+<p><b>Viewers Jumla:</b> <span id="pViewers">0</span></p>
+<p><b>Mapato Yangu (70%):</b> Tsh <span id="pEarn">0</span></p>
+<button onclick="followMe()">➕ Follow</button>
+<button class="green" onclick="openWhatsApp()">🟢 WhatsApp Button</button>
+<p style="font-size:12px">Masharti: KAPAPP ni jukwaa tu. Hailipi mtu mfukoni. Malipo ni 70% kwa msanii, 30% kwa KAPAPP, kutokana na pesa halisi iliyoingia kupitia matangazo na zawadi kwenye post yake tu.</p>
+</div>
+</div>
+
+<script>
+let posts = [];
+let viewers = 0;
+let totalEarned = 0;
+let likes = 0;
+let followers = 0;
+
+function showTab(id){
+  ['postTab','reelTab','dmTab','profileTab'].forEach(t=>document.getElementById(t).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  if(id==='postTab') document.getElementById('tabPost').classList.add('active');
+  if(id==='reelTab') document.getElementById('tabReel').classList.add('active');
+  if(id==='dmTab') document.getElementById('tabDM').classList.add('active');
+  if(id==='profileTab') document.getElementById('tabProfile').classList.add('active');
+}
+
+function updateEarn(){
+  let mine = Math.floor(totalEarned * 0.70);
+  let kap = totalEarned - mine;
+  document.getElementById('viewers').innerText = viewers;
+  document.getElementById('totalLikes').innerText = likes;
+  document.getElementById('totalEarned').innerText = totalEarned.toLocaleString();
+  document.getElementById('myShare').innerText = mine.toLocaleString();
+  document.getElementById('kapShare').innerText = kap.toLocaleString();
+  document.getElementById('pViewers').innerText = viewers;
+  document.getElementById('pEarn').innerText = mine.toLocaleString();
+  document.getElementById('followers').innerText = followers;
+  document.getElementById('pName').innerText = document.getElementById('userName').value || 'Said Kapwile';
+}
+
+function addPost(){
+  let text = document.getElementById('postText').value;
+  let name = document.getElementById('userName').value || 'Said Kapwile';
+  let tag = document.getElementById('tagInput').value;
+  let type = document.getElementById('postType').value;
+  let file = document.getElementById('mediaInput').files[0];
+  if(!text && !file){ alert('Andika kitu kwanza!'); return; }
+  viewers += Math.floor(Math.random()*50)+10;
+  let id = Date.now();
+  let mediaHTML = '';
+  if(file){
+    let url = URL.createObjectURL(file);
+    if(file.type.startsWith('video')) mediaHTML = `<video controls src="${url}"></video>`;
+    else mediaHTML = `<img src="${url}">`;
+  }
+  let postHTML = `<div class="post" id="post-${id}">
+    <b>${name}</b> <span style="color:#888;font-size:12px">• ${type.toUpperCase()} • Sasa hivi</span>
+    <p>${text} <b style="color:#1877f2">${tag}</b></p>
+    ${mediaHTML}
+    <p style="font-size:12px">👀 Viewers: ${viewers} | 💰 Tangazo lililoingia: Tsh 0</p>
+    <div class="actions">
+      <button onclick="likePost(${id},this)">❤️ Like (<span>0</span>)</button>
+      <button onclick="commentPost(${id})">💬 Comment</button>
+      <button onclick="tagPost(${id})">🏷️ Tag</button>
+      <button class="green" onclick="openWhatsApp()">🟢 WhatsApp</button>
+      <button onclick="sharePost(${id})">🔗 Share</button>
+    </div>
+    <div id="comments-${id}"></div>
+  </div>`;
+  document.getElementById('feed').innerHTML = postHTML + document.getElementById('feed').innerHTML;
+  if(type==='reel' || type==='video'){
+    document.getElementById('reelFeed').innerHTML = postHTML + document.getElementById('reelFeed').innerHTML;
+  }
+  document.getElementById('postText').value='';
+  updateEarn();
+  alert('Post imefanikiwa! Viewers wameongezeka. Subiri matangazo.');
+}
+
+function likePost(id,btn){
+  likes++;
+  let span = btn.querySelector('span');
+  span.innerText = parseInt(span.innerText)+1;
+  viewers += 5;
+  updateEarn();
+}
+function commentPost(id){
+  let c = prompt('Andika Comment yako:');
+  if(c){
+    let div = document.getElementById('comments-'+id);
+    div.innerHTML += `<div class="comment-box"><b>Wewe:</b> ${c}</div>`;
+    viewers += 2; updateEarn();
+  }
+}
+function tagPost(id){
+  let t = prompt('Tag nani? Andika @Jina:');
+  if(t){
+    let div = document.getElementById('comments-'+id);
+    div.innerHTML += `<div class="comment-box">🏷️ Umetag ${t}</div>`;
+  }
+}
+function sharePost(id){ alert('Post imeshare-iwa! Watu wengi wataiona = Viewers wengi.'); viewers+=10; updateEarn(); }
+
+function wekaTangazo(){
+  let pesa = prompt('Biashara yako italipa kiasi gani kwa Tangazo? Mf: 100000');
+  pesa = parseInt(pesa);
+  if(!pesa || pesa<=0){ alert('Weka kiasi sahihi'); return; }
+  totalEarned += pesa;
+  viewers += 100;
+  updateEarn();
+  alert(`Tangazo limewekwa! Tsh ${pesa.toLocaleString()} imeingia. Msanii 70% = Tsh ${Math.floor(pesa*0.7).toLocaleString()}, KAPAPP 30% = Tsh ${Math.floor(pesa*0.3).toLocaleString()}. KAPAPP haikulipa mfukoni.`);
+}
+function tumaZawadi(){
+  let pesa = prompt('Unamtumia msanii Zawadi ya Tsh ngapi? Mf: 5000');
+  pesa = parseInt(pesa);
+  if(!pesa || pesa<=0) return;
+  totalEarned += pesa;
+  updateEarn();
+  alert(`Asante! Zawadi Tsh ${pesa.toLocaleString()}. Msanii anapata 70% = ${Math.floor(pesa*0.7).toLocaleString()}, KAPAPP 30% = ${Math.floor(pesa*0.3).toLocaleString()}`);
+}
+function sendDM(){
+  let to = document.getElementById('dmTo').value;
+  let txt = document.getElementById('dmText').value;
+  if(!txt){ alert('Andika ujumbe'); return; }
+  document.getElementById('dmList').innerHTML += `<div class="comment-box"><b>Kwa ${to||'Mtu'}:</b> ${txt}</div>`;
+  document.getElementById('dmText').value='';
+}
+function openWhatsApp(){
+  let msg = encodeURIComponent('Habari, nimetoka KAPAPP. Nataka kuongea nawe.');
+  window.open('https://wa.me/255000000000?text='+msg, '_blank');
+}
+function followMe(){ followers++; updateEarn(); alert('Umemfollow!'); }
+updateEarn();
 </script>
 </body>
 </html>
- 
-

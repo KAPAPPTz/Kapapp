@@ -61,7 +61,8 @@ Mfuko Wako: <b id="myBalance">0 TZS</b><br>
 <textarea id="caption" placeholder="Andika kitu... #Kapapp"></textarea>
 <input id="postUrl" placeholder="Link ya picha/video (hiari)">
 <input type="file" id="postFile" accept="image/*,video/*">
-<button onclick="createPost()" style="width:100%">POST • +50 TZS</button>
+<button id="postBtn" onclick="createPost()" style="width:100%">POST • +50 TZS</button>
+<p id="uploadStatus" style="font-size:13px;color:#1877f2;text-align:center;margin-top:6px"></p>
 </div>
 <input id="searchInput" placeholder="🔍 Tafuta #hashtag au jina..." oninput="loadFeed()" style="margin:10px">
 <div id="feedList"></div>
@@ -98,31 +99,36 @@ Mfuko Wako: <b id="myBalance">0 TZS</b><br>
 </div>
 
 <script>
-// ===== KAPAPP - IME REKEBISHWA =====
-let me = ""; // jina tu, sio object
+// ===== KAPAPP + CLOUDINARY =====
+const CLOUD_NAME = 'izgmg90u';
+const UPLOAD_PRESET = 'kapapp';
+
+let me = "";
 let myPhone = "";
 
 function getData(k, def){ try{ return JSON.parse(localStorage.getItem(k)) || def }catch(e){ return def } }
 function saveData(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
 
-// Soma mtumiaji - REKEBISHO KUU HAPA
+async function uploadToCloudinary(file){
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', UPLOAD_PRESET);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, {
+    method: 'POST',
+    body: formData
+  });
+  const data = await res.json();
+  if(!data.secure_url) throw new Error(data.error?.message || 'Upload imeshindwa');
+  return data.secure_url;
+}
+
 function loadUser(){
   let saved = localStorage.getItem('kapappUser');
   if(!saved) return false;
   try{
     let u = JSON.parse(saved);
-    // Kama ilikuwa object {"name":"Said"} chukua name tu
-    // Kama ilikuwa string "Said" chukua kama ilivyo
-    if(typeof u === 'object' && u !== null){
-      me = u.name || u.username || "";
-    } else {
-      me = u;
-    }
-  }catch(e){
-    // Kama ilihifadhiwa vibaya, chukua kama string
-    me = saved.replace(/[{}\"]/g,'').replace('name:','').replace(':', '');
-  }
-  // Safisha kama bado ina { au "
+    if(typeof u === 'object' && u !== null){ me = u.name || u.username || ""; } else { me = u; }
+  }catch(e){ me = saved.replace(/[{}\"]/g,'').replace('name:','').replace(':', ''); }
   if(me.includes('{') || me.includes('"')){
     let m = me.match(/"name":"([^"]+)"/);
     if(m) me = m[1];
@@ -140,7 +146,6 @@ function updateHeader(){
 function login(){
   let n = document.getElementById('loginName').value.trim();
   if(!n) return alert('Andika jina lako kwanza!');
-  // Hifadhi kama object lakini tunasoma name tu baadaye
   me = n;
   myPhone = document.getElementById('loginPhone').value.trim();
   saveData('kapappUser', {name: me, phone: myPhone});
@@ -177,12 +182,24 @@ function show(page){
 function getBalance(){ return getData('kapappBalance_'+me, 0); }
 function addMoney(amount){ let b = getBalance() + amount; saveData('kapappBalance_'+me, b); document.getElementById('myBalance').textContent = b + " TZS"; }
 
-function createPost(){
+async function createPost(){
   let caption = document.getElementById('caption').value.trim();
   let url = document.getElementById('postUrl').value.trim();
   let file = document.getElementById('postFile').files[0];
   if(!caption && !url && !file) return alert('Andika kitu kwanza!');
-  let doSave = (finalUrl)=>{
+
+  let btn = document.getElementById('postBtn');
+  let status = document.getElementById('uploadStatus');
+  btn.disabled = true;
+  btn.textContent = 'INAPAKIA...';
+
+  try{
+    let finalUrl = url;
+    if(file){
+      status.textContent = '⏳ Inapakia picha Cloudinary... subiri kidogo';
+      finalUrl = await uploadToCloudinary(file);
+      status.textContent = '✅ Picha imepakiwa!';
+    }
     let posts = getData('kapappPosts', []);
     let hashtags = (caption.match(/#\w+/g) || []).join(' ');
     posts.unshift({id: Date.now(), user: me, caption: caption, media: finalUrl, type: '', tags: hashtags, likes: 0, likedBy: [], comments: [], time: new Date().toLocaleString()});
@@ -192,13 +209,14 @@ function createPost(){
     document.getElementById('caption').value = '';
     document.getElementById('postUrl').value = '';
     document.getElementById('postFile').value = '';
+    status.textContent = '';
     show('feed');
-  };
-  if(file){
-    let r = new FileReader();
-    r.onload = e => doSave(e.target.result);
-    r.readAsDataURL(file);
-  } else doSave(url);
+  }catch(err){
+    alert('Picha haikupakiwa: ' + err.message + '\nJaribu tena, angalia internet.');
+    status.textContent = '❌ Imeshindwa, jaribu tena';
+  }
+  btn.disabled = false;
+  btn.textContent = 'POST • +50 TZS';
 }
 
 function formatText(t){ return (t||'').replace(/#(\w+)/g, '<b style="color:#1877f2">#$1</b>'); }
@@ -212,8 +230,9 @@ function loadFeed(){
     if(search && !(p.caption||'').toLowerCase().includes(search) && !(p.user||'').toLowerCase().includes(search)) return;
     let media = '';
     if(p.media){
-      if(p.media.startsWith('data:video') || p.media.includes('.mp4')) media = `<video src="${p.media}" controls style="width:100%;border-radius:8px;margin-top:8px"></video>`;
-      else media = `<img src="${p.media}" style="width:100%;border-radius:8px;margin-top:8px">`;
+      if(p.media.startsWith('data:video') || p.media.includes('.mp4') || p.media.includes('/video/')) media = `<video src="${p.media}" controls style="width:100%;border-radius:8px;margin-top:8px"></video>`;
+      else if(p.media.startsWith('http')) media = `<img src="${p.media}" style="width:100%;border-radius:8px;margin-top:8px">`;
+      else if(p.media.startsWith('data:image')) media = `<img src="${p.media}" style="width:100%;border-radius:8px;margin-top:8px">`;
     }
     let comments = (p.comments||[]).map(c=>`<div class="comment"><b>${c.user}:</b> ${c.text}</div>`).join('');
     html += `<div class="card">
@@ -241,13 +260,10 @@ function likePost(id, likes){
   p.likedBy.push(me);
   p.likes = (p.likes||0)+1;
   saveData('kapappPosts', posts);
-  // Mwenye post apate 10 TZS kama sio wewe
   if(p.user !== me){
     let bal = getData('kapappBalance_'+p.user, 0) + 10;
     saveData('kapappBalance_'+p.user, bal);
-  } else {
-    addMoney(0);
-  }
+  } else { addMoney(0); }
   loadFeed();
 }
 
@@ -259,7 +275,6 @@ function addComment(id){
   if(!p) return;
   p.comments.push({user: me, text: txt});
   saveData('kapappPosts', posts);
-  // Mwenye post apate 5 TZS
   if(p.user !== me){
     let bal = getData('kapappBalance_'+p.user, 0) + 5;
     saveData('kapappBalance_'+p.user, bal);
@@ -306,7 +321,6 @@ function loadProfile(){
   document.getElementById('myBalance').textContent = getBalance() + " TZS";
 }
 
-// ANZA
 if(loadUser()){
   startApp();
 }

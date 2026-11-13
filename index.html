@@ -2,87 +2,129 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KAPAPP</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f0f2f5}
-.top{background:#fff;padding:10px;display:flex;align-items:center;gap:10px;position:sticky;top:0;box-shadow:0 1px 5px #ccc}
-.top b{color:#1877f2;font-size:24px}
-.box{background:#fff;margin:10px;padding:10px;border-radius:10px}
-input,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:8px;font-size:16px}
-button{width:100%;padding:12px;background:#1877f2;color:#fff;border:0;border-radius:8px;font-size:16px;font-weight:bold}
-.post{background:#fff;margin:10px;padding:10px;border-radius:10px}
-.post img,.post video{width:100%;border-radius:8px;margin-top:8px}
-.small{color:#1877f2;text-align:center;margin-top:10px}
-.story{display:flex;gap:8px;overflow:auto}
-.story div{min-width:90px;height:140px;background:#1877f2;color:#fff;border-radius:10px;padding:10px;font-weight:bold}
+body{font-family:Arial;background:#eef2f7;margin:0;padding:10px}
+.box{background:white;padding:15px;border-radius:12px;margin-bottom:10px}
+h1{color:#1877f2;margin:0}
+input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
+button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-weight:bold;font-size:16px;margin-top:5px}
+.blue{background:#1877f2}.green{background:#42b72a}.red{background:#e41e3f;width:auto;padding:8px 15px}
+.top{display:flex;justify-content:space-between;align-items:center;background:white;padding:10px;border-radius:12px;margin-bottom:10px}
+.post img,.post video{width:100%;border-radius:10px;margin-top:8px}
+.story-row{display:flex;gap:8px;overflow:auto}
+.story{background:#1877f2;color:white;padding:20px 10px;border-radius:10px;min-width:90px;text-align:center;font-weight:bold}
 </style>
 </head>
 <body>
 
-<div id="loginPage" class="box" style="margin-top:60px">
-<h1 style="color:#1877f2;text-align:center">KAPAPP</h1>
+<div id="loginBox" class="box">
+<h1 style="text-align:center">KAPAPP</h1>
 <p style="text-align:center">Ingia au Jiandikishe</p>
-<input id="phone" placeholder="Namba ya Simu - mf 0755000000">
+<input id="phone" placeholder="Namba ya Simu">
 <input id="pass" type="password" placeholder="Password">
-<input id="jina" placeholder="Jina Lako (kwa wanao jiandikisha mara ya kwanza)">
-<button onclick="ingia()">INGIA</button>
-<button onclick="jiandikishe()" style="background:#42b72a;margin-top:8px">JIANDIKISHE MPYA</button>
-<p id="msg" style="text-align:center;color:red"></p>
+<input id="jina" placeholder="Jina Lako - KAPWILE">
+<button class="green" onclick="jiandikishe()">JIANDIKISHE MPYA</button>
+<button class="blue" onclick="ingia()">INGIA</button>
 </div>
 
-<div id="app" style="display:none">
-<div class="top"><b>KAPAPP</b><span id="myName" style="margin-left:auto"></span><button onclick="toka()" style="width:auto;padding:6px 12px;background:red">Toka</button></div>
+<div id="main" style="display:none">
+<div class="top"><h1>KAPAPP</h1><span>👋 <span id="myName"></span></span><button class="red" onclick="toka()">Toka</button></div>
 
 <div class="box">
-<textarea id="txt" placeholder="What's on your mind?"></textarea>
-<input type="file" id="file" accept="image/*,video/*">
-<button onclick="post()">POST SASA</button>
+<textarea id="postText" placeholder="What's on your mind?"></textarea>
+<input type="file" id="postFile" accept="image/*,video/*">
+<button class="blue" onclick="postSasa()">POST SASA</button>
 </div>
 
-<div class="box"><b>Story</b><div class="story"><div onclick="alert('Tengeneza Story - chagua picha hapo juu uki-post')">+ Tengeneza Story</div><div>Kapwile 👑</div><div>Rafiki</div></div></div>
+<div class="box"><b>Story</b><div class="story-row"><div class="story" onclick="alert('Story inakuja')">+ Tengeneza Story</div><div class="story">Kapwile 👑</div><div class="story">Rafiki</div></div></div>
 
 <div id="feed"></div>
 </div>
 
 <script>
-let users=JSON.parse(localStorage.getItem('kapapp_users')||'[]');
-let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
-let me=localStorage.getItem('kapapp_me');
+let users = JSON.parse(localStorage.getItem('kapapp_users') || '{}');
+let user = localStorage.getItem('kapapp_user');
 
 function jiandikishe(){
-let p=phone.value.trim(),w=pass.value.trim(),j=jina.value.trim();
-if(!p||!w||!j){msg.innerText='Jaza Namba, Password na Jina';return}
-if(users.find(u=>u.phone==p)){msg.innerText='Namba hii ishaandikishwa, Ingia tu';return}
-users.push({phone:p,pass:w,name:j});localStorage.setItem('kapapp_users',JSON.stringify(users));
-msg.style.color='green';msg.innerText='Umejiandikisha! Sasa bonyeza INGIA';
+  let p=document.getElementById('phone').value.trim();
+  let pw=document.getElementById('pass').value.trim();
+  let j=document.getElementById('jina').value.trim();
+  if(!p||!pw||!j){alert('Jaza vyote');return;}
+  users[p]={pass:pw,name:j};
+  localStorage.setItem('kapapp_users',JSON.stringify(users));
+  localStorage.setItem('kapapp_user',j);
+  showMain(j);
 }
 function ingia(){
-let p=phone.value.trim(),w=pass.value.trim();
-let u=users.find(x=>x.phone==p&&x.pass==w);
-if(!u){msg.innerText='Namba au Password sio sahihi';return}
-me=p;localStorage.setItem('kapapp_me',p);onyesha();
+  let p=document.getElementById('phone').value.trim();
+  let pw=document.getElementById('pass').value.trim();
+  if(users[p] && users[p].pass===pw){localStorage.setItem('kapapp_user',users[p].name);showMain(users[p].name);}
+  else alert('Namba au Password sio sahihi. Jiandikishe kwanza.');
 }
-function toka(){localStorage.removeItem('kapapp_me');location.reload()}
+function toka(){localStorage.removeItem('kapapp_user');location.reload();}
+function showMain(name){
+  document.getElementById('loginBox').style.display='none';
+  document.getElementById('main').style.display='block';
+  document.getElementById('myName').innerText=name;
+  onyesha();
+}
+function postSasa(){
+  let t=document.getElementById('postText').value.trim();
+  let f=document.getElementById('postFile').files[0];
+  if(!t && !f){alert('Andika kitu au chagua picha/video');return;}
+  if(!f){ savePost(t,'',''); return; }
+  // Kama ni video - weka kama ilivyo
+  if(f.type.includes('video')){
+    let r=new FileReader();
+    r.onload=function(e){ savePost(t,e.target.result,f.type); };
+    r.readAsDataURL(f);
+  } else {
+    // Kama ni picha - ipunguze automatically
+    let r=new FileReader();
+    r.onload=function(e){
+      let img=new Image();
+      img.onload=function(){
+        let canvas=document.createElement('canvas');
+        let max=800; // ukubwa wa juu
+        let w=img.width, h=img.height;
+        if(w>max){ h=h*max/w; w=max; }
+        canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        let ndogo=canvas.toDataURL('image/jpeg',0.7); // punguza 70%
+        savePost(t,ndogo,'image/jpeg');
+      };
+      img.src=e.target.result;
+    };
+    r.readAsDataURL(f);
+  }
+}
+function savePost(t,media,type){
+  let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+  posts.unshift({name:localStorage.getItem('kapapp_user'),text:t,media:media,type:type});
+  localStorage.setItem('kapapp_posts',JSON.stringify(posts));
+  document.getElementById('postText').value='';
+  document.getElementById('postFile').value='';
+  onyesha();
+}
 function onyesha(){
-let u=users.find(x=>x.phone==me);if(!u)return;
-loginPage.style.display='none';app.style.display='block';myName.innerText='👋 '+u.name;
-feed.innerHTML='';
-for(let i=posts.length-1;i>=0;i--){let po=posts[i];
-feed.innerHTML+='<div class="post"><b>'+po.name+'</b><div>'+po.txt+'</div>'+(po.media? (po.type=='v'?'<video controls src="'+po.media+'"></video>':'<img src="'+po.media+'">'):'')+'</div>'}
+  let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+  // Futa automatiki za zamani - Machungwa / undefined / tupu
+  posts=posts.filter(p=>p && p.text!=='undefined' && p.name!=='Machungwa' && (p.text || p.media));
+  localStorage.setItem('kapapp_posts',JSON.stringify(posts));
+  let h='';
+  posts.forEach(p=>{
+    h+='<div class="box post"><b>'+(p.name||'')+'</b><div>'+(p.text||'')+'</div>';
+    if(p.media){
+      if(p.type && p.type.includes('video')) h+='<video controls><source src="'+p.media+'"></video>';
+      else h+='<img src="'+p.media+'">';
+    }
+    h+='</div>';
+  });
+  document.getElementById('feed').innerHTML=h||'<div class="box">Hakuna post bado. Post ya kwanza!</div>';
 }
-function post(){
-let u=users.find(x=>x.phone==me);if(!u)return;
-let f=file.files[0];
-if(f){let r=new FileReader();r.onload=function(){save(r.result,f.type.includes('video')?'v':'i')};r.readAsDataURL(f)}
-else save('','');
-}
-function save(media,type){
-let u=users.find(x=>x.phone==me);
-posts.push({name:u.name,txt:txt.value,media:media,type:type});
-localStorage.setItem('kapapp_posts',JSON.stringify(posts));txt.value='';file.value='';onyesha();
-}
-if(me)onyesha();
+if(user) showMain(user);
 </script>
 </body>
 </html>

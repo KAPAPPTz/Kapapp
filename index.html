@@ -1,71 +1,88 @@
 <!DOCTYPE html>
-<html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>kapapp</title>
-<style>*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f0f2f5;padding-bottom:80px}header{position:fixed;top:0;left:0;right:0;height:56px;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:0 12px;box-shadow:0 1px 4px #ccc;z-index:99}header h1{color:#1877f2;margin:0;font-size:30px}.right span{font-size:22px;margin-left:12px;cursor:pointer}.wrap{margin-top:60px;padding:0 8px}.hidden{display:none}.mind{background:#fff;padding:10px;border-radius:10px;display:flex;gap:8px;align-items:center}.mind img{width:40px;height:40px;border-radius:50%;object-fit:cover}.mind input{flex:1;padding:12px;border-radius:20px;border:0;background:#f0f2f5}.story{width:110px;height:180px;flex-shrink:0;border-radius:12px;overflow:hidden;position:relative;background:#ddd}.story img{width:100%;height:100%;object-fit:cover}.story .lab{position:absolute;bottom:6px;left:6px;color:#fff;font-weight:bold;font-size:13px;text-shadow:0 0 5px #000}.post{background:#fff;border-radius:10px;padding:10px;margin:10px 0}.post .head{display:flex;gap:8px;align-items:center}.avatar{width:40px;height:40px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:22px}.post img{width:100%;border-radius:8px;margin-top:8px}.actions{display:flex;justify-content:space-around;border-top:1px solid #eee;padding-top:8px;color:#555}.actions span{cursor:pointer}.box{background:#fff;padding:14px;border-radius:10px;margin:10px 0}.box input,.box textarea,.box select{width:100%;padding:11px;margin:6px 0;border:1px solid #ddd;border-radius:8px}.box button{width:100%;padding:12px;background:#1877f2;color:#fff;border:0;border-radius:8px;font-weight:bold;margin-top:6px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0 4px;border-top:1px solid #ddd;z-index:99}.bottom div{text-align:center;font-size:13px;color:#555;cursor:pointer}.bottom div.active{color:#1877f2}</style>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAPAPP</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f0f2f5}
+.top{background:#fff;padding:10px;display:flex;align-items:center;gap:10px;position:sticky;top:0;box-shadow:0 1px 5px #ccc}
+.top b{color:#1877f2;font-size:24px}
+.box{background:#fff;margin:10px;padding:10px;border-radius:10px}
+input,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:8px;font-size:16px}
+button{width:100%;padding:12px;background:#1877f2;color:#fff;border:0;border-radius:8px;font-size:16px;font-weight:bold}
+.post{background:#fff;margin:10px;padding:10px;border-radius:10px}
+.post img,.post video{width:100%;border-radius:8px;margin-top:8px}
+.small{color:#1877f2;text-align:center;margin-top:10px}
+.story{display:flex;gap:8px;overflow:auto}
+.story div{min-width:90px;height:140px;background:#1877f2;color:#fff;border-radius:10px;padding:10px;font-weight:bold}
+</style>
 </head>
 <body>
-<header><h1>kapapp</h1><div class="right"><span onclick="show('searchPage')">🔍</span><span onclick="show('postPage')">+</span></div></header>
 
-<div class="wrap" id="home">
-<div class="mind"><img id="mindPic" src="https://i.pravatar.cc/100"><input placeholder="What's on your mind?" onclick="show('postPage')"></div>
-<div style="display:flex;gap:8px;overflow-x:auto;padding:10px 0"><div class="story" style="background:#1877f2;color:#fff;text-align:center" onclick="show('postPage')"><div style="font-size:40px;margin-top:60px">+</div><div class="lab">Create story</div></div><div class="story" style="background:#ff7a00;color:#fff;text-align:center" onclick="show('postPage')"><div style="font-size:40px;margin-top:60px">🎬</div><div class="lab">Create reel</div></div><div class="story"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300"><div class="lab">Kapwile</div></div><div class="story"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300"><div class="lab">Zuchu</div></div></div>
-<div id="feed"><p style="text-align:center;color:#888">Inapakia post...</p></div>
+<div id="loginPage" class="box" style="margin-top:60px">
+<h1 style="color:#1877f2;text-align:center">KAPAPP</h1>
+<p style="text-align:center">Ingia au Jiandikishe</p>
+<input id="phone" placeholder="Namba ya Simu - mf 0755000000">
+<input id="pass" type="password" placeholder="Password">
+<input id="jina" placeholder="Jina Lako (kwa wanao jiandikisha mara ya kwanza)">
+<button onclick="ingia()">INGIA</button>
+<button onclick="jiandikishe()" style="background:#42b72a;margin-top:8px">JIANDIKISHE MPYA</button>
+<p id="msg" style="text-align:center;color:red"></p>
 </div>
 
-<div class="wrap hidden" id="postPage"><div class="box"><h3>Create Post</h3><input id="pTitle" placeholder="Title"><textarea id="pDesc" placeholder="What's on your mind?"></textarea><select id="pType"><option value="image">Picha</option><option value="video">Video</option></select><input id="pUrl" placeholder="Link ya picha/video"><input type="file" accept="image/*" onchange="readFile(this)"><button onclick="addPost()">Post</button><button onclick="goHome()" style="background:#e4e6eb;color:#000">Cancel</button></div></div>
-<div class="wrap hidden" id="searchPage"><div class="box"><input id="searchInput" placeholder="Tafuta..."><button onclick="doSearch()">Search</button><button onclick="goHome()" style="background:#e4e6eb;color:#000">Rudi Home</button></div></div>
-<div class="wrap hidden" id="dmPage"><div class="box"><div id="dmBox"><p>Karibu DM</p></div><input id="dmInput" placeholder="Andika..."><button onclick="sendDM()">Tuma</button></div></div>
-<div class="wrap hidden" id="profile"><div class="box"><img id="profPicShow" style="display:none;width:80px;height:80px;border-radius:50%"><div id="profEmojiShow" style="font-size:60px">👤</div><h3 id="profNameShow">Wewe</h3><input id="profName" placeholder="Jina lako"><input type="file" accept="image/*" onchange="changeProfilePic(this)"><button onclick="saveProfile()">Hifadhi</button><button onclick="doLogout()" style="background:#e4e6eb;color:#000">Toka</button><div id="myPostsList"></div></div></div>
-<div class="wrap hidden" id="menuPage"><div class="box"><div>👁️ Views: <span id="views">0</span></div><div>❤️ Likes: <span id="totalLikes">0</span></div><div>💰 Pesa: <span id="money">TSh 0</span></div><input id="withdrawNumber" placeholder="Namba ya M-Pesa / Tigo"><button onclick="withdraw()">Toa Pesa</button></div></div>
-<div class="wrap hidden" id="livePage"><div class="box"><button onclick="startLive()">Anza LIVE</button><div id="myLiveRoom" class="hidden"><p>👁️ <span id="liveViewers">1</span> • 🎁 <span id="liveGifts">TSh 0</span></p><div id="liveChat"></div><input id="liveCommentInput" placeholder="Comment..."><button onclick="sendLiveComment()">Tuma</button><button onclick="sendGift('Rose',5000)">🌹 Rose</button><button onclick="endLive()" style="background:red">Maliza LIVE</button></div></div></div>
-<div class="wrap hidden" id="reels"><div id="reelFeed"><div class="box"><p>Reels - Post mpya hapa!</p></div></div></div>
-<div class="wrap hidden" id="pages"><div class="box"><input id="pageName" placeholder="Jina la Page"><button onclick="addPage()">Tengeneza Page</button><div id="pageList"></div></div></div>
-<div class="wrap hidden" id="notifPage"><div class="box"><div id="notifList"><p>Karibu Kapapp mpya!</p></div><button onclick="clearNotif()">Futa Zote</button></div></div>
-<div class="wrap hidden" id="ceo"><div class="box"><h3>CEO Dashboard</h3><p>Views: <span id="ceoViews">0</span></p><p>Pesa: <span id="ceoMoney">TSh 0</span></p></div></div>
+<div id="app" style="display:none">
+<div class="top"><b>KAPAPP</b><span id="myName" style="margin-left:auto"></span><button onclick="toka()" style="width:auto;padding:6px 12px;background:red">Toka</button></div>
 
-<div class="bottom"><div onclick="goHome()" id="btnHome" class="active">🏠<br>Home</div><div onclick="show('reels')">🎬<br>Reels</div><div onclick="show('livePage')">📺<br>Live</div><div onclick="show('notifPage')">🔔<br>Notif</div><div onclick="show('profile')">👤<br>Profile</div></div>
+<div class="box">
+<textarea id="txt" placeholder="What's on your mind?"></textarea>
+<input type="file" id="file" accept="image/*,video/*">
+<button onclick="post()">POST SASA</button>
+</div>
+
+<div class="box"><b>Story</b><div class="story"><div onclick="alert('Tengeneza Story - chagua picha hapo juu uki-post')">+ Tengeneza Story</div><div>Kapwile 👑</div><div>Rafiki</div></div></div>
+
+<div id="feed"></div>
+</div>
 
 <script>
-var tempFile="";var liveGiftTotal=0;
-var posts=[
-{user:"Anetile Osiah",emoji:"👤",desc:"Anatajwa kuwa mmoja wa wanachama wanaotarajiwa kuchukua fomu... more",type:"image",url:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600",likes:1250,views:25400,comments:["Hongera!"]},
-{user:"Kapwile",emoji:"👤",desc:"Karibu Kapapp mpya - safi kama Facebook!",type:"image",url:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600",likes:890,views:12000,comments:["Safi sana!"]},
-{user:"Presenter Sila",emoji:"👤",desc:"Kama muziki wa Bongo ni nyumba, Alikiba ana mafanikio yake... more",type:"image",url:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600",likes:2100,views:45000,comments:["Poa sana!"]}
-];
-function savePosts(){try{localStorage.setItem('kapapp_posts',JSON.stringify(posts))}catch(e){}}
-try{var s=JSON.parse(localStorage.getItem('kapapp_posts')||'null');if(s&&s.length>0)posts=s;}catch(e){}
-function setText(id,txt){var el=document.getElementById(id);if(el)el.innerText=txt;}
-function render(filter){
-try{
-var feed=document.getElementById('feed');if(!feed)return;
-var list=posts.filter(function(p){return !filter||(p.desc+p.user).toLowerCase().indexOf(filter.toLowerCase())>-1});
-var html="";
-for(var i=0;i<list.length;i++){var p=list[i];var idx=posts.indexOf(p);
-html+='<div class="post"><div class="head"><div class="avatar">'+p.emoji+'</div><div><b>'+p.user+'</b><br><small style="color:#65676b">1d</small></div></div><p>'+p.desc+'</p><img src="'+p.url+'"><div style="display:flex;justify-content:space-between;padding:8px 2px;color:#65676b;font-size:13px"><span>❤️ '+p.likes+'</span><span>'+p.comments.length+' comments • 👀 '+p.views+'</span></div><div class="actions"><span onclick="like('+idx+')">👍 Like</span><span onclick="document.getElementById(\'c'+idx+'\').focus()">💬 Comment</span><span onclick="alert(\'Link Imecopiwa!\')">↗️ Share</span></div><div><p>'+p.comments.join('<br>')+'</p><input id="c'+idx+'" placeholder="Write a comment..." style="width:70%;padding:9px;border-radius:20px;border:0;background:#f0f2f5"><button onclick="comment('+idx+')" style="padding:9px 12px;border-radius:20px;border:0;background:#1877f2;color:#fff">Send</button></div></div>';
+let users=JSON.parse(localStorage.getItem('kapapp_users')||'[]');
+let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+let me=localStorage.getItem('kapapp_me');
+
+function jiandikishe(){
+let p=phone.value.trim(),w=pass.value.trim(),j=jina.value.trim();
+if(!p||!w||!j){msg.innerText='Jaza Namba, Password na Jina';return}
+if(users.find(u=>u.phone==p)){msg.innerText='Namba hii ishaandikishwa, Ingia tu';return}
+users.push({phone:p,pass:w,name:j});localStorage.setItem('kapapp_users',JSON.stringify(users));
+msg.style.color='green';msg.innerText='Umejiandikisha! Sasa bonyeza INGIA';
 }
-feed.innerHTML=html;
-var v=0;var l=0;for(var j=0;j<posts.length;j++){v+=posts[j].views;l+=posts[j].likes;}
-setText('views',v.toLocaleString());setText('totalLikes',l.toLocaleString());setText('money','TSh '+(Math.floor(v/1000)*5000).toLocaleString());setText('ceoViews',v.toLocaleString());setText('ceoMoney','TSh '+(Math.floor(v/1000)*5000).toLocaleString());
-}catch(e){var f=document.getElementById('feed');if(f)f.innerHTML='<p>Hitilafu: '+e.message+'</p>';}
+function ingia(){
+let p=phone.value.trim(),w=pass.value.trim();
+let u=users.find(x=>x.phone==p&&x.pass==w);
+if(!u){msg.innerText='Namba au Password sio sahihi';return}
+me=p;localStorage.setItem('kapapp_me',p);onyesha();
 }
-function like(i){posts[i].likes++;posts[i].views+=10;savePosts();render();}
-function comment(i){var inp=document.getElementById('c'+i);if(!inp.value)return;posts[i].comments.push('Wewe: '+inp.value);savePosts();render();}
-function readFile(input){var f=input.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){tempFile=e.target.result;alert('Picha imewekwa!');};r.readAsDataURL(f);}
-function addPost(){var d=document.getElementById('pDesc').value||document.getElementById('pTitle').value||"What's on your mind?";var ty=document.getElementById('pType').value;var u=document.getElementById('pUrl').value||tempFile||'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600';posts.unshift({user:"Wewe",emoji:"👤",desc:d,type:ty,url:u,likes:0,views:10,comments:[]});savePosts();render();alert('Post imewekwa!');goHome();}
-function doSearch(){render(document.getElementById('searchInput').value);show('home');}
-function sendDM(){var v=document.getElementById('dmInput').value;if(!v)return;document.getElementById('dmBox').innerHTML+='<p><b>Wewe:</b> '+v+'</p>';document.getElementById('dmInput').value='';}
-function changeProfilePic(input){var f=input.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){document.getElementById('profPicShow').src=e.target.result;document.getElementById('profPicShow').style.display='block';document.getElementById('profEmojiShow').style.display='none';document.getElementById('mindPic').src=e.target.result;};r.readAsDataURL(f);}
-function saveProfile(){document.getElementById('profNameShow').innerText=document.getElementById('profName').value||'Wewe';alert('Imehifadhiwa!');}
-function doLogout(){location.reload();}
-function withdraw(){var n=document.getElementById('withdrawNumber').value;if(!n)return alert('Weka Namba');alert('Pesa imetumwa kwenda '+n);}
-function addPage(){var n=document.getElementById('pageName').value;if(!n)return;document.getElementById('pageList').innerHTML+='<p>'+n+'</p>';alert('Page imetengenezwa!');}
-function clearNotif(){document.getElementById('notifList').innerHTML='<p>Hakuna mpya</p>';}
-function startLive(){document.getElementById('myLiveRoom').classList.remove('hidden');alert('Uko LIVE!');}
-function sendLiveComment(){var v=document.getElementById('liveCommentInput').value;if(!v)return;document.getElementById('liveChat').innerHTML+='<p><b>Wewe:</b> '+v+'</p>';document.getElementById('liveCommentInput').value='';}
-function sendGift(n,a){liveGiftTotal+=a;setText('liveGifts','TSh '+liveGiftTotal.toLocaleString());}
-function endLive(){alert('LIVE imemalizika! Zawadi: TSh '+liveGiftTotal);document.getElementById('myLiveRoom').classList.add('hidden');}
-function show(id){var ids=['home','postPage','searchPage','dmPage','profile','menuPage','livePage','reels','pages','notifPage','ceo'];for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el)el.classList.add('hidden');}var t=document.getElementById(id);if(t)t.classList.remove('hidden');window.scrollTo(0,0);}
-function goHome(){render('');show('home');}
-render('');show('home');
+function toka(){localStorage.removeItem('kapapp_me');location.reload()}
+function onyesha(){
+let u=users.find(x=>x.phone==me);if(!u)return;
+loginPage.style.display='none';app.style.display='block';myName.innerText='👋 '+u.name;
+feed.innerHTML='';
+for(let i=posts.length-1;i>=0;i--){let po=posts[i];
+feed.innerHTML+='<div class="post"><b>'+po.name+'</b><div>'+po.txt+'</div>'+(po.media? (po.type=='v'?'<video controls src="'+po.media+'"></video>':'<img src="'+po.media+'">'):'')+'</div>'}
+}
+function post(){
+let u=users.find(x=>x.phone==me);if(!u)return;
+let f=file.files[0];
+if(f){let r=new FileReader();r.onload=function(){save(r.result,f.type.includes('video')?'v':'i')};r.readAsDataURL(f)}
+else save('','');
+}
+function save(media,type){
+let u=users.find(x=>x.phone==me);
+posts.push({name:u.name,txt:txt.value,media:media,type:type});
+localStorage.setItem('kapapp_posts',JSON.stringify(posts));txt.value='';file.value='';onyesha();
+}
+if(me)onyesha();
 </script>
 </body>
 </html>

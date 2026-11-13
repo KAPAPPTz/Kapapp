@@ -27,7 +27,6 @@ body{background:#f0f2f5;padding-bottom:80px}
 .post-head{display:flex;gap:10px;align-items:center}
 .post-head small{color:gray}
 .post p{margin:10px 0;font-size:16px;white-space:pre-wrap}
-.post-img{width:100%;border-radius:10px;margin:5px 0}
 .actions{display:flex;justify-content:space-between;border-top:1px solid #eee;padding-top:8px;margin-top:8px}
 .actions button{flex:1;border:none;background:none;padding:8px;font-weight:bold;color:#555}
 .actions button.liked{color:#1877f2}
@@ -42,13 +41,13 @@ body{background:#f0f2f5;padding-bottom:80px}
 </head>
 <body>
 <div id="loginScreen">
-<div class="header"><h1>KAPAPP 🌍</h1><p>App ya Kijamii kama Facebook</p></div>
+<div class="header"><h1>KAPAPP 🌍</h1></div>
 <div class="box" id="ingiaBox"><h2>INGIA</h2><br><input id="namba" placeholder="Namba ya Simu"><input id="pass" type="password" placeholder="Password"><button onclick="ingia()">INGIA</button><p id="msg"></p><a class="link" onclick="onyeshaJisajili()">Huna akaunti? Jisajili hapa</a></div>
 <div class="box" id="jisajiliBox" style="display:none"><h2>JISAJILI</h2><br><input id="jinaJ" placeholder="Jina lako"><input id="nambaJ" placeholder="Namba ya Simu"><input id="passJ" type="password" placeholder="Weka Password"><button class="green" onclick="jisajili()">JISAJILI SASA</button><p id="msg2"></p><a class="link" onclick="onyeshaIngia()">Umeshaingia? Ingia hapa</a></div>
 </div>
 
 <div id="mainScreen" style="display:none">
-<div class="header"><h1>facebook style - KAPAPP 🌍</h1></div>
+<div class="header"><h1>KAPAPP 🌍</h1></div>
 <div class="top"><span>👤 <b id="showJina"></b><br><small id="showNamba"></small></span><button onclick="toka()">Toka</button></div>
 
 <div class="topbar"><div class="avatar" id="av">S</div><input placeholder="Unafikiria nini leo?" onclick="document.getElementById('maandishi').focus()"></div>
@@ -58,7 +57,6 @@ body{background:#f0f2f5;padding-bottom:80px}
 <div class="story" style="background:#ff6b6b">Naa Kim</div>
 <div class="story" style="background:#4ecdc4">Hussein Puga</div>
 <div class="story" style="background:#45b7d1">Said Kapwile</div>
-<div class="story" style="background:#f9ca24">Mgeni</div>
 </div>
 
 <div class="composer"><textarea id="maandishi" placeholder="Unafikiria nini leo?"></textarea><button onclick="tumaPost()">📝 CHAPISHA POST</button></div>
@@ -68,8 +66,7 @@ body{background:#f0f2f5;padding-bottom:80px}
 
 <script>
 var posts=[
-{jina:"KAPAPP",txt:"Karibu KAPAPP! Hapa ni kama Facebook - post vitu vyenu, like na comment! 🌍",likes:12,comments:["Karibu sana!"],liked:false},
-{jina:"Said Kapwile",txt:"Leo ni siku nzuri sana Dar es Salaam! Nani yupo?",likes:8,comments:["Poa sana mkuu!"],liked:false}
+{jina:"KAPAPP",txt:"Karibu KAPAPP! 🌍 Hapa ndipo tutaweka matangazo yetu. Kama Facebook inavyotupatia pesa kwa matangazo, na sisi tutapata hapa!",likes:12,comments:["Karibu sana!"],liked:false}
 ];
 var jinaLangu="";
 function onyeshaJisajili(){document.getElementById('ingiaBox').style.display='none';document.getElementById('jisajiliBox').style.display='block';}

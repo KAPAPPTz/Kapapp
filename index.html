@@ -7,100 +7,102 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#f0f2f5;padding-bottom:80px}
-.header{background:#1877f2;color:white;padding:15px;text-align:center}
+.header{background:#1877f2;color:white;padding:12px;text-align:center;position:sticky;top:0;z-index:10}
+.header h1{font-size:28px}
 .box{background:white;margin:15px;padding:20px;border-radius:15px;text-align:center}
 .box input{width:100%;padding:13px;border:1px solid #ddd;border-radius:10px;margin-bottom:10px;font-size:16px}
 .box button{background:#1877f2;color:white;border:none;padding:14px;width:100%;border-radius:20px;font-weight:bold;font-size:17px}
 .box button.green{background:#00a400}
-.wallet{background:white;margin:10px;padding:15px;border-radius:12px;text-align:center}
-.wallet h2{color:#1877f2;font-size:28px}
-.post-box{background:white;margin:10px;padding:12px;border-radius:12px}
-.post-box textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:12px;min-height:60px}
-.post-box button{background:#1877f2;color:white;border:none;padding:12px;width:100%;border-radius:20px;font-weight:bold;margin-top:8px}
+.topbar{background:white;padding:10px;display:flex;align-items:center;gap:10px;position:sticky;top:52px;z-index:9}
+.avatar{width:40px;height:40px;background:#1877f2;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;flex-shrink:0}
+.topbar input{flex:1;background:#f0f2f5;border:none;padding:12px;border-radius:20px;font-size:15px}
+.stories{display:flex;gap:8px;overflow-x:auto;padding:10px;background:white;margin-top:5px}
+.story{min-width:110px;height:170px;border-radius:12px;background:#ddd;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:8px;color:white;font-weight:bold;font-size:13px}
+.story.create{background:#f0f2f5;color:#333;flex-direction:column;justify-content:flex-end;align-items:center}
+.story.create .plus{background:#1877f2;color:white;width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:8px}
+.composer{background:white;margin:10px;padding:12px;border-radius:12px}
+.composer textarea{width:100%;border:none;outline:none;padding:10px;font-size:16px;min-height:50px;resize:none}
+.composer button{background:#1877f2;color:white;border:none;padding:12px;width:100%;border-radius:20px;font-weight:bold;margin-top:8px}
 .post{background:white;margin:10px;border-radius:12px;padding:12px}
-.post button{border:none;background:#eee;padding:8px 15px;border-radius:20px;margin-right:5px}
-.top{background:white;margin:10px;padding:10px;border-radius:10px;display:flex;justify-content:space-between}
+.post-head{display:flex;gap:10px;align-items:center}
+.post-head small{color:gray}
+.post p{margin:10px 0;font-size:16px;white-space:pre-wrap}
+.post-img{width:100%;border-radius:10px;margin:5px 0}
+.actions{display:flex;justify-content:space-between;border-top:1px solid #eee;padding-top:8px;margin-top:8px}
+.actions button{flex:1;border:none;background:none;padding:8px;font-weight:bold;color:#555}
+.actions button.liked{color:#1877f2}
+.comments{background:#f0f2f5;padding:8px;border-radius:10px;margin-top:8px}
+.comments p{font-size:14px;margin:3px 0}
+.top{background:white;margin:10px;padding:12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center}
 .top button{background:#ff4444;color:white;border:none;padding:6px 12px;border-radius:15px}
 .link{color:#1877f2;text-decoration:underline;margin-top:10px;display:block}
-#msg{color:green;font-weight:bold;margin-top:10px}
+#msg,#msg2{color:red;font-weight:bold;margin-top:10px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #ddd;font-size:22px}
 </style>
 </head>
 <body>
 <div id="loginScreen">
-<div class="header"><h1>KAPAPP 🌍</h1><p>Iko kwenye Server sasa - Haijai tena!</p></div>
-<div class="box" id="ingiaBox">
-<h2>INGIA</h2><br>
-<input id="namba" placeholder="Namba ya Simu">
-<input id="pass" type="password" placeholder="Password">
-<button onclick="ingia()">INGIA</button>
-<p id="msg"></p>
-<a class="link" onclick="onyeshaJisajili()">Huna akaunti? Jisajili hapa</a>
-</div>
-<div class="box" id="jisajiliBox" style="display:none">
-<h2>JISAJILI</h2><br>
-<input id="jinaJ" placeholder="Jina lako">
-<input id="nambaJ" placeholder="Namba ya Simu">
-<input id="passJ" type="password" placeholder="Weka Password">
-<button class="green" onclick="jisajili()">JISAJILI SASA</button>
-<p id="msg2"></p>
-<a class="link" onclick="onyeshaIngia()">Umeshaingia? Ingia hapa</a>
-</div>
+<div class="header"><h1>KAPAPP 🌍</h1><p>App ya Kijamii kama Facebook</p></div>
+<div class="box" id="ingiaBox"><h2>INGIA</h2><br><input id="namba" placeholder="Namba ya Simu"><input id="pass" type="password" placeholder="Password"><button onclick="ingia()">INGIA</button><p id="msg"></p><a class="link" onclick="onyeshaJisajili()">Huna akaunti? Jisajili hapa</a></div>
+<div class="box" id="jisajiliBox" style="display:none"><h2>JISAJILI</h2><br><input id="jinaJ" placeholder="Jina lako"><input id="nambaJ" placeholder="Namba ya Simu"><input id="passJ" type="password" placeholder="Weka Password"><button class="green" onclick="jisajili()">JISAJILI SASA</button><p id="msg2"></p><a class="link" onclick="onyeshaIngia()">Umeshaingia? Ingia hapa</a></div>
 </div>
 
 <div id="mainScreen" style="display:none">
-<div class="header"><h1>KAPAPP 🌍</h1></div>
+<div class="header"><h1>facebook style - KAPAPP 🌍</h1></div>
 <div class="top"><span>👤 <b id="showJina"></b><br><small id="showNamba"></small></span><button onclick="toka()">Toka</button></div>
-<div class="wallet"><p>💰 MFUKO WAKO</p><h2><span id="pesa">0</span> TZS</h2><p>Post = 50 | Like = 10 | Comment = 5</p></div>
-<div class="post-box"><textarea id="maandishi" placeholder="Unafikiria nini leo?"></textarea><button onclick="tumaPost()">📝 CHAPISHA POST +50 TZS</button></div>
+
+<div class="topbar"><div class="avatar" id="av">S</div><input placeholder="Unafikiria nini leo?" onclick="document.getElementById('maandishi').focus()"></div>
+
+<div class="stories">
+<div class="story create"><div class="plus">+</div><span>Create Story</span></div>
+<div class="story" style="background:#ff6b6b">Naa Kim</div>
+<div class="story" style="background:#4ecdc4">Hussein Puga</div>
+<div class="story" style="background:#45b7d1">Said Kapwile</div>
+<div class="story" style="background:#f9ca24">Mgeni</div>
+</div>
+
+<div class="composer"><textarea id="maandishi" placeholder="Unafikiria nini leo?"></textarea><button onclick="tumaPost()">📝 CHAPISHA POST</button></div>
 <div id="feed"></div>
+<div class="nav"><span>🏠</span><span>👥</span><span>🔔</span><span>☰</span></div>
 </div>
 
 <script>
-var pesa=0;
-var posts=[{jina:"KAPAPP",txt:"Karibu KAPAPP! Post hapa, watu wakipenda unapata 10 TZS!",likes:12}];
+var posts=[
+{jina:"KAPAPP",txt:"Karibu KAPAPP! Hapa ni kama Facebook - post vitu vyenu, like na comment! 🌍",likes:12,comments:["Karibu sana!"],liked:false},
+{jina:"Said Kapwile",txt:"Leo ni siku nzuri sana Dar es Salaam! Nani yupo?",likes:8,comments:["Poa sana mkuu!"],liked:false}
+];
 var jinaLangu="";
 function onyeshaJisajili(){document.getElementById('ingiaBox').style.display='none';document.getElementById('jisajiliBox').style.display='block';}
 function onyeshaIngia(){document.getElementById('jisajiliBox').style.display='none';document.getElementById('ingiaBox').style.display='block';}
 function jisajili(){
-var j=document.getElementById('jinaJ').value;
-var n=document.getElementById('nambaJ').value;
-var p=document.getElementById('passJ').value;
+var j=document.getElementById('jinaJ').value;var n=document.getElementById('nambaJ').value;var p=document.getElementById('passJ').value;
 if(j==""||n==""||p==""){document.getElementById('msg2').innerHTML="Jaza vyote kwanza!";return;}
-jinaLangu=j;
-document.getElementById('showJina').innerHTML=j;
-document.getElementById('showNamba').innerHTML=n;
-document.getElementById('loginScreen').style.display='none';
-document.getElementById('mainScreen').style.display='block';
-onyesha();
+jinaLangu=j;document.getElementById('showJina').innerHTML=j;document.getElementById('showNamba').innerHTML=n;document.getElementById('av').innerHTML=j.charAt(0).toUpperCase();
+document.getElementById('loginScreen').style.display='none';document.getElementById('mainScreen').style.display='block';onyesha();
 }
 function ingia(){
-var n=document.getElementById('namba').value;
-var p=document.getElementById('pass').value;
+var n=document.getElementById('namba').value;var p=document.getElementById('pass').value;
 if(n==""||p==""){document.getElementById('msg').innerHTML="Andika Namba na Password!";return;}
-if(jinaLangu=="") jinaLangu="Mgeni";
-document.getElementById('showJina').innerHTML=jinaLangu;
-document.getElementById('showNamba').innerHTML=n;
-document.getElementById('loginScreen').style.display='none';
-document.getElementById('mainScreen').style.display='block';
-onyesha();
+if(jinaLangu=="") jinaLangu="Mgeni";document.getElementById('showJina').innerHTML=jinaLangu;document.getElementById('showNamba').innerHTML=n;document.getElementById('av').innerHTML=jinaLangu.charAt(0).toUpperCase();
+document.getElementById('loginScreen').style.display='none';document.getElementById('mainScreen').style.display='block';onyesha();
 }
 function toka(){document.getElementById('mainScreen').style.display='none';document.getElementById('loginScreen').style.display='block';}
 function onyesha(){
-document.getElementById('pesa').innerHTML=pesa;
 var h="";
-for(var i=0;i<posts.length;i++){h+='<div class="post"><b>'+posts[i].jina+'</b><p style="margin:8px 0">'+posts[i].txt+'</p><button onclick="like('+i+')">❤️ Like ('+posts[i].likes+')</button><button onclick="comment('+i+')">💬 Comment</button></div>';}
+for(var i=0;i<posts.length;i++){
+h+='<div class="post"><div class="post-head"><div class="avatar">'+posts[i].jina.charAt(0).toUpperCase()+'</div><div><b>'+posts[i].jina+'</b><br><small>Sasa hivi • 🌍</small></div></div><p>'+posts[i].txt+'</p><div style="color:#555;font-size:14px">❤️ '+posts[i].likes+' Likes • 💬 '+posts[i].comments.length+' Comments</div><div class="actions"><button class="'+(posts[i].liked?'liked':'')+'" onclick="like('+i+')">👍 Like</button><button onclick="comment('+i+')">💬 Comment</button><button onclick="share('+i+')">↗️ Share</button></div><div class="comments">';
+for(var c=0;c<posts[i].comments.length;c++){h+='<p>💬 '+posts[i].comments[c]+'</p>';}
+h+='</div></div>';
+}
 document.getElementById('feed').innerHTML=h;
 }
 function tumaPost(){
-var t=document.getElementById('maandishi').value;
-if(t==""){return;}
-posts.unshift({jina:jinaLangu,txt:t,likes:0});
-pesa=pesa+50;
-onyesha();
-document.getElementById('maandishi').value='';
+var t=document.getElementById('maandishi').value;if(t==""){return;}
+posts.unshift({jina:jinaLangu,txt:t,likes:0,comments:[],liked:false});onyesha();document.getElementById('maandishi').value='';
 }
-function like(i){posts[i].likes++;pesa=pesa+10;onyesha();}
-function comment(i){pesa=pesa+5;onyesha();}
+function like(i){if(posts[i].liked){posts[i].likes--;posts[i].liked=false;}else{posts[i].likes++;posts[i].liked=true;}onyesha();}
+function comment(i){var c=prompt('Andika comment:');if(c){posts[i].comments.push(jinaLangu+": "+c);onyesha();}}
+function share(i){alert('Ume-share post ya '+posts[i].jina);}
 </script>
 </body>
 </html>

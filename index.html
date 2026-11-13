@@ -5,114 +5,231 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KAPAPP</title>
 <style>
-body{font-family:Arial;background:#eef2f7;margin:0;padding:10px}
+body{font-family:Arial;background:#eef2f7;margin:0;padding:10px;padding-bottom:70px}
 .box{background:white;padding:15px;border-radius:12px;margin-bottom:10px}
 h1{color:#1877f2;margin:0}
-input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
-button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-weight:bold;font-size:16px;margin-top:5px}
-.blue{background:#1877f2}.green{background:#42b72a}.red{background:#e41e3f;width:auto;padding:8px 15px}
+input,textarea,select{width:100%;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;font-size:15px}
+button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-weight:bold;font-size:16px;margin-top:5px;cursor:pointer}
+.blue{background:#1877f2}.green{background:#42b72a}.red{background:#e41e3f;width:auto;padding:8px 15px;font-size:14px}
 .top{display:flex;justify-content:space-between;align-items:center;background:white;padding:10px;border-radius:12px;margin-bottom:10px}
-.post img{width:100%;border-radius:10px;margin-top:8px}
-.del-btn{background:#ff3b30;width:auto;padding:6px 12px;font-size:13px;float:right}
+.post img,.post video{width:100%;border-radius:10px;margin-top:8px}
+.del-btn{background:#e41e3f;width:auto;padding:8px 15px;font-size:14px}
 .post-head{display:flex;justify-content:space-between;align-items:center}
+.actions{display:flex;gap:6px;margin-top:10px;border-top:1px solid #eee;padding-top:10px}
+.actions button{flex:1;background:#f0f2f5;color:#333;font-size:14px;padding:9px}
+.actions button.liked{background:#ffe0e0;color:#e41e3f}
+.comments{margin-top:10px;background:#f8f9fa;padding:10px;border-radius:10px}
+.cmt{padding:5px 0;border-bottom:1px solid #eee;font-size:14px}
+.cmt-input{display:flex;gap:6px;margin-top:8px}.cmt-input input{flex:1}.cmt-input button{width:auto;padding:10px 14px;background:#1877f2}
+.wa-btn{background:#25D366;display:block;text-align:center;text-decoration:none;padding:11px;border-radius:8px;color:white;font-weight:bold;margin-top:8px}
+.tabs{display:flex;gap:6px;margin-bottom:10px}.tabs button{flex:1;background:white;color:#333;border:1px solid #ddd;padding:10px;font-size:14px}
+.tabs button.active{background:#1877f2;color:white}
+.hashtag{color:#1877f2;font-weight:bold}
+.avatar{width:40px;height:40px;background:#1877f2;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:19px;overflow:hidden;flex-shrink:0}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.hidden{display:none!important}
+.user-row{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #eee}
+.user-row .info{flex:1}
+.nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;padding:8px;border-top:1px solid #ddd}
+.nav button{flex:1;background:none;color:#333;font-size:13px;padding:8px}
+.nav button.active{color:#1877f2;font-weight:bold}
 </style>
 </head>
 <body>
-<div id="loginBox" class="box">
-<h1 style="text-align:center">KAPAPP 🌍</h1>
-<p style="text-align:center">Iko kwenye Server sasa - Haijai tena!</p>
-<input id="phone" placeholder="Namba ya Simu">
-<input id="pass" type="password" placeholder="Password">
-<input id="jina" placeholder="Jina Lako - KAPWILE">
-<button class="green" onclick="jiandikishe()">JIANDIKISHE MPYA</button>
+<div id="authBox">
+<div class="box" style="text-align:center"><h1 style="font-size:32px">KAPAPP 🌍</h1><p>Iko kwenye Server sasa - Haijai tena!</p></div>
+<div class="box" id="loginForm">
+<input id="lPhone" placeholder="Namba ya Simu">
+<input id="lPass" type="password" placeholder="Password">
 <button class="blue" onclick="ingia()">INGIA</button>
+<p style="text-align:center">Huna akaunti? <a href="#" onclick="showReg()">Jisajili hapa</a></p>
 </div>
-<div id="main" style="display:none">
+<div class="box hidden" id="regForm">
+<h3 style="margin:0">JISAJILI - Kama FB</h3>
+<input id="rJina" placeholder="Jina Lako - KAPWILE *">
+<input id="rPhone" placeholder="Namba ya Simu *">
+<input id="rPass" type="password" placeholder="Password *">
+<input id="rMji" placeholder="Mji wako - Dar es Salaam">
+<textarea id="rBio" placeholder="Bio yako - Ji-eleze..."></textarea>
+<label>Picha ya Profile:</label><input type="file" id="rPic" accept="image/*">
+<input id="rWa" placeholder="WhatsApp 2557XXXXXXXX">
+<button class="green" onclick="jiandikishe()">JIANDIKISHE MPYA</button>
+<p style="text-align:center"><a href="#" onclick="showLogin()">Nina akaunti - Ingia</a></p>
+</div>
+</div>
+
+<div id="main" class="hidden">
 <div class="top"><h1>KAPAPP</h1><span>👋 <span id="myName"></span></span><button class="red" onclick="toka()">Toka</button></div>
+
+<div class="tabs">
+<button id="tabFeed" class="active" onclick="showTab('feed')">🏠 Feed</button>
+<button id="tabReels" onclick="showTab('reels')">🎬 Reels</button>
+<button id="tabPeople" onclick="showTab('people')">👥 Watu</button>
+<button id="tabProfile" onclick="showTab('profile')">👤 Mimi</button>
+</div>
+
+<div id="viewFeed">
 <div class="box">
-<textarea id="postText" placeholder="What's on your mind?"></textarea>
-<input type="file" id="postFile" accept="image/*">
+<textarea id="postText" placeholder="What's on your mind? Tumia #hashtag @tag"></textarea>
+<input type="file" id="postFile" accept="image/*,video/*">
+<select id="postType"><option value="post">📝 Post ya kawaida</option><option value="reel">🎬 Reel / Video</option></select>
+<input id="postTags" placeholder="Tag rafiki - @Said">
 <button class="blue" id="postBtn" onclick="postSasa()">POST SASA</button>
 <p id="status" style="text-align:center;color:#1877f2"></p>
 </div>
+<input id="searchPost" placeholder="🔍 Tafuta #hashtag..." oninput="renderFeed()">
 <div id="feed"></div>
 </div>
+
+<div id="viewReels" class="hidden"><div class="box" style="text-align:center"><h3>🎬 Reels</h3></div><div id="reelsFeed"></div></div>
+
+<div id="viewPeople" class="hidden"><div class="box"><h3>👥 Watu wa KAPAPP</h3><input id="searchUser" placeholder="🔍 Tafuta mtu..." oninput="renderPeople()"><div id="peopleList"></div></div></div>
+
+<div id="viewProfile" class="hidden">
+<div class="box" style="text-align:center">
+<div class="avatar" id="profAvatar" style="width:80px;height:80px;font-size:36px;margin:0 auto">?</div>
+<h2 id="profName"></h2><p id="profBio" style="color:#666"></p><p id="profMji"></p>
+<p><b id="profFollowers">0</b> Followers • <b id="profFollowing">0</b> Following • <b id="profPosts">0</b> Posts</p>
+<button class="blue" onclick="editProfile()">✏️ BADILISHA PROFILE</button>
+<a class="wa-btn" id="myWaLink" target="_blank">💬 WhatsApp Yangu</a>
+</div>
+<div class="box hidden" id="editBox"><input id="eBio" placeholder="Bio mpya"><input id="eMji" placeholder="Mji mpya"><input id="eWa" placeholder="WhatsApp 255..."><input type="file" id="ePic" accept="image/*"><button class="green" onclick="saveProfile()">HIFADHI</button></div>
+<div id="myPosts"></div>
+</div>
+</div>
+
+<div class="nav" id="bottomNav" style="display:none">
+<button class="active" onclick="showTab('feed')">🏠<br>Feed</button>
+<button onclick="showTab('reels')">🎬<br>Reels</button>
+<button onclick="showTab('people')">👥<br>Watu</button>
+<button onclick="showTab('profile')">👤<br>Mimi</button>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wElVXS9mBZKYw",
-  authDomain: "kapapp-97bed.firebaseapp.com",
-  projectId: "kapapp-97bed",
-  storageBucket: "kapapp-97bed.firebasestorage.app",
-  messagingSenderId: "497811742831",
-  appId: "1:497811742831:web:9cf03078065ceb0805ed9a"
-};
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig = { apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wElVXS9mBZKYw", authDomain: "kapapp-97bed.firebaseapp.com", projectId: "kapapp-97bed", storageBucket: "kapapp-97bed.firebasestorage.app", messagingSenderId: "497811742831", appId: "1:497811742831:web:9cf03078065ceb0805ed9a" };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const postsRef = collection(db, "posts");
-let users = JSON.parse(localStorage.getItem('kapapp_users') || '{}');
-let user = localStorage.getItem('kapapp_user') || '';
-function showMain(name){
-  document.getElementById('loginBox').style.display='none';
-  document.getElementById('main').style.display='block';
-  document.getElementById('myName').innerText=name;
+let allPosts=[];
+let me = JSON.parse(localStorage.getItem('kapapp_me') || 'null');
+let usersLocal = JSON.parse(localStorage.getItem('kapapp_users') || '{}');
+function fmt(t){ if(!t) return ''; return t.replace(/#(\w+)/g,'<span class="hashtag">#$1</span>').replace(/@(\w+)/g,'<b style="color:#1877f2">@$1</b>'); }
+function showReg(){ document.getElementById('loginForm').classList.add('hidden'); document.getElementById('regForm').classList.remove('hidden'); }
+function showLogin(){ document.getElementById('regForm').classList.add('hidden'); document.getElementById('loginForm').classList.remove('hidden'); }
+window.showReg=showReg; window.showLogin=showLogin;
+function showMain(){ document.getElementById('authBox').classList.add('hidden'); document.getElementById('main').classList.remove('hidden'); document.getElementById('bottomNav').style.display='flex'; document.getElementById('myName').innerText=me.name; renderProfile(); }
+window.toka=function(){ localStorage.removeItem('kapapp_me'); location.reload(); }
+async function fileToCompressed(file, isVideo){
+  if(isVideo) return new Promise(res=>{ let r=new FileReader(); r.onload=e=>res(e.target.result); r.readAsDataURL(file); });
+  let data = await new Promise(res=>{ let r=new FileReader(); r.onload=e=>res(e.target.result); r.readAsDataURL(file); });
+  let img=new Image(); await new Promise((a,b)=>{ img.onload=a; img.onerror=b; img.src=data; });
+  let c=document.createElement('canvas'); let max=700,w=img.width,h=img.height; if(w>max){h=h*max/w;w=max;} c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h); return c.toDataURL('image/jpeg',0.6);
 }
-window.jiandikishe = function(){
-  let p=document.getElementById('phone').value.trim();
-  let pw=document.getElementById('pass').value.trim();
-  let j=document.getElementById('jina').value.trim();
-  if(!p||!pw||!j){alert('Jaza vyote');return;}
-  users[p]={pass:pw,name:j}; localStorage.setItem('kapapp_users',JSON.stringify(users));
-  localStorage.setItem('kapapp_user',j); showMain(j);
+window.jiandikishe=async function(){
+  let j=document.getElementById('rJina').value.trim(), p=document.getElementById('rPhone').value.trim(), pw=document.getElementById('rPass').value.trim();
+  let mji=document.getElementById('rMji').value.trim(), bio=document.getElementById('rBio').value.trim(), wa=document.getElementById('rWa').value.trim();
+  let f=document.getElementById('rPic').files[0];
+  if(!j||!p||!pw){alert('Jaza Jina, Namba na Password');return;}
+  let pic=''; if(f) pic=await fileToCompressed(f,false);
+  me={name:j,phone:p,pass:pw,mji:mji,bio:bio||'Karibu KAPAPP! 🌍',pic:pic,wa:wa,followers:[],following:[]};
+  usersLocal[p]=me; localStorage.setItem('kapapp_users',JSON.stringify(usersLocal)); localStorage.setItem('kapapp_me',JSON.stringify(me));
+  try{ await setDoc(doc(db,"users",p),me); }catch(e){}
+  showMain(); alert('Karibu '+j+'! 🎉');
 }
-window.ingia = function(){
-  let p=document.getElementById('phone').value.trim();
-  let pw=document.getElementById('pass').value.trim();
-  if(users[p] && users[p].pass===pw){localStorage.setItem('kapapp_user',users[p].name);showMain(users[p].name);}
-  else alert('Namba au Password sio sahihi. Jiandikishe kwanza.');
+window.ingia=function(){
+  let p=document.getElementById('lPhone').value.trim(), pw=document.getElementById('lPass').value.trim();
+  let u=usersLocal[p];
+  if(u && u.pass===pw){ me=u; localStorage.setItem('kapapp_me',JSON.stringify(me)); showMain(); }
+  else alert('Namba au Password sio sahihi. Jisajili kwanza.');
 }
-window.toka = function(){localStorage.removeItem('kapapp_user');location.reload();}
-window.futaPostMoja = async function(id){
-  if(!confirm('Kufuta hii post moja?')) return;
-  await deleteDoc(doc(db,"posts",id));
+window.showTab=function(tab){
+  ['feed','reels','people','profile'].forEach(t=>{
+    document.getElementById('view'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('hidden', t!==tab);
+    document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('active', t===tab);
+  });
+  document.querySelectorAll('.nav button').forEach((b,i)=>{ b.classList.toggle('active', ['feed','reels','people','profile'][i]===tab); });
+  if(tab==='profile') renderProfile(); if(tab==='people') renderPeople();
 }
-window.postSasa = async function(){
-  let btn=document.getElementById('postBtn');
-  let t=document.getElementById('postText').value.trim();
-  let f=document.getElementById('postFile').files[0];
-  if(!t && !f){alert('Andika kitu au chagua picha');return;}
-  btn.innerText='INAPAKIA KWENYE SERVER...'; btn.disabled=true;
-  document.getElementById('status').innerText='Inatuma kwenye Server...';
-  let media='';
-  if(f){
-    let data = await new Promise(res=>{ let r=new FileReader(); r.onload=e=>res(e.target.result); r.readAsDataURL(f); });
-    let img = new Image();
-    await new Promise((resolve,reject)=>{ img.onload=resolve; img.onerror=reject; img.src=data; });
-    let canvas=document.createElement('canvas'); let max=700; let w=img.width,h=img.height;
-    if(w>max){ h=h*max/w; w=max; }
-    canvas.width=w; canvas.height=h; canvas.getContext('2d').drawImage(img,0,0,w,h);
-    media=canvas.toDataURL('image/jpeg',0.6);
-  }
+window.postSasa=async function(){
+  let btn=document.getElementById('postBtn'), t=document.getElementById('postText').value.trim(), f=document.getElementById('postFile').files[0];
+  let type=document.getElementById('postType').value, tags=document.getElementById('postTags').value.trim();
+  if(!t && !f){alert('Andika kitu au chagua picha/video');return;}
+  btn.innerText='INAPAKIA...'; btn.disabled=true;
+  let media='', mediaType='image';
+  if(f){ mediaType=f.type.startsWith('video')?'video':'image'; media=await fileToCompressed(f, mediaType==='video'); }
   try{
-    await addDoc(postsRef,{name:localStorage.getItem('kapapp_user'),text:t,media:media,time:serverTimestamp()});
-    document.getElementById('postText').value=''; document.getElementById('postFile').value='';
+    await addDoc(postsRef,{name:me.name,phone:me.phone,pic:me.pic||'',wa:me.wa||'',text:t,media:media,mediaType:mediaType,type:type,tags:tags,likes:[],comments:[],time:serverTimestamp()});
+    document.getElementById('postText').value=''; document.getElementById('postFile').value=''; document.getElementById('postTags').value='';
     document.getElementById('status').innerText='✅ Imetumwa kwenye Server! Dunia nzima inaona!';
-  }catch(e){ alert('Imeshindikana: '+e.message); }
+  }catch(e){ alert(e.message); }
   btn.innerText='POST SASA'; btn.disabled=false;
 }
-const q = query(postsRef, orderBy("time","desc"));
-onSnapshot(q,(snap)=>{
-  let h='';
-  snap.forEach(d=>{
-    let p=d.data();
-    h+='<div class="box post"><div class="post-head"><b>'+(p.name||'')+'</b><button class="del-btn" onclick="futaPostMoja(\''+d.id+'\')">❌ Futa Hii</button></div><div style="margin-top:8px">'+(p.text||'')+'</div>';
-    if(p.media) h+='<img src="'+p.media+'">';
-    h+='</div>';
-  });
-  document.getElementById('feed').innerHTML = h || '<div class="box">Hakuna post bado. Kuwa wa kwanza kwenye Server!</div>';
-});
-if(user) showMain(user);
+window.futaPostMoja=async function(id){ if(!confirm('Futa hii?'))return; await deleteDoc(doc(db,"posts",id)); }
+window.likePost=async function(id,liked){ let ref=doc(db,"posts",id); if(liked) await updateDoc(ref,{likes:arrayRemove(me.name)}); else await updateDoc(ref,{likes:arrayUnion(me.name)}); }
+window.addComment=async function(id){ let inp=document.getElementById('cmt-'+id); let txt=inp.value.trim(); if(!txt)return; await updateDoc(doc(db,"posts",id),{comments:arrayUnion({name:me.name,text:txt,time:Date.now()})}); inp.value=''; }
+window.sharePost=async function(text){ let msg=(text||'Angalia KAPAPP!')+' - '+location.href; if(navigator.share){ try{await navigator.share({title:'KAPAPP',text:msg,url:location.href});}catch(e){} } else { await navigator.clipboard.writeText(msg); alert('Link imenakiliwa!'); } }
+window.followUser=async function(phone){
+  let target=usersLocal[phone]; if(!target) return;
+  let isF=(me.following||[]).includes(phone);
+  if(isF){ me.following=me.following.filter(x=>x!==phone); target.followers=(target.followers||[]).filter(x=>x!==me.phone); }
+  else { me.following=[...(me.following||[]),phone]; target.followers=[...(target.followers||[]),me.phone]; }
+  usersLocal[phone]=target; usersLocal[me.phone]=me; localStorage.setItem('kapapp_users',JSON.stringify(usersLocal)); localStorage.setItem('kapapp_me',JSON.stringify(me));
+  try{ await setDoc(doc(db,"users",phone),target); await setDoc(doc(db,"users",me.phone),me); }catch(e){}
+  renderPeople(); renderFeed(); renderProfile();
+}
+window.editProfile=function(){ document.getElementById('editBox').classList.remove('hidden'); }
+window.saveProfile=async function(){
+  let bio=document.getElementById('eBio').value.trim(), mji=document.getElementById('eMji').value.trim(), wa=document.getElementById('eWa').value.trim();
+  let f=document.getElementById('ePic').files[0]; let pic=me.pic; if(f) pic=await fileToCompressed(f,false);
+  if(bio) me.bio=bio; if(mji) me.mji=mji; if(wa) me.wa=wa; me.pic=pic;
+  usersLocal[me.phone]=me; localStorage.setItem('kapapp_users',JSON.stringify(usersLocal)); localStorage.setItem('kapapp_me',JSON.stringify(me));
+  try{ await setDoc(doc(db,"users",me.phone),me); }catch(e){}
+  document.getElementById('editBox').classList.add('hidden'); renderProfile(); showMain(); alert('Profile imehifadhiwa! ✅');
+}
+function postCard(p,id){
+  let likes=p.likes||[], cmts=p.comments||[], liked=likes.includes(me.name);
+  let mediaHtml=''; if(p.media){ mediaHtml = p.mediaType==='video' ? '<video src="'+p.media+'" controls></video>' : '<img src="'+p.media+'">'; }
+  let isMe=p.phone===me.phone;
+  let followBtn = !isMe ? '<button style="width:auto;padding:7px 12px;font-size:13px;margin:0" class="blue" onclick="followUser(\''+p.phone+'\')">'+((me.following||[]).includes(p.phone)?'✅ Unamfuata':'➕ Follow')+'</button>' : '';
+  let cmtsHtml=cmts.map(c=>'<div class="cmt"><b>'+c.name+':</b> '+c.text+'</div>').join('');
+  let waLink='https://wa.me/'+(p.wa||'255700000000');
+  return '<div class="box post"><div class="post-head"><b>'+(p.name||'')+'</b><div style="display:flex;gap:6px">'+followBtn+(isMe?'<button class="del-btn" onclick="futaPostMoja(\''+id+'\')">❌ Futa Hii</button>':'')+'</div></div><div style="margin-top:8px">'+fmt(p.text)+'</div>'+mediaHtml+'<div style="font-size:13px;color:#666;margin-top:8px">❤️ '+likes.length+' Likes • 💬 '+cmts.length+' Comments</div><div class="actions"><button class="'+(liked?'liked':'')+'" onclick="likePost(\''+id+'\','+liked+')">'+(liked?'❤️ Liked':'🤍 Like')+'</button><button onclick="document.getElementById(\'cmt-'+id+'\').focus()">💬 Comment</button><button onclick="sharePost(\''+(p.text||'').replace(/'/g,'')+'\')">🔗 Share</button></div><div class="comments">'+cmtsHtml+'<div class="cmt-input"><input id="cmt-'+id+'" placeholder="Andika comment..."><button onclick="addComment(\''+id+'\')">Tuma</button></div></div><a class="wa-btn" href="'+waLink+'" target="_blank">💬 DM kwa WhatsApp</a></div>';
+}
+function renderFeed(){
+  let q=(document.getElementById('searchPost').value||'').toLowerCase();
+  let filtered=allPosts.filter(x=> !q || (x.p.text||'').toLowerCase().includes(q) || (x.p.name||'').toLowerCase().includes(q));
+  document.getElementById('feed').innerHTML=filtered.map(x=>postCard(x.p,x.id)).join('') || '<div class="box">Hakuna post bado.</div>';
+  let reels=allPosts.filter(x=> x.p.type==='reel' || x.p.mediaType==='video');
+  document.getElementById('reelsFeed').innerHTML=reels.map(x=>postCard(x.p,x.id)).join('') || '<div class="box">Hakuna Reels bado.</div>';
+  let mine=allPosts.filter(x=>x.p.phone===me.phone);
+  document.getElementById('myPosts').innerHTML=mine.map(x=>postCard(x.p,x.id)).join('') || '<div class="box">Hujapost chochote.</div>';
+}
+window.renderFeed=renderFeed;
+function renderPeople(){
+  let q=(document.getElementById('searchUser').value||'').toLowerCase();
+  let list=Object.values(usersLocal).filter(u=> u.phone!==me.phone && (!q || u.name.toLowerCase().includes(q)));
+  document.getElementById('peopleList').innerHTML=list.map(u=>{
+    let isF=(me.following||[]).includes(u.phone);
+    return '<div class="user-row"><div class="avatar">'+(u.pic?'<img src="'+u.pic+'">':u.name.charAt(0))+'</div><div class="info"><b>'+u.name+'</b><div style="font-size:12px;color:#888">'+(u.bio||'')+' • '+(u.mji||'')+'</div><div style="font-size:12px">'+(u.followers||[]).length+' Followers</div></div><button class="blue" style="width:auto;padding:8px 14px" onclick="followUser(\''+u.phone+'\')">'+(isF?'✅ Unamfuata':'➕ Follow')+'</button></div>';
+  }).join('') || '<div style="padding:10px">Hakuna watu wengine bado.</div>';
+}
+window.renderPeople=renderPeople;
+function renderProfile(){
+  if(!me) return;
+  document.getElementById('profAvatar').innerHTML=me.pic?'<img src="'+me.pic+'">':me.name.charAt(0);
+  document.getElementById('profName').innerText=me.name;
+  document.getElementById('profBio').innerText=me.bio||'';
+  document.getElementById('profMji').innerText='📍 '+(me.mji||'Tanzania');
+  document.getElementById('profFollowers').innerText=(me.followers||[]).length;
+  document.getElementById('profFollowing').innerText=(me.following||[]).length;
+  document.getElementById('profPosts').innerText=allPosts.filter(x=>x.p.phone===me.phone).length;
+  document.getElementById('myWaLink').href='https://wa.me/'+(me.wa||'255700000000');
+}
+const q=query(postsRef, orderBy("time","desc"));
+onSnapshot(q,(snap)=>{ allPosts=[]; snap.forEach(d=>allPosts.push({id:d.id,p:d.data()})); renderFeed(); if(me) renderProfile(); });
+if(me) showMain();
 </script>
 </body>
 </html>

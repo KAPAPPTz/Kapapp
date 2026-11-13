@@ -41,7 +41,8 @@ button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-we
 <div class="box" id="loginForm">
 <input id="lPhone" placeholder="Namba ya Simu">
 <input id="lPass" type="password" placeholder="Password">
-<button class="blue" onclick="ingia()">INGIA</button>
+<button class="blue" id="loginBtn" onclick="ingia()">INGIA</button>
+<p style="text-align:center"><a href="#" onclick="sahauPassword()">Umesahau Password? Badilisha hapa</a></p>
 <p style="text-align:center">Huna akaunti? <a href="#" onclick="showReg()">Jisajili hapa</a></p>
 </div>
 <div class="box hidden" id="regForm">
@@ -53,7 +54,7 @@ button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-we
 <textarea id="rBio" placeholder="Bio yako - Ji-eleze..."></textarea>
 <label>Picha ya Profile:</label><input type="file" id="rPic" accept="image/*">
 <input id="rWa" placeholder="WhatsApp 2557XXXXXXXX">
-<button class="green" onclick="jiandikishe()">JIANDIKISHE MPYA</button>
+<button class="green" id="regBtn" onclick="jiandikishe()">JIANDIKISHE MPYA</button>
 <p style="text-align:center"><a href="#" onclick="showLogin()">Nina akaunti - Ingia</a></p>
 </div>
 </div>
@@ -107,7 +108,7 @@ button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-we
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, serverTimestamp, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig = { apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wElVXS9mBZKYw", authDomain: "kapapp-97bed.firebaseapp.com", projectId: "kapapp-97bed", storageBucket: "kapapp-97bed.firebasestorage.app", messagingSenderId: "497811742831", appId: "1:497811742831:web:9cf03078065ceb0805ed9a" };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -115,6 +116,7 @@ const postsRef = collection(db, "posts");
 let allPosts=[];
 let me = JSON.parse(localStorage.getItem('kapapp_me') || 'null');
 let usersLocal = JSON.parse(localStorage.getItem('kapapp_users') || '{}');
+function cleanPhone(p){ return (p||'').replace(/\s+/g,'').replace(/^\+255/,'0').trim(); }
 function fmt(t){ if(!t) return ''; return t.replace(/#(\w+)/g,'<span class="hashtag">#$1</span>').replace(/@(\w+)/g,'<b style="color:#1877f2">@$1</b>'); }
 function showReg(){ document.getElementById('loginForm').classList.add('hidden'); document.getElementById('regForm').classList.remove('hidden'); }
 function showLogin(){ document.getElementById('regForm').classList.add('hidden'); document.getElementById('loginForm').classList.remove('hidden'); }
@@ -128,21 +130,61 @@ async function fileToCompressed(file, isVideo){
   let c=document.createElement('canvas'); let max=700,w=img.width,h=img.height; if(w>max){h=h*max/w;w=max;} c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h); return c.toDataURL('image/jpeg',0.6);
 }
 window.jiandikishe=async function(){
-  let j=document.getElementById('rJina').value.trim(), p=document.getElementById('rPhone').value.trim(), pw=document.getElementById('rPass').value.trim();
+  let j=document.getElementById('rJina').value.trim(), p=cleanPhone(document.getElementById('rPhone').value), pw=document.getElementById('rPass').value.trim();
   let mji=document.getElementById('rMji').value.trim(), bio=document.getElementById('rBio').value.trim(), wa=document.getElementById('rWa').value.trim();
   let f=document.getElementById('rPic').files[0];
   if(!j||!p||!pw){alert('Jaza Jina, Namba na Password');return;}
+  let btn=document.getElementById('regBtn'); btn.innerText='INAJISAJILI...'; btn.disabled=true;
+  try{
+    let snap=await getDoc(doc(db,"users",p));
+    if(snap.exists()){ alert('Namba hii imeshatumika! Bonyeza "Nina akaunti - Ingia" au "Umesahau Password?"'); btn.innerText='JIANDIKISHE MPYA'; btn.disabled=false; return; }
+  }catch(e){}
   let pic=''; if(f) pic=await fileToCompressed(f,false);
   me={name:j,phone:p,pass:pw,mji:mji,bio:bio||'Karibu KAPAPP! 🌍',pic:pic,wa:wa,followers:[],following:[]};
   usersLocal[p]=me; localStorage.setItem('kapapp_users',JSON.stringify(usersLocal)); localStorage.setItem('kapapp_me',JSON.stringify(me));
-  try{ await setDoc(doc(db,"users",p),me); }catch(e){}
+  try{ await setDoc(doc(db,"users",p),me); }catch(e){ alert('Imeshindwa kuhifadhi kwenye Server: '+e.message); btn.innerText='JIANDIKISHE MPYA'; btn.disabled=false; return; }
+  btn.innerText='JIANDIKISHE MPYA'; btn.disabled=false;
   showMain(); alert('Karibu '+j+'! 🎉');
 }
-window.ingia=function(){
-  let p=document.getElementById('lPhone').value.trim(), pw=document.getElementById('lPass').value.trim();
+window.ingia=async function(){
+  let p=cleanPhone(document.getElementById('lPhone').value), pw=document.getElementById('lPass').value.trim();
+  if(!p||!pw){alert('Jaza Namba na Password');return;}
+  let btn=document.getElementById('loginBtn'); btn.innerText='INATAFUTA...'; btn.disabled=true;
   let u=usersLocal[p];
-  if(u && u.pass===pw){ me=u; localStorage.setItem('kapapp_me',JSON.stringify(me)); showMain(); }
-  else alert('Namba au Password sio sahihi. Jisajili kwanza.');
+  if(u && u.pass===pw){ me=u; localStorage.setItem('kapapp_me',JSON.stringify(me)); btn.innerText='INGIA'; btn.disabled=false; showMain(); return; }
+  try{
+    let snap=await getDoc(doc(db,"users",p));
+    if(snap.exists()){
+      let data=snap.data();
+      if(data.pass===pw){
+        me=data; usersLocal[p]=data; localStorage.setItem('kapapp_users',JSON.stringify(usersLocal)); localStorage.setItem('kapapp_me',JSON.stringify(me));
+        btn.innerText='INGIA'; btn.disabled=false; showMain(); return;
+      } else {
+        alert('Password sio sahihi. Bonyeza "Umesahau Password? Badilisha hapa"');
+      }
+    } else {
+      alert('Akaunti haikupatikana. Jisajili kwanza na namba hii.');
+      showReg();
+    }
+  }catch(e){ alert('Kuna tatizo la mtandao: '+e.message); }
+  btn.innerText='INGIA'; btn.disabled=false;
+}
+window.sahauPassword=async function(){
+  let p=cleanPhone(document.getElementById('lPhone').value);
+  if(!p) p=prompt('Weka namba yako ya simu, mfano 0688472790');
+  p=cleanPhone(p);
+  if(!p) return;
+  let np=prompt('Weka PASSWORD MPYA kwa namba '+p);
+  if(!np || np.length<3){ alert('Password mpya lazima iwe angalau herufi 3'); return; }
+  try{
+    let snap=await getDoc(doc(db,"users",p));
+    if(!snap.exists()){ alert('Akaunti ya namba hii haikupatikana. Jisajili kwanza.'); return; }
+    let data=snap.data(); data.pass=np;
+    await setDoc(doc(db,"users",p),data);
+    usersLocal[p]=data; localStorage.setItem('kapapp_users',JSON.stringify(usersLocal));
+    document.getElementById('lPhone').value=p; document.getElementById('lPass').value=np;
+    alert('Password imebadilishwa! Sasa bonyeza INGIA.');
+  }catch(e){ alert('Imeshindwa: '+e.message); }
 }
 window.showTab=function(tab){
   ['feed','reels','people','profile'].forEach(t=>{

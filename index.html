@@ -37,11 +37,9 @@ button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-we
 </div>
 <div id="feed"></div>
 </div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wElVXS9mBZKYw",
   authDomain: "kapapp-97bed.firebaseapp.com",
@@ -53,10 +51,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const postsRef = collection(db, "posts");
-
 let users = JSON.parse(localStorage.getItem('kapapp_users') || '{}');
 let user = localStorage.getItem('kapapp_user') || '';
-
 function showMain(name){
   document.getElementById('loginBox').style.display='none';
   document.getElementById('main').style.display='block';

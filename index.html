@@ -10,7 +10,7 @@ body{background:#f0f2f5;padding-bottom:80px}
 .header{background:#1877f2;color:white;padding:15px;text-align:center}
 .box{background:white;margin:15px;padding:20px;border-radius:15px;text-align:center}
 .box input{width:100%;padding:13px;border:1px solid #ddd;border-radius:10px;margin-bottom:10px;font-size:16px}
-.box button{background:#1877f2;color:white;border:none;padding:14px;width:100%;border-radius:20px;font-weight:bold;font-size:17px;margin-top:5px}
+.box button{background:#1877f2;color:white;border:none;padding:14px;width:100%;border-radius:20px;font-weight:bold;font-size:17px}
 .box button.green{background:#00a400}
 .wallet{background:white;margin:10px;padding:15px;border-radius:12px;text-align:center}
 .wallet h2{color:#1877f2;font-size:28px}
@@ -22,6 +22,7 @@ body{background:#f0f2f5;padding-bottom:80px}
 .top{background:white;margin:10px;padding:10px;border-radius:10px;display:flex;justify-content:space-between}
 .top button{background:#ff4444;color:white;border:none;padding:6px 12px;border-radius:15px}
 .link{color:#1877f2;text-decoration:underline;margin-top:10px;display:block}
+#msg{color:green;font-weight:bold;margin-top:10px}
 </style>
 </head>
 <body>
@@ -32,14 +33,16 @@ body{background:#f0f2f5;padding-bottom:80px}
 <input id="namba" placeholder="Namba ya Simu">
 <input id="pass" type="password" placeholder="Password">
 <button onclick="ingia()">INGIA</button>
+<p id="msg"></p>
 <a class="link" onclick="onyeshaJisajili()">Huna akaunti? Jisajili hapa</a>
 </div>
 <div class="box" id="jisajiliBox" style="display:none">
 <h2>JISAJILI</h2><br>
 <input id="jinaJ" placeholder="Jina lako">
 <input id="nambaJ" placeholder="Namba ya Simu">
-<input id="passJ" type="password" placeholder="Weka Password (123456)">
+<input id="passJ" type="password" placeholder="Weka Password">
 <button class="green" onclick="jisajili()">JISAJILI SASA</button>
+<p id="msg2"></p>
 <a class="link" onclick="onyeshaIngia()">Umeshaingia? Ingia hapa</a>
 </div>
 </div>
@@ -53,23 +56,51 @@ body{background:#f0f2f5;padding-bottom:80px}
 </div>
 
 <script>
-let user = JSON.parse(localStorage.getItem('kapapp_user')||'null');
-let users = JSON.parse(localStorage.getItem('kapapp_users')||'[]');
-let pesa = parseInt(localStorage.getItem('kapapp_pesa')||'0');
-let posts = JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
-if(posts.length==0){posts=[{jina:"KAPAPP",txt:"Karibu KAPAPP! Post hapa, watu wakipenda unapata 10 TZS!",likes:12}];}
-function save(){localStorage.setItem('kapapp_pesa',pesa);localStorage.setItem('kapapp_posts',JSON.stringify(posts));localStorage.setItem('kapapp_users',JSON.stringify(users));if(user)localStorage.setItem('kapapp_user',JSON.stringify(user));}
+var pesa=0;
+var posts=[{jina:"KAPAPP",txt:"Karibu KAPAPP! Post hapa, watu wakipenda unapata 10 TZS!",likes:12}];
+var jinaLangu="";
 function onyeshaJisajili(){document.getElementById('ingiaBox').style.display='none';document.getElementById('jisajiliBox').style.display='block';}
 function onyeshaIngia(){document.getElementById('jisajiliBox').style.display='none';document.getElementById('ingiaBox').style.display='block';}
-function jisajili(){let j=document.getElementById('jinaJ').value.trim();let n=document.getElementById('nambaJ').value.trim();let p=document.getElementById('passJ').value.trim();if(!j||!n||!p){alert('Jaza vyote kwanza!');return;}if(p.length<4){alert('Password iwe angalau 4!');return;}users.push({jina:j,namba:n,pass:p});user={jina:j,namba:n};save();alert('Hongera! Umejisajili! Sasa ingia');funguaApp();}
-function ingia(){let n=document.getElementById('namba').value.trim();let p=document.getElementById('pass').value.trim();if(!n||!p){alert('Andika Namba na Password!');return;}let f=users.find(u=>u.namba==n && u.pass==p);if(f){user={jina:f.jina,namba:f.namba};save();funguaApp();}else if(users.length==0){alert('Huna akaunti bado! Bonyeza Jisajili hapa chini kwanza!');onyeshaJisajili();}else{alert('Namba au Password sio sahihi! Jaribu tena au Jisajili upya.');}}
-function toka(){localStorage.removeItem('kapapp_user');user=null;document.getElementById('mainScreen').style.display='none';document.getElementById('loginScreen').style.display='block';}
-function funguaApp(){document.getElementById('loginScreen').style.display='none';document.getElementById('mainScreen').style.display='block';document.getElementById('showJina').innerText=user.jina;document.getElementById('showNamba').innerText=user.namba;onyesha();}
-function onyesha(){document.getElementById('pesa').innerText=pesa;let h='';posts.forEach((po,i)=>{h+='<div class="post"><b>'+po.jina+'</b><p style="margin:8px 0;white-space:pre-wrap">'+po.txt+'</p><button onclick="like('+i+')">❤️ Like ('+po.likes+')</button><button onclick="comment('+i+')">💬 Comment</button></div>';});document.getElementById('feed').innerHTML=h;}
-function tumaPost(){let t=document.getElementById('maandishi').value.trim();if(!t){alert('Andika kitu kwanza!');return;}posts.unshift({jina:user.jina,txt:t,likes:0});pesa+=50;save();onyesha();document.getElementById('maandishi').value='';alert('Hongera! +50 TZS');}
-function like(i){posts[i].likes++;pesa+=10;save();onyesha();}
-function comment(i){let c=prompt('Andika comment:');if(c){pesa+=5;save();onyesha();alert('Hongera! +5 TZS');}}
-if(user){funguaApp();}
+function jisajili(){
+var j=document.getElementById('jinaJ').value;
+var n=document.getElementById('nambaJ').value;
+var p=document.getElementById('passJ').value;
+if(j==""||n==""||p==""){document.getElementById('msg2').innerHTML="Jaza vyote kwanza!";return;}
+jinaLangu=j;
+document.getElementById('showJina').innerHTML=j;
+document.getElementById('showNamba').innerHTML=n;
+document.getElementById('loginScreen').style.display='none';
+document.getElementById('mainScreen').style.display='block';
+onyesha();
+}
+function ingia(){
+var n=document.getElementById('namba').value;
+var p=document.getElementById('pass').value;
+if(n==""||p==""){document.getElementById('msg').innerHTML="Andika Namba na Password!";return;}
+if(jinaLangu=="") jinaLangu="Mgeni";
+document.getElementById('showJina').innerHTML=jinaLangu;
+document.getElementById('showNamba').innerHTML=n;
+document.getElementById('loginScreen').style.display='none';
+document.getElementById('mainScreen').style.display='block';
+onyesha();
+}
+function toka(){document.getElementById('mainScreen').style.display='none';document.getElementById('loginScreen').style.display='block';}
+function onyesha(){
+document.getElementById('pesa').innerHTML=pesa;
+var h="";
+for(var i=0;i<posts.length;i++){h+='<div class="post"><b>'+posts[i].jina+'</b><p style="margin:8px 0">'+posts[i].txt+'</p><button onclick="like('+i+')">❤️ Like ('+posts[i].likes+')</button><button onclick="comment('+i+')">💬 Comment</button></div>';}
+document.getElementById('feed').innerHTML=h;
+}
+function tumaPost(){
+var t=document.getElementById('maandishi').value;
+if(t==""){return;}
+posts.unshift({jina:jinaLangu,txt:t,likes:0});
+pesa=pesa+50;
+onyesha();
+document.getElementById('maandishi').value='';
+}
+function like(i){posts[i].likes++;pesa=pesa+10;onyesha();}
+function comment(i){pesa=pesa+5;onyesha();}
 </script>
 </body>
 </html>

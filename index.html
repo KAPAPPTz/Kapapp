@@ -31,21 +31,26 @@ button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-we
 
 <div id="main" style="display:none">
 <div class="top"><h1>KAPAPP</h1><span>👋 <span id="myName"></span></span><button class="red" onclick="toka()">Toka</button></div>
-
 <div class="box">
 <textarea id="postText" placeholder="What's on your mind?"></textarea>
 <input type="file" id="postFile" accept="image/*,video/*">
 <button class="blue" onclick="postSasa()">POST SASA</button>
 </div>
-
 <div class="box"><b>Story</b><div class="story-row"><div class="story" onclick="alert('Story inakuja')">+ Tengeneza Story</div><div class="story">Kapwile 👑</div><div class="story">Rafiki</div></div></div>
-
 <div id="feed"></div>
 </div>
 
 <script>
 let users = JSON.parse(localStorage.getItem('kapapp_users') || '{}');
-let user = localStorage.getItem('kapapp_user');
+let userRaw = localStorage.getItem('kapapp_user');
+// Rekebisha jina la zamani lililokuwa {"name":"Said..."}
+function safishaJina(u){
+  if(!u) return '';
+  try{ if(u.trim().startsWith('{')){ let o=JSON.parse(u); return o.name||''; } }catch(e){}
+  return u;
+}
+let user = safishaJina(userRaw);
+if(userRaw && user!==userRaw) localStorage.setItem('kapapp_user', user);
 
 function jiandikishe(){
   let p=document.getElementById('phone').value.trim();
@@ -75,24 +80,21 @@ function postSasa(){
   let f=document.getElementById('postFile').files[0];
   if(!t && !f){alert('Andika kitu au chagua picha/video');return;}
   if(!f){ savePost(t,'',''); return; }
-  // Kama ni video - weka kama ilivyo
   if(f.type.includes('video')){
     let r=new FileReader();
     r.onload=function(e){ savePost(t,e.target.result,f.type); };
     r.readAsDataURL(f);
   } else {
-    // Kama ni picha - ipunguze automatically
     let r=new FileReader();
     r.onload=function(e){
       let img=new Image();
       img.onload=function(){
         let canvas=document.createElement('canvas');
-        let max=800; // ukubwa wa juu
-        let w=img.width, h=img.height;
+        let max=800; let w=img.width, h=img.height;
         if(w>max){ h=h*max/w; w=max; }
         canvas.width=w; canvas.height=h;
         canvas.getContext('2d').drawImage(img,0,0,w,h);
-        let ndogo=canvas.toDataURL('image/jpeg',0.7); // punguza 70%
+        let ndogo=canvas.toDataURL('image/jpeg',0.7);
         savePost(t,ndogo,'image/jpeg');
       };
       img.src=e.target.result;
@@ -110,8 +112,9 @@ function savePost(t,media,type){
 }
 function onyesha(){
   let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
-  // Futa automatiki za zamani - Machungwa / undefined / tupu
   posts=posts.filter(p=>p && p.text!=='undefined' && p.name!=='Machungwa' && (p.text || p.media));
+  // Rekebisha majina ya zamani kwenye post pia
+  posts=posts.map(p=>{ p.name=safishaJina(p.name); return p; });
   localStorage.setItem('kapapp_posts',JSON.stringify(posts));
   let h='';
   posts.forEach(p=>{

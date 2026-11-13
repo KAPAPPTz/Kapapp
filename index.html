@@ -40,4 +40,62 @@ button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-we
 </div>
 <script>
 let users = JSON.parse(localStorage.getItem('kapapp_users') || '{}');
-function safishaJina(u){ if(!u) return ''; try{ if(u.trim().startsWith('{')){let o=JSON.parse(u
+function safishaJina(u){ if(!u) return ''; try{ if(u.trim().startsWith('{')){let o=JSON.parse(u);return o.name||'';} }catch(e){} return u; }
+let user = safishaJina(localStorage.getItem('kapapp_user'));
+if(user && user!==localStorage.getItem('kapapp_user')) localStorage.setItem('kapapp_user',user);
+function jiandikishe(){ let p=document.getElementById('phone').value.trim(); let pw=document.getElementById('pass').value.trim(); let j=document.getElementById('jina').value.trim(); if(!p||!pw||!j){alert('Jaza vyote');return;} users[p]={pass:pw,name:j}; localStorage.setItem('kapapp_users',JSON.stringify(users)); localStorage.setItem('kapapp_user',j); showMain(j); }
+function ingia(){ let p=document.getElementById('phone').value.trim(); let pw=document.getElementById('pass').value.trim(); if(users[p] && users[p].pass===pw){localStorage.setItem('kapapp_user',users[p].name);showMain(users[p].name);} else alert('Namba au Password sio sahihi. Jiandikishe kwanza.'); }
+function toka(){localStorage.removeItem('kapapp_user');location.reload();}
+function showMain(name){ document.getElementById('loginBox').style.display='none'; document.getElementById('main').style.display='block'; document.getElementById('myName').innerText=name; onyesha(); }
+function futaZamani(){ if(confirm('Kufuta post zote za zamani ili kupata nafasi?')){ localStorage.removeItem('kapapp_posts'); onyesha(); alert('Imesafishwa! Jaribu kupost sasa.'); } }
+function postSasa(){
+  let btn=document.getElementById('postBtn');
+  let t=document.getElementById('postText').value.trim();
+  let f=document.getElementById('postFile').files[0];
+  if(!t && !f){alert('Andika kitu au chagua picha/video');return;}
+  btn.innerText='INAPAKIA... SUBIRI'; btn.disabled=true;
+  if(!f){ savePost(t,'',''); return; }
+  if(f.type.includes('video')){
+    if(f.size > 8*1024*1024){ alert('Video kubwa sana! Chagua video ndogo chini ya 8MB'); btn.innerText='POST SASA'; btn.disabled=false; return; }
+    let r=new FileReader(); r.onload=function(e){ savePost(t,e.target.result,f.type); }; r.readAsDataURL(f);
+  } else {
+    let r=new FileReader();
+    r.onload=function(e){
+      let img=new Image();
+      img.onload=function(){
+        try{
+          let canvas=document.createElement('canvas'); let max=700; let w=img.width,h=img.height;
+          if(w>max){ h=h*max/w; w=max; }
+          canvas.width=w; canvas.height=h; canvas.getContext('2d').drawImage(img,0,0,w,h);
+          let ndogo=canvas.toDataURL('image/jpeg',0.6);
+          savePost(t,ndogo,'image/jpeg');
+        }catch(err){ alert('Picha imeshindikana. Chagua picha ndogo.'); btn.innerText='POST SASA'; btn.disabled=false; }
+      };
+      img.onerror=function(){ alert('Picha haikufunguka. Chagua nyingine.'); btn.innerText='POST SASA'; btn.disabled=false; };
+      img.src=e.target.result;
+    };
+    r.readAsDataURL(f);
+  }
+}
+function savePost(t,media,type){
+  let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+  posts.unshift({name:localStorage.getItem('kapapp_user'),text:t,media:media,type:type});
+  try{ localStorage.setItem('kapapp_posts',JSON.stringify(posts)); }
+  catch(e){ posts=posts.slice(0,5); try{ localStorage.setItem('kapapp_posts',JSON.stringify(posts)); alert('Nafasi ilikuwa imejaa, nimefuta za zamani kidogo.'); }catch(e2){ alert('Simu imejaa. Bonyeza FUTA POST ZA ZAMANI kwanza.'); } }
+  document.getElementById('postText').value=''; document.getElementById('postFile').value='';
+  let btn=document.getElementById('postBtn'); btn.innerText='POST SASA'; btn.disabled=false;
+  onyesha();
+}
+function onyesha(){
+  let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+  posts=posts.filter(p=>p && p.text!=='undefined' && p.name!=='Machungwa' && (p.text || p.media));
+  posts=posts.map(p=>{ p.name=safishaJina(p.name); return p; });
+  localStorage.setItem('kapapp_posts',JSON.stringify(posts));
+  let h='';
+  posts.forEach(p=>{ h+='<div class="box post"><b>'+(p.name||'')+'</b><div>'+(p.text||'')+'</div>'; if(p.media){ if(p.type && p.type.includes('video')) h+='<video controls><source src="'+p.media+'"></video>'; else h+='<img src="'+p.media+'">'; } h+='</div>'; });
+  document.getElementById('feed').innerHTML=h||'<div class="box">Hakuna post bado. Post ya kwanza!</div>';
+}
+if(user) showMain(user);
+</script>
+</body>
+</html>

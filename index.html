@@ -1,29 +1,125 @@
-<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KAPAPP</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#f0f2f5}.box{max-width:400px;margin:30px auto;background:#fff;padding:20px;border-radius:14px;text-align:center}.logo{font-size:42px;font-weight:900;color:#1877f2}.logo span{color:#ff9800}input{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:10px}.b{width:100%;padding:13px;border:none;border-radius:10px;background:#1877f2;color:#fff;font-weight:900;font-size:16px}.g{background:#00a400;margin-top:10px}.o{background:#ff9800}.h{background:#1877f2;color:#fff;padding:10px;display:flex;justify-content:space-between;position:sticky;top:0}.c{max-width:600px;margin:auto;padding:10px}.card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px}.av{width:50px;height:50px;border-radius:50%;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px}.t{display:flex;gap:5px;overflow-x:auto}.t button{padding:9px 12px;border:none;border-radius:20px;background:#fff;font-weight:bold}.t button.a{background:#1877f2;color:#fff}.hd{display:none}textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px}select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:5px 0}.flag{font-size:28px}</style></head><body>
-<div id="loginPage"><div class="box"><div class="logo">KAP<span>APP</span> 🌍</div><p id="t-slogan" style="margin:10px 0;color:#555">Ungana na dunia.</p><div id="flagShow" class="flag">🇹🇿</div><div id="regBox" style="display:none"><input id="ln" placeholder="Jina lako kamili - mfano Juma Mwalimu"><input id="lc" placeholder="Nchi yako - Tanzania / China / USA" oninput="previewLang(this.value)"></div><input id="em" placeholder="📧 Email au 📱 Namba ya Simu" type="text"><input id="lp" type="password" placeholder="🔒 Password"><button class="b" id="t-login" onclick="login()">INGIA KAPAPP →</button><button class="b g" id="t-new" onclick="toggleReg()">➕ FUNGUA AKAUNTI MPYA</button><button class="b" id="t-create" style="display:none;background:#00a400" onclick="register()">✅ TENGENEZA AKAUNTI</button><p style="font-size:12px;margin-top:12px"><span id="t-agree">Kwa kuingia unakubali Masharti ya KAPAPP</span><br><b id="t-joined">Watu 1,247 wamesha jiunga leo!</b></p><p style="font-size:11px;color:#888;margin-top:8px" id="t-secure">🔒 Email / Simu yako ni siri!</p></div><div class="box" style="background:#fff3cd"><b>🔥 KAPAPP V6 - EMAIL / SIMU + PASSWORD</b><br><small id="t-feat">Login • Post • Chat • Soko • Boost $</small></div></div>
-<div id="mainPage" style="display:none"><div class="h"><div style="font-size:22px;font-weight:900">KAP<span style="color:#ffeb3b">APP</span> 🌍</div><div><button onclick="show('home')" style="padding:7px;border:none;border-radius:15px;font-weight:bold" id="m-home">Nyumbani</button> <button onclick="show('admin')" style="padding:7px;border:none;border-radius:15px;background:#ff9800;color:#fff;font-weight:bold">Admin 💰</button> <button onclick="logout()" style="padding:7px;border:none;border-radius:15px;background:#ff3b30;color:#fff;font-weight:bold" id="m-out">Toka</button></div></div><div class="c"><div class="card"><div style="display:flex;gap:10px;align-items:center"><div class="av" id="myAv">S</div><div><b id="myName">Said Kapwile</b><br><small><span id="myFlag">🇹🇿</span> <span id="myCountry">Tanzania</span> • <span id="myLangShow">Kiswahili</span></small><br><small style="color:#1877f2" id="myContact">📱 +255...</small><br><small style="color:#00a400">✅ Akaunti Imethibitishwa</small></div></div><div style="background:#fff3cd;border:1px solid #ff9800;padding:10px;border-radius:10px;margin-top:10px"><b>💰 <span id="t-boostMoney">PESA ZA BOOST:</span></b> <b id="tm">$0.00</b> • <span id="t-boosted">Wame-boost:</span> <span id="bc">0</span><br><small>Bei: Siku 1 = $3 • Siku 3 = $7 • Wiki = $12</small></div></div><div class="t"><button class="a" onclick="show('home',this)" id="tab-home-b">🏠 Nyumbani</button><button onclick="show('fr',this)" id="tab-fr-b">👥 Marafiki</button><button onclick="show('sk',this)" id="tab-sk-b">🛒 Soko</button><button onclick="show('ch',this)" id="tab-ch-b">💬 Chat</button><button onclick="show('admin',this)" id="tab-ad-b">💰 Admin</button></div><div id="tab-home"><div class="card"><textarea id="pt" rows="2" placeholder="Unafikiria nini?"></textarea><div style="display:flex;gap:6px;margin-top:6px"><button class="b" style="background:#e7f3ff;color:#1877f2" onclick="alert('🔴 LIVE!')">🔴 Live</button><button class="b" id="t-post" onclick="ap()">Post</button></div></div><div id="feed"></div></div><div id="tab-fr" class="hd"><div class="card"><h3 id="t-people">👥 Watu Unaowajua</h3><div id="pl"></div></div></div><div id="tab-sk" class="hd"><div class="card"><h3 id="t-market">🛒 SOKO - DUNIA</h3><p>📱 iPhone 11 - <b>$180</b> <button class="b" style="padding:8px" onclick="alert('Muuze amepokea!')">Nunua</button></p><br><p>🚗 Toyota IST - <b>$3,800</b> <button class="b" style="padding:8px" onclick="alert('Muuze amepokea!')">Nunua</button></p><br><input id="si" placeholder="Unauza nini? Bei kwa $"><button class="b o" id="t-sell" onclick="alert('Bidhaa imewekwa!')">➕ Weka Bidhaa</button></div></div><div id="tab-ch" class="hd"><div class="card"><h3>💬 Chat</h3><div id="cb"></div><input id="ci" placeholder="Andika..."><button class="b" style="margin-top:6px" id="t-send" onclick="sm()">Tuma</button></div></div><div id="tab-admin" class="hd"><div class="card"><h3>💰 ADMIN - SAID KAPWILE</h3><p>Jumla: <b id="tm2">$0.00</b></p><p>Watu: <b id="uc">1,247</b></p><input id="mi" placeholder="PayPal Email yako"><button class="b o" onclick="alert('Imehifadhiwa!')">💾 Hifadhi Malipo</button></div></div></div></div>
-<div id="bm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99;align-items:center;justify-content:center"><div style="background:#fff;margin:20px;padding:16px;border-radius:14px;width:100%;max-width:400px"><h3>🚀 BOOST - $</h3><select id="bp"><option value="3">Siku 1 - $3</option><option value="7">Siku 3 - $7</option><option value="12">Wiki 1 - $12</option></select><select><option>💳 Visa / Mastercard</option><option>🅿️ PayPal</option><option>📱 M-Pesa</option></select><input id="pp" placeholder="Namba ya Kadi / PayPal"><button class="b o" onclick="db()">💰 LIPA NA BOOST</button><button class="b" style="background:#eee;color:#333;margin-top:6px" onclick="document.getElementById('bm').style.display='none'">Funga</button></div></div>
-<script>
-let isReg=false;
-function toggleReg(){isReg=true;document.getElementById('regBox').style.display='block';document.getElementById('t-login').style.display='none';document.getElementById('t-new').style.display='none';document.getElementById('t-create').style.display='block';document.getElementById('em').placeholder='📧 Email au 📱 Namba ya Simu - itakua jina lako la kuingia';}
-let T={sw:{slogan:"Ungana na dunia.",login:"INGIA KAPAPP →",new:"➕ FUNGUA AKAUNTI MPYA",agree:"Kwa kuingia unakubali Masharti ya KAPAPP",joined:"Watu 1,247 wamesha jiunga leo!",feat:"Login • Post • Chat • Soko • Boost $",home:"Nyumbani",out:"Toka",boostMoney:"PESA ZA BOOST:",boosted:"Wame-boost:",post:"Post",people:"👥 Watu Unaowajua",market:"🛒 SOKO - DUNIA",sell:"➕ Weka Bidhaa",send:"Tuma",think:"Unafikiria nini?",langName:"Kiswahili",secure:"🔒 Email / Simu yako ni siri!"},en:{slogan:"Connect with the world.",login:"LOGIN TO KAPAPP →",new:"➕ CREATE NEW ACCOUNT",agree:"By logging in you accept KAPAPP Terms",joined:"1,247 people joined today!",feat:"Login • Post • Chat • Market • Boost $",home:"Home",out:"Logout",boostMoney:"BOOST MONEY:",boosted:"Boosted:",post:"Post",people:"👥 People You May Know",market:"🛒 MARKET - WORLD",sell:"➕ Sell Product",send:"Send",think:"What's on your mind?",langName:"English",secure:"🔒 Your Email / Phone is private!"},zh:{slogan:"与世界联系。",login:"登录 KAPAPP →",new:"➕ 创建新帐户",agree:"登录即表示您接受 KAPAPP 条款",joined:"今天已有 1,247 人加入！",feat:"登录 • 发帖 • 聊天 • 市场 • 推广 $",home:"首页",out:"退出",boostMoney:"推广资金：",boosted:"已推广：",post:"发布",people:"👥 你可能认识的人",market:"🛒 市场 - 世界",sell:"➕ 发布商品",send:"发送",think:"你在想什么？",langName:"中文",secure:"🔒 您的邮箱 / 电话是私密的！"},fr:{slogan:"Connectez-vous au monde.",login:"ENTRER DANS KAPAPP →",new:"➕ CRÉER UN COMPTE",agree:"En entrant vous acceptez les conditions KAPAPP",joined:"1 247 personnes ont rejoint aujourd'hui !",feat:"Connexion • Publier • Chat • Marché • Boost $",home:"Accueil",out:"Sortir",boostMoney:"ARGENT BOOST :",boosted:"Boostés :",post:"Publier",people:"👥 Personnes que vous connaissez",market:"🛒 MARCHÉ - MONDE",sell:"➕ Vendre un produit",send:"Envoyer",think:"À quoi pensez-vous ?",langName:"Français",secure:"🔒 Votre Email / Téléphone est privé !"},ar:{slogan:"تواصل مع العالم.",login:"دخول KAPAPP →",new:"➕ إنشاء حساب جديد",agree:"بالدخول أنت تقبل شروط KAPAPP",joined:"انضم 1,247 شخص اليوم!",feat:"دخول • منشور • دردشة • سوق • ترويج $",home:"الرئيسية",out:"خروج",boostMoney:"أموال الترويج:",boosted:"تم الترويج:",post:"نشر",people:"👥 أشخاص قد تعرفهم",market:"🛒 السوق - العالم",sell:"➕ أضف منتج",send:"إرسال",think:"بماذا تفكر؟",langName:"العربية",secure:"🔒 بريدك / هاتفك سري!"},pt:{slogan:"Conecte-se com o mundo.",login:"ENTRAR NO KAPAPP →",new:"➕ CRIAR NOVA CONTA",agree:"Ao entrar você aceita os Termos do KAPAPP",joined:"1.247 pessoas entraram hoje!",feat:"Login • Post • Chat • Mercado • Boost $",home:"Início",out:"Sair",boostMoney:"DINHEIRO BOOST:",boosted:"Impulsionados:",post:"Postar",people:"👥 Pessoas que você conhece",market:"🛒 MERCADO - MUNDO",sell:"➕ Vender Produto",send:"Enviar",think:"No que você está pensando?",langName:"Português",secure:"🔒 Seu Email / Telefone é privado!"}};
-function getLang(c){c=(c||"").toLowerCase();if(c.includes("china")||c.includes("beijing"))return "zh";if(c.includes("france")||c.includes("paris")||c.includes("congo"))return "fr";if(c.includes("arab")||c.includes("egypt")||c.includes("saudi"))return "ar";if(c.includes("brazil")||c.includes("portugal")||c.includes("angola"))return "pt";if(c.includes("tanzania")||c.includes("kenya")||c.includes("uganda"))return "sw";if(c.includes("usa")||c.includes("america")||c.includes("nigeria")||c.includes("ghana")||c.includes("india")||c.includes("uk"))return "en";return "sw";}
-function getFlag(c){c=(c||"").toLowerCase();if(c.includes("tanzania"))return "🇹🇿";if(c.includes("china"))return "🇨🇳";if(c.includes("usa")||c.includes("america"))return "🇺🇸";if(c.includes("kenya"))return "🇰🇪";if(c.includes("nigeria"))return "🇳🇬";if(c.includes("france"))return "🇫🇷";if(c.includes("brazil"))return "🇧🇷";if(c.includes("india"))return "🇮🇳";if(c.includes("uk"))return "🇬🇧";return "🌍";}
-function applyLang(l){let d=T[l]||T.sw;document.getElementById('t-slogan').innerText=d.slogan;document.getElementById('t-login').innerText=d.login;document.getElementById('t-new').innerText=d.new;document.getElementById('t-agree').innerText=d.agree;document.getElementById('t-joined').innerText=d.joined;document.getElementById('t-feat').innerText=d.feat;document.getElementById('m-home').innerText=d.home;document.getElementById('m-out').innerText=d.out;document.getElementById('t-boostMoney').innerText=d.boostMoney;document.getElementById('t-boosted').innerText=d.boosted;document.getElementById('tab-home-b').innerText="🏠 "+d.home;document.getElementById('t-post').innerText=d.post;document.getElementById('t-people').innerText=d.people;document.getElementById('t-market').innerText=d.market;document.getElementById('t-sell').innerText=d.sell;document.getElementById('t-send').innerText=d.send;document.getElementById('pt').placeholder=d.think;document.getElementById('myLangShow').innerText=d.langName;document.getElementById('t-secure').innerText=d.secure;}
-function previewLang(v){if(!v)return;let l=getLang(v);applyLang(l);document.getElementById('flagShow').innerText=getFlag(v);}
-let curUser=localStorage.getItem('k_user')||'',posts=JSON.parse(localStorage.getItem('k_posts')||'[]'),money=parseFloat(localStorage.getItem('k_money_usd')||'0'),bcn=parseInt(localStorage.getItem('k_boost')||'0');
-function showUser(u){let l=getLang(u.country);applyLang(l);document.getElementById('flagShow').innerText=getFlag(u.country);document.getElementById('loginPage').style.display='none';document.getElementById('mainPage').style.display='block';document.getElementById('myName').innerText=u.name;document.getElementById('myCountry').innerText=u.country;document.getElementById('myFlag').innerText=getFlag(u.country);document.getElementById('myAv').innerText=u.name[0];document.getElementById('myContact').innerText=(u.loginId.includes('@')?'📧 '+u.loginId:'📱 '+u.loginId);}
-if(curUser){showUser(JSON.parse(curUser));}
-function login(){let id=document.getElementById('em').value.trim(),pass=document.getElementById('lp').value.trim();if(!id)return alert('⚠️ Andika Email au Namba ya Simu!');if(!pass)return alert('⚠️ Andika Password!');let saved=JSON.parse(localStorage.getItem('k_all_users')||'[]');let f=saved.find(u=>u.loginId.toLowerCase()==id.toLowerCase());if(!f)return alert('❌ Akaunti haijapatikana! Bonyeza FUNGUA AKAUNTI MPYA kwanza.');if(f.pass!=pass)return alert('❌ Password sio sahihi! Jaribu tena.');localStorage.setItem('k_user',JSON.stringify(f));showUser(f);alert('Karibu tena, '+f.name+'! 🌍');rf();ua();}
-function register(){let name=document.getElementById('ln').value.trim(),id=document.getElementById('em').value.trim(),pass=document.getElementById('lp').value.trim(),country=document.getElementById('lc').value.trim()||'Tanzania';if(!name)return alert('⚠️ Andika Jina lako!');if(!id)return alert('⚠️ Andika Email au Namba ya Simu!');if(id.includes('@')&&!id.includes('.'))return alert('⚠️ Email sio sahihi!');if(!pass||pass.length<4)return alert('⚠️ Password iwe angalau 4!');let saved=JSON.parse(localStorage.getItem('k_all_users')||'[]');if(saved.find(u=>u.loginId.toLowerCase()==id.toLowerCase()))return alert('❌ Hii Email / Simu imeshajiunga! Bonyeza INGIA.');let user={name:name,loginId:id,pass:pass,country:country};saved.push(user);localStorage.setItem('k_all_users',JSON.stringify(saved));localStorage.setItem('k_user',JSON.stringify(user));showUser(user);alert('🎉 Hongera '+name+'! Akaunti imefunguliwa!');rf();ua();}
-function logout(){localStorage.removeItem('k_user');location.reload();}
-function show(n,btn){['home','fr','sk','ch','admin'].forEach(t=>document.getElementById('tab-'+t).classList.add('hd'));document.getElementById('tab-'+n).classList.remove('hd');if(btn){document.querySelectorAll('.t button').forEach(b=>b.classList.remove('a'));btn.classList.add('a');}}
-function ap(){let t=document.getElementById('pt').value.trim();if(!t)return alert('Andika kitu!');let u=JSON.parse(localStorage.getItem('k_user')||'{"name":"Said Kapwile"}');posts.unshift({name:u.name,text:t,likes:0,cm:[],time:'Sasa hivi',bo:false});localStorage.setItem('k_posts',JSON.stringify(posts));document.getElementById('pt').value='';rf();}
-function rf(){let f=document.getElementById('feed');if(posts.length===0)posts=[{name:'Said Kapwile',text:'Karibu KAPAPP V6! Ingia kwa Email au Simu + Password! 🌍',likes:124,cm:['Hongera!'],time:'Leo',bo:true},{name:'Juma Mwalimu',text:'KAPAPP ni moto!',likes:45,cm:['Kweli!'],time:'Saa 1',bo:false}];f.innerHTML=posts.map((p,i)=>`<div class="card"><b>${p.name}</b> ${p.bo?'• <span style="color:#ff9800">⭐ BOOSTED</span>':''}<br><small>${p.time}</small><p style="margin:10px 0">${p.text}</p><small>❤️ ${p.likes} • 💬 ${p.cm.length}</small><div style="display:flex;gap:5px;margin-top:8px"><button style="flex:1;border:none;padding:8px;font-weight:bold" onclick="lk(${i})">👍 Like</button><button style="flex:1;border:none;padding:8px;font-weight:bold" onclick="cm(${i})">💬 Comment</button><button style="flex:1;border:none;padding:8px;font-weight:bold;background:#ff9800;color:#fff;border-radius:8px" onclick="document.getElementById('bm').style.display='flex'">🚀 Boost $</button></div></div>`).join('');}
-function lk(i){posts[i].likes++;localStorage.setItem('k_posts',JSON.stringify(posts));rf();}
-function cm(i){let c=prompt('Comment:');if(c){posts[i].cm.push(c);localStorage.setItem('k_posts',JSON.stringify(posts));rf();}}
-function db(){let a=parseFloat(document.getElementById('bp').value);money+=a;bcn++;localStorage.setItem('k_money_usd',money);localStorage.setItem('k_boost',bcn);ua();document.getElementById('bm').style.display='none';alert('UMELIPA $'+a+'! BOOSTED!');if(posts.length>0){posts[0].bo=true;localStorage.setItem('k_posts',JSON.stringify(posts));rf();}}
-function ua(){document.getElementById('tm').innerText='$'+money.toFixed(2);document.getElementById('tm2').innerText='$'+money.toFixed(2);document.getElementById('bc').innerText=bcn;}
-let pe=['Juma Mwalimu - Dar 🇹🇿','Neema John - Arusha 🇹🇿','Li Wei - China 🇨🇳','John Smith - USA 🇺🇸','Amara - Nigeria 🇳🇬'];document.getElementById('pl').innerHTML=pe.map(p=>`<p style="display:flex;justify-content:space-between;margin:8px 0">${p} <button onclick="this.innerText='✅ Rafiki!'" style="padding:6px 10px;border:none;border-radius:8px;background:#1877f2;color:#fff;font-weight:bold">+ Ombi</button></p>`).join('');
-function sm(){let v=document.getElementById('ci').value;if(!v)return;document.getElementById('cb').innerHTML+=`<div style="padding:8px;border-radius:12px;margin:5px 0;background:#1877f2;color:#fff;margin-left:auto;max-width:80%">${v}</div>`;document.getElementById('ci').value='';}
-rf();ua();
-</script></body></html>
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAPAPP</title>
+<meta name="theme-color" content="#1877f2">
+<style>
+body{font-family:Arial;background:#eef2f7;margin:0;padding:10px}
+.box{background:white;padding:15px;border-radius:12px;margin-bottom:10px}
+h1{color:#1877f2;margin:0}
+input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
+button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-weight:bold;font-size:16px;margin-top:5px}
+.blue{background:#1877f2}.green{background:#42b72a}.red{background:#e41e3f;width:auto;padding:8px 15px}
+.top{display:flex;justify-content:space-between;align-items:center;background:white;padding:10px;border-radius:12px;margin-bottom:10px}
+.post img{width:100%;border-radius:10px;margin-top:8px}
+.del-btn{background:#ff3b30;width:auto;padding:6px 12px;font-size:13px;float:right}
+.post-head{display:flex;justify-content:space-between;align-items:center}
+</style>
+</head>
+<body>
+<div id="loginBox" class="box">
+<h1 style="text-align:center">KAPAPP 🌍</h1>
+<p style="text-align:center">Iko kwenye Server sasa - Haijai tena!</p>
+<input id="phone" placeholder="Namba ya Simu">
+<input id="pass" type="password" placeholder="Password">
+<input id="jina" placeholder="Jina Lako - KAPWILE">
+<button class="green" onclick="jiandikishe()">JIANDIKISHE MPYA</button>
+<button class="blue" onclick="ingia()">INGIA</button>
+</div>
+<div id="main" style="display:none">
+<div class="top"><h1>KAPAPP</h1><span>👋 <span id="myName"></span></span><button class="red" onclick="toka()">Toka</button></div>
+<div class="box">
+<textarea id="postText" placeholder="What's on your mind?"></textarea>
+<input type="file" id="postFile" accept="image/*">
+<button class="blue" id="postBtn" onclick="postSasa()">POST SASA</button>
+<p id="status" style="text-align:center;color:#1877f2"></p>
+</div>
+<div id="feed"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+// Hii ndiyo CDN config yako uliyonitumia - tayari imewekwa
+const firebaseConfig = {
+  apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wElVXS9mBZKyw",
+  authDomain: "kapapp-97bed.firebaseapp.com",
+  databaseURL: "https://kapapp-97bed-default-rtdb.firebaseio.com",
+  projectId: "kapapp-97bed",
+  storageBucket: "kapapp-97bed.firebasestorage.app",
+  messagingSenderId: "497811742831",
+  appId: "1:497811742831:web:9cf03078065ceb0805ed9a"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const postsRef = collection(db, "posts");
+
+let users = JSON.parse(localStorage.getItem('kapapp_users') || '{}');
+let user = localStorage.getItem('kapapp_user') || '';
+
+function showMain(name){
+  document.getElementById('loginBox').style.display='none';
+  document.getElementById('main').style.display='block';
+  document.getElementById('myName').innerText=name;
+}
+window.jiandikishe = function(){
+  let p=document.getElementById('phone').value.trim();
+  let pw=document.getElementById('pass').value.trim();
+  let j=document.getElementById('jina').value.trim();
+  if(!p||!pw||!j){alert('Jaza vyote');return;}
+  users[p]={pass:pw,name:j}; localStorage.setItem('kapapp_users',JSON.stringify(users));
+  localStorage.setItem('kapapp_user',j); showMain(j);
+}
+window.ingia = function(){
+  let p=document.getElementById('phone').value.trim();
+  let pw=document.getElementById('pass').value.trim();
+  if(users[p] && users[p].pass===pw){localStorage.setItem('kapapp_user',users[p].name);showMain(users[p].name);}
+  else alert('Namba au Password sio sahihi. Jiandikishe kwanza.');
+}
+window.toka = function(){localStorage.removeItem('kapapp_user');location.reload();}
+window.futaPostMoja = async function(id){
+  if(!confirm('Kufuta hii post moja?')) return;
+  await deleteDoc(doc(db,"posts",id));
+}
+window.postSasa = async function(){
+  let btn=document.getElementById('postBtn');
+  let t=document.getElementById('postText').value.trim();
+  let f=document.getElementById('postFile').files[0];
+  if(!t && !f){alert('Andika kitu au chagua picha');return;}
+  btn.innerText='INAPAKIA KWENYE SERVER...'; btn.disabled=true;
+  document.getElementById('status').innerText='Inatuma kwenye Server...';
+  let media='';
+  if(f){
+    let data = await new Promise(res=>{ let r=new FileReader(); r.onload=e=>res(e.target.result); r.readAsDataURL(f); });
+    let img = new Image();
+    await new Promise((resolve,reject)=>{ img.onload=resolve; img.onerror=reject; img.src=data; });
+    let canvas=document.createElement('canvas'); let max=700; let w=img.width,h=img.height;
+    if(w>max){ h=h*max/w; w=max; }
+    canvas.width=w; canvas.height=h; canvas.getContext('2d').drawImage(img,0,0,w,h);
+    media=canvas.toDataURL('image/jpeg',0.6);
+  }
+  try{
+    await addDoc(postsRef,{name:localStorage.getItem('kapapp_user'),text:t,media:media,time:serverTimestamp()});
+    document.getElementById('postText').value=''; document.getElementById('postFile').value='';
+    document.getElementById('status').innerText='✅ Imetumwa kwenye Server! Dunia nzima inaona!';
+  }catch(e){ alert('Imeshindikana: '+e.message); }
+  btn.innerText='POST SASA'; btn.disabled=false;
+}
+const q = query(postsRef, orderBy("time","desc"));
+onSnapshot(q,(snap)=>{
+  let h='';
+  snap.forEach(d=>{
+    let p=d.data();
+    h+='<div class="box post"><div class="post-head"><b>'+(p.name||'')+'</b><button class="del-btn" onclick="futaPostMoja(\''+d.id+'\')">❌ Futa Hii</button></div><div style="margin-top:8px">'+(p.text||'')+'</div>';
+    if(p.media) h+='<img src="'+p.media+'">';
+    h+='</div>';
+  });
+  document.getElementById('feed').innerHTML = h || '<div class="box">Hakuna post bado. Kuwa wa kwanza kwenye Server!</div>';
+});
+if(user) showMain(user);
+</script>
+</body>
+</html>

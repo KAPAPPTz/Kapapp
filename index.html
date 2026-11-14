@@ -24,7 +24,6 @@
 <button id="btnRegTab" onclick="switchAuth('register')" class="flex-1 bg-blue-600 text-white py-2 rounded-full font-bold">JISAJILI</button>
 </div>
 
-<!-- INGIA -->
 <div id="form-login">
 <input id="loginPhone" type="text" placeholder="Namba ya simu au Email" class="w-full border p-3 rounded-xl mb-3">
 <input id="loginPass" type="password" placeholder="Password" class="w-full border p-3 rounded-xl mb-2">
@@ -33,7 +32,6 @@
 <p id="loginMsg" class="text-center text-red-500 text-sm mt-2"></p>
 </div>
 
-<!-- JISAJILI -->
 <div id="form-register" class="hidden">
 <input id="regName" type="text" placeholder="Jina lako kamili" class="w-full border p-3 rounded-xl mb-3">
 <input id="regPhone" type="text" placeholder="Namba ya simu au Email" class="w-full border p-3 rounded-xl mb-3">
@@ -42,7 +40,6 @@
 <p id="regMsg" class="text-center text-red-500 text-sm mt-2"></p>
 </div>
 
-<!-- SAHAU PASSWORD -->
 <div id="form-forgot" class="hidden">
 <p class="text-center font-bold mb-3">Badilisha Password</p>
 <input id="forgotPhone" type="text" placeholder="Weka namba au Email uliyosajili nayo" class="w-full border p-3 rounded-xl mb-3">
@@ -64,8 +61,30 @@
 <span id="userNameShow" class="text-sm font-bold"></span>
 <button onclick="doLogout()" class="text-red-500 text-sm font-bold">Toka</button>
 </div>
+
+<!-- SEHEMU YA KUPOST - KAMA FB -->
 <div class="bg-white p-3 rounded-xl shadow mb-3">
 <textarea id="postText" placeholder="Andika chochote..." class="w-full border p-3 rounded-xl"></textarea>
+
+<!-- Preview ya picha/video -->
+<div id="mediaPreview" class="hidden mt-2 relative">
+<img id="previewImg" class="w-full rounded-xl hidden max-h-72 object-cover">
+<video id="previewVideo" controls class="w-full rounded-xl hidden max-h-72"></video>
+<button onclick="removeMedia()" class="absolute top-1 right-1 bg-red-500 text-white w-7 h-7 rounded-full font-bold">X</button>
+</div>
+
+<!-- Vifungo vya Picha / Video -->
+<div class="flex gap-2 mt-2">
+<label class="flex-1 text-center bg-green-100 text-green-700 py-2 rounded-xl font-bold cursor-pointer text-sm">
+📷 Picha
+<input type="file" id="postImage" accept="image/*" class="hidden" onchange="handleMedia(this, 'image')">
+</label>
+<label class="flex-1 text-center bg-red-100 text-red-700 py-2 rounded-xl font-bold cursor-pointer text-sm">
+🎥 Video
+<input type="file" id="postVideo" accept="video/*" class="hidden" onchange="handleMedia(this, 'video')">
+</label>
+</div>
+
 <button onclick="addPost()" class="w-full bg-blue-600 text-white py-2 rounded-xl font-bold mt-2">POST</button>
 </div>
 <div id="feed"></div>
@@ -75,37 +94,14 @@
 let users = JSON.parse(localStorage.getItem('kapapp_users')||'[]');
 let posts = JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
 let currentUser = JSON.parse(localStorage.getItem('kapapp_current')||'null');
+let selectedMedia = null;
+let selectedMediaType = null;
 
-// SAFISHA DATA ZA ZAMANI - Ondoa undefined
-users = users.map(u => {
-  return {
-    name: u.name || u.username || 'Mgeni',
-    phone: u.phone || u.email || u.namba || '',
-    email: u.email || '',
-    pass: u.pass || u.password || ''
-  };
-}).filter(u => u.phone !== '' || u.email !== '');
+users = users.map(u => ({name: u.name || 'Mgeni', phone: u.phone || u.email || '', email: u.email || '', pass: u.pass || u.password || ''})).filter(u => u.phone !== '' || u.email !== '');
 localStorage.setItem('kapapp_users', JSON.stringify(users));
-
-// SAFISHA POST ZA ZAMANI
-posts = posts.filter(p => p && (p.text || p.message || p.content)).map(p => {
-  return {
-    name: p.name || p.username || 'Mgeni',
-    phone: p.phone || p.email || '',
-    text: p.text || p.message || p.content || '',
-    time: p.time || p.date || ''
-  };
-});
+posts = posts.filter(p => p && (p.text || p.message || p.media)).map(p => ({name: p.name || 'Mgeni', phone: p.phone || '', text: p.text || p.message || '', time: p.time || '', media: p.media || null, mediaType: p.mediaType || null}));
 localStorage.setItem('kapapp_posts', JSON.stringify(posts));
-
-if(currentUser){
-  currentUser = {
-    name: currentUser.name || 'Said Kapwile',
-    phone: currentUser.phone || currentUser.email || '',
-    email: currentUser.email || '',
-    pass: currentUser.pass || currentUser.password || ''
-  };
-}
+if(currentUser){ currentUser = {name: currentUser.name || 'Said Kapwile', phone: currentUser.phone || currentUser.email || '', email: currentUser.email || '', pass: currentUser.pass || ''}; }
 
 function switchAuth(t){
   document.getElementById('form-login').classList.toggle('hidden', t!=='login');
@@ -114,37 +110,25 @@ function switchAuth(t){
   document.getElementById('btnLoginTab').className = t==='login' ? 'flex-1 bg-blue-600 text-white py-2 rounded-full font-bold' : 'flex-1 bg-gray-200 py-2 rounded-full font-bold';
   document.getElementById('btnRegTab').className = t==='register' ? 'flex-1 bg-blue-600 text-white py-2 rounded-full font-bold' : 'flex-1 bg-gray-200 py-2 rounded-full font-bold';
 }
-function showForgot(){
-  document.getElementById('form-login').classList.add('hidden');
-  document.getElementById('form-register').classList.add('hidden');
-  document.getElementById('form-forgot').classList.remove('hidden');
-}
+function showForgot(){ document.getElementById('form-login').classList.add('hidden'); document.getElementById('form-register').classList.add('hidden'); document.getElementById('form-forgot').classList.remove('hidden'); }
 function showLoginFromForgot(){ switchAuth('login'); }
-function findUser(key){
-  key = key.trim().toLowerCase();
-  return users.find(x => (x.phone && x.phone.toLowerCase()===key) || (x.email && x.email.toLowerCase()===key));
-}
+function findUser(key){ key = key.trim().toLowerCase(); return users.find(x => (x.phone && x.phone.toLowerCase()===key) || (x.email && x.email.toLowerCase()===key)); }
 function doRegister(){
   let n=document.getElementById('regName').value.trim();
   let p=document.getElementById('regPhone').value.trim();
   let pw=document.getElementById('regPass').value.trim();
   if(!n||!p||!pw){ document.getElementById('regMsg').innerText='Jaza kila kitu'; return; }
   if(findUser(p)){ document.getElementById('regMsg').innerText='Hii imeshasajiliwa. Ingia au badilisha password.'; return; }
-  let isEmail = p.includes('@');
-  let u={name:n, phone: isEmail ? '' : p, email: isEmail ? p : '', pass:pw};
-  // Tunaweka phone = p ili isionekane undefined
-  u.phone = p;
+  let u={name:n, phone:p, email:p.includes('@')?p:'', pass:pw};
   users.push(u); localStorage.setItem('kapapp_users',JSON.stringify(users));
-  currentUser=u; localStorage.setItem('kapapp_current',JSON.stringify(u));
-  openHome();
+  currentUser=u; localStorage.setItem('kapapp_current',JSON.stringify(u)); openHome();
 }
 function doLogin(){
   let p=document.getElementById('loginPhone').value.trim();
   let pw=document.getElementById('loginPass').value.trim();
   let u=findUser(p);
-  if(!u || u.pass!==pw){ document.getElementById('loginMsg').innerText='Namba/Email au password sio sahihi. Kama umesahau, bonyeza Umesahau Password?'; return; }
-  currentUser=u; localStorage.setItem('kapapp_current',JSON.stringify(u));
-  openHome();
+  if(!u || u.pass!==pw){ document.getElementById('loginMsg').innerText='Namba/Email au password sio sahihi.'; return; }
+  currentUser=u; localStorage.setItem('kapapp_current',JSON.stringify(u)); openHome();
 }
 function doForgot(){
   let p=document.getElementById('forgotPhone').value.trim();
@@ -154,35 +138,61 @@ function doForgot(){
   if(!p||!pw||!pw2){ msg.style.color='red'; msg.innerText='Jaza kila kitu'; return; }
   if(pw!==pw2){ msg.style.color='red'; msg.innerText='Password mbili hazifanani'; return; }
   let idx=users.findIndex(x => (x.phone && x.phone.toLowerCase()===p.toLowerCase()) || (x.email && x.email.toLowerCase()===p.toLowerCase()));
-  if(idx===-1){ msg.style.color='red'; msg.innerText='Namba/Email hii haijasajiliwa. Tafadhali jisajili kwanza.'; return; }
+  if(idx===-1){ msg.style.color='red'; msg.innerText='Namba/Email hii haijasajiliwa.'; return; }
   users[idx].pass=pw; localStorage.setItem('kapapp_users',JSON.stringify(users));
   currentUser=users[idx]; localStorage.setItem('kapapp_current',JSON.stringify(currentUser));
-  msg.style.color='green'; msg.innerText='Password imebadilika! Unaingia sasa...';
-  setTimeout(openHome, 1000);
+  msg.style.color='green'; msg.innerText='Password imebadilika! Unaingia sasa...'; setTimeout(openHome, 1000);
 }
 function doLogout(){ localStorage.removeItem('kapapp_current'); location.reload(); }
 function openHome(){
   document.getElementById('page-login').classList.add('hidden');
   document.getElementById('page-home').classList.remove('hidden');
-  let show = currentUser.name;
-  if(currentUser.phone) show += ' - ' + currentUser.phone;
-  document.getElementById('userNameShow').innerText = show;
+  document.getElementById('userNameShow').innerText = currentUser.name + (currentUser.phone ? ' - ' + currentUser.phone : '');
   renderFeed();
+}
+
+// PICHA / VIDEO
+function handleMedia(input, type){
+  let file = input.files[0];
+  if(!file) return;
+  let reader = new FileReader();
+  reader.onload = function(e){
+    selectedMedia = e.target.result;
+    selectedMediaType = type;
+    document.getElementById('mediaPreview').classList.remove('hidden');
+    if(type==='image'){
+      document.getElementById('previewImg').src = selectedMedia;
+      document.getElementById('previewImg').classList.remove('hidden');
+      document.getElementById('previewVideo').classList.add('hidden');
+    } else {
+      document.getElementById('previewVideo').src = selectedMedia;
+      document.getElementById('previewVideo').classList.remove('hidden');
+      document.getElementById('previewImg').classList.add('hidden');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+function removeMedia(){
+  selectedMedia=null; selectedMediaType=null;
+  document.getElementById('mediaPreview').classList.add('hidden');
+  document.getElementById('postImage').value='';
+  document.getElementById('postVideo').value='';
 }
 function addPost(){
   let t=document.getElementById('postText').value.trim();
-  if(!t) return;
-  posts.unshift({name:currentUser.name, phone:currentUser.phone || currentUser.email || '', text:t, time:new Date().toLocaleString()});
+  if(!t && !selectedMedia) return;
+  posts.unshift({name:currentUser.name, phone:currentUser.phone || '', text:t, time:new Date().toLocaleString(), media:selectedMedia, mediaType:selectedMediaType});
   localStorage.setItem('kapapp_posts',JSON.stringify(posts));
-  document.getElementById('postText').value=''; renderFeed();
+  document.getElementById('postText').value=''; removeMedia(); renderFeed();
 }
 function renderFeed(){
   let html = posts.map(p=>{
-    let jina = p.name || 'Mgeni';
-    let namba = p.phone || '';
-    let ujumbe = p.text || '';
-    let muda = p.time || '';
-    return `<div class="bg-white p-3 rounded-xl shadow mb-3"><b>${jina}</b> <span class="text-gray-400 text-xs">${namba}</span><p class="mt-1">${ujumbe}</p><p class="text-xs text-gray-400">${muda}</p></div>`;
+    let mediaHtml = '';
+    if(p.media){
+      if(p.mediaType==='video') mediaHtml = `<video controls src="${p.media}" class="w-full rounded-xl mt-2 max-h-80"></video>`;
+      else mediaHtml = `<img src="${p.media}" class="w-full rounded-xl mt-2 max-h-80 object-cover">`;
+    }
+    return `<div class="bg-white p-3 rounded-xl shadow mb-3"><b>${p.name||'Mgeni'}</b> <span class="text-gray-400 text-xs">${p.phone||''}</span><p class="mt-1">${p.text||''}</p>${mediaHtml}<p class="text-xs text-gray-400 mt-2">${p.time||''}</p></div>`;
   }).join('');
   if(posts.length===0) html = `<p class="text-center text-gray-400 text-sm">Hakuna post bado. Anza kuandika!</p>`;
   document.getElementById('feed').innerHTML = html;

@@ -50,9 +50,8 @@
 <div class="flex gap-3 text-xl"><span>➕</span><span>🔍</span><span>💬</span></div>
 </div>
 
-<!-- VIEW HOME -->
 <div id="view-home">
-<!-- WHAT'S ON YOUR MIND -->
+<!-- WHAT'S ON YOUR MIND + POST PICHA / VIDEO -->
 <div class="bg-white p-3 mt-1 flex items-center gap-2">
 <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold shrink-0 overflow-hidden"><span id="homeLetter">K</span><img id="homeAvatarImg" class="hidden w-full h-full object-cover"></div>
 <input id="postText" type="text" placeholder="What's on your mind?" class="flex-1 bg-gray-100 p-3 rounded-full outline-none" onclick="showPostBox()">
@@ -68,7 +67,7 @@
 </div>
 </div>
 
-<!-- STORIES - MUUNDO TU, HAKUNA MAJINA -->
+<!-- STORIES -->
 <div class="flex gap-2 overflow-x-auto no-scrollbar p-2 bg-white mt-1">
 <div class="min-w-[115px] h-44 rounded-xl overflow-hidden relative shadow shrink-0 bg-gray-100">
 <div class="h-32 bg-gray-200 flex items-center justify-center text-3xl">👤</div>
@@ -83,7 +82,7 @@
 <div id="feed" class="mt-1"></div>
 </div>
 
-<!-- VIEW PROFILE - MUUNDO TU -->
+<!-- PROFILE -->
 <div id="view-profile" class="hidden">
 <div class="relative">
 <img id="coverImg" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800" class="w-full h-52 object-cover">
@@ -118,7 +117,7 @@
 <div id="view-other" class="hidden bg-white p-6 text-center"><h2 id="otherTitle" class="font-bold text-xl">Reels</h2><p class="text-gray-500 mt-2">Sehemu hii itakuja hivi karibuni</p></div>
 </div>
 
-<!-- BOTTOM NAV - MUUNDO WA FB -->
+<!-- BOTTOM NAV -->
 <div id="bottomNav" class="hidden fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around py-2 max-w-md mx-auto z-30">
 <button onclick="showView('home')" class="text-2xl">🏠</button>
 <button onclick="showView('reels')" class="text-2xl">🎬</button>
@@ -128,12 +127,16 @@
 <button onclick="showView('profile')" class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold overflow-hidden"><span id="navLetter">K</span><img id="navImg" class="hidden w-full h-full object-cover"></button>
 </div>
 
+<!-- BUTTON YA WHATSAPP KUBWA - INAELEA -->
+<a id="waFloat" href="https://wa.me/?text=Nimeona%20Kapapp%20-%20Dunia%20Yetu%20%F0%9F%8C%8D%20https://kapapptz.github.io/Kapapp" target="_blank" class="hidden fixed bottom-20 right-3 z-40 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-3xl shadow-lg">💬</a>
+
 <script>
 let users=JSON.parse(localStorage.getItem('kapapp_users')||'[]');
 let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
 let currentUser=JSON.parse(localStorage.getItem('kapapp_current')||'null');
 let selectedMedia=null, selectedMediaType=null;
-posts=posts.filter(p=>p&&(p.text||p.media)).map(p=>({name:p.name||'Mgeni',text:p.text||'',time:p.time||'',media:p.media||null,mediaType:p.mediaType||null}));
+// Safisha post za zamani - ongeza like/comment kama hazipo
+posts=posts.filter(p=>p&&(p.text||p.media)).map(p=>({id:p.id||Date.now()+Math.random(), name:p.name||'Mgeni', text:p.text||'', time:p.time||'', media:p.media||null, mediaType:p.mediaType||null, likes:p.likes||0, liked:p.liked||false, comments:p.comments||[]}));
 localStorage.setItem('kapapp_posts',JSON.stringify(posts));
 function switchAuth(t){document.getElementById('form-login').classList.toggle('hidden',t!=='login');document.getElementById('form-register').classList.toggle('hidden',t!=='register');document.getElementById('form-forgot').classList.add('hidden');document.getElementById('btnLoginTab').className=t==='login'?'flex-1 bg-blue-600 text-white py-2 rounded-full font-bold':'flex-1 bg-gray-200 py-2 rounded-full font-bold';document.getElementById('btnRegTab').className=t==='register'?'flex-1 bg-blue-600 text-white py-2 rounded-full font-bold':'flex-1 bg-gray-200 py-2 rounded-full font-bold';}
 function showForgot(){document.getElementById('form-login').classList.add('hidden');document.getElementById('form-register').classList.add('hidden');document.getElementById('form-forgot').classList.remove('hidden');}
@@ -142,24 +145,57 @@ function findUser(k){k=k.trim().toLowerCase();return users.find(x=>(x.phone&&x.p
 function doRegister(){let n=document.getElementById('regName').value.trim();let p=document.getElementById('regPhone').value.trim();let pw=document.getElementById('regPass').value.trim();if(!n||!p||!pw){document.getElementById('regMsg').innerText='Jaza kila kitu';return;}if(findUser(p)){document.getElementById('regMsg').innerText='Imeshasajiliwa. Ingia.';return;}let u={name:n,phone:p,email:p.includes('@')?p:'',pass:pw};users.push(u);localStorage.setItem('kapapp_users',JSON.stringify(users));currentUser=u;localStorage.setItem('kapapp_current',JSON.stringify(u));openHome();}
 function doLogin(){let p=document.getElementById('loginPhone').value.trim();let pw=document.getElementById('loginPass').value.trim();let u=findUser(p);if(!u||u.pass!==pw){document.getElementById('loginMsg').innerText='Namba/Email au password sio sahihi.';return;}currentUser=u;localStorage.setItem('kapapp_current',JSON.stringify(u));openHome();}
 function doForgot(){let p=document.getElementById('forgotPhone').value.trim();let pw=document.getElementById('forgotPass').value.trim();let pw2=document.getElementById('forgotPass2').value.trim();let msg=document.getElementById('forgotMsg');if(!p||!pw||!pw2){msg.style.color='red';msg.innerText='Jaza kila kitu';return;}if(pw!==pw2){msg.style.color='red';msg.innerText='Password hazifanani';return;}let idx=users.findIndex(x=>(x.phone&&x.phone.toLowerCase()===p.toLowerCase())||(x.email&&x.email.toLowerCase()===p.toLowerCase()));if(idx===-1){msg.style.color='red';msg.innerText='Haijasajiliwa';return;}users[idx].pass=pw;localStorage.setItem('kapapp_users',JSON.stringify(users));currentUser=users[idx];localStorage.setItem('kapapp_current',JSON.stringify(currentUser));msg.style.color='green';msg.innerText='Imebadilika! Unaingia...';setTimeout(openHome,1000);}
-function openHome(){document.getElementById('page-login').classList.add('hidden');document.getElementById('page-home').classList.remove('hidden');document.getElementById('bottomNav').classList.remove('hidden');let init=(currentUser.name||'K').charAt(0).toUpperCase();document.getElementById('homeLetter').innerText=init;document.getElementById('profileLetter').innerText=init;document.getElementById('navLetter').innerText=init;document.getElementById('profileName').innerText=currentUser.name;if(currentUser.profilePic){document.getElementById('profileImg').src=currentUser.profilePic;document.getElementById('profileImg').classList.remove('hidden');document.getElementById('homeAvatarImg').src=currentUser.profilePic;document.getElementById('homeAvatarImg').classList.remove('hidden');document.getElementById('navImg').src=currentUser.profilePic;document.getElementById('navImg').classList.remove('hidden');}if(currentUser.coverPic) document.getElementById('coverImg').src=currentUser.coverPic;showView('home');renderFeed();}
+function openHome(){document.getElementById('page-login').classList.add('hidden');document.getElementById('page-home').classList.remove('hidden');document.getElementById('bottomNav').classList.remove('hidden');document.getElementById('waFloat').classList.remove('hidden');let init=(currentUser.name||'K').charAt(0).toUpperCase();document.getElementById('homeLetter').innerText=init;document.getElementById('profileLetter').innerText=init;document.getElementById('navLetter').innerText=init;document.getElementById('profileName').innerText=currentUser.name;if(currentUser.profilePic){document.getElementById('profileImg').src=currentUser.profilePic;document.getElementById('profileImg').classList.remove('hidden');document.getElementById('homeAvatarImg').src=currentUser.profilePic;document.getElementById('homeAvatarImg').classList.remove('hidden');document.getElementById('navImg').src=currentUser.profilePic;document.getElementById('navImg').classList.remove('hidden');}if(currentUser.coverPic) document.getElementById('coverImg').src=currentUser.coverPic;showView('home');renderFeed();}
 function showView(v){document.getElementById('view-home').classList.toggle('hidden',v!=='home');document.getElementById('view-profile').classList.toggle('hidden',v!=='profile');document.getElementById('view-other').classList.toggle('hidden',!['reels','friends','market','notif'].includes(v));if(['reels','friends','market','notif'].includes(v)) document.getElementById('otherTitle').innerText=v==='reels'?'Reels':v==='friends'?'Friends':v==='market'?'Marketplace':'Notifications';window.scrollTo(0,0);}
 function switchProfileTab(t){['all','reels','photos','events'].forEach(x=>{document.getElementById('profile-'+x).classList.toggle('hidden',x!==t);document.getElementById('tab-'+x).className=t===x?'tab-active pb-2 px-2':'pb-2 px-2';});}
 function showPostBox(){document.getElementById('postBox').classList.remove('hidden');document.getElementById('postTextArea').focus();}
 function handleMedia(input,type){let f=input.files[0];if(!f) return;let r=new FileReader();r.onload=function(e){selectedMedia=e.target.result;selectedMediaType=type;document.getElementById('mediaPreview').classList.remove('hidden');if(type==='image'){document.getElementById('previewImg').src=selectedMedia;document.getElementById('previewImg').classList.remove('hidden');document.getElementById('previewVideo').classList.add('hidden');}else{document.getElementById('previewVideo').src=selectedMedia;document.getElementById('previewVideo').classList.remove('hidden');document.getElementById('previewImg').classList.add('hidden');}};r.readAsDataURL(f);}
 function removeMedia(){selectedMedia=null;selectedMediaType=null;document.getElementById('mediaPreview').classList.add('hidden');}
-function addPost(){let t=document.getElementById('postText').value.trim()||document.getElementById('postTextArea').value.trim();if(!t&&!selectedMedia) return;posts.unshift({name:currentUser.name,text:t,time:new Date().toLocaleString(),media:selectedMedia,mediaType:selectedMediaType});localStorage.setItem('kapapp_posts',JSON.stringify(posts));document.getElementById('postText').value='';document.getElementById('postTextArea').value='';document.getElementById('postBox').classList.add('hidden');removeMedia();renderFeed();}
+function addPost(){let t=document.getElementById('postText').value.trim()||document.getElementById('postTextArea').value.trim();if(!t&&!selectedMedia) return;posts.unshift({id:Date.now(), name:currentUser.name, text:t, time:new Date().toLocaleString(), media:selectedMedia, mediaType:selectedMediaType, likes:0, liked:false, comments:[]});localStorage.setItem('kapapp_posts',JSON.stringify(posts));document.getElementById('postText').value='';document.getElementById('postTextArea').value='';document.getElementById('postBox').classList.add('hidden');removeMedia();renderFeed();}
 function changeProfilePic(input){let f=input.files[0];if(!f) return;let r=new FileReader();r.onload=function(e){currentUser.profilePic=e.target.result;localStorage.setItem('kapapp_current',JSON.stringify(currentUser));let idx=users.findIndex(u=>u.phone===currentUser.phone);if(idx!==-1){users[idx].profilePic=e.target.result;localStorage.setItem('kapapp_users',JSON.stringify(users));}openHome();};r.readAsDataURL(f);}
 function changeCover(input){let f=input.files[0];if(!f) return;let r=new FileReader();r.onload=function(e){currentUser.coverPic=e.target.result;localStorage.setItem('kapapp_current',JSON.stringify(currentUser));let idx=users.findIndex(u=>u.phone===currentUser.phone);if(idx!==-1){users[idx].coverPic=e.target.result;localStorage.setItem('kapapp_users',JSON.stringify(users));}document.getElementById('coverImg').src=e.target.result;};r.readAsDataURL(f);}
+
+// LIKE - COMMENT - WHATSAPP
+function toggleLike(id){
+  let p=posts.find(x=>x.id==id); if(!p) return;
+  p.liked=!p.liked; p.likes=p.liked? p.likes+1 : p.likes-1;
+  localStorage.setItem('kapapp_posts',JSON.stringify(posts)); renderFeed();
+}
+function toggleComment(id){ let el=document.getElementById('cbox-'+id); el.classList.toggle('hidden'); }
+function addComment(id){
+  let input=document.getElementById('cinput-'+id); let txt=input.value.trim(); if(!txt) return;
+  let p=posts.find(x=>x.id==id); p.comments.push({name:currentUser.name, text:txt});
+  localStorage.setItem('kapapp_posts',JSON.stringify(posts)); renderFeed();
+}
+function shareWhatsApp(id){
+  let p=posts.find(x=>x.id==id);
+  let text = encodeURIComponent('Tazama post hii kwenye KAPAPP 🌍\n\n' + (p.text||'Picha / Video') + '\n\nKapapp - Dunia Yetu: https://kapapptz.github.io/Kapapp');
+  window.open('https://wa.me/?text='+text, '_blank');
+}
+
 function renderFeed(){
   let html = posts.map(p=>{
-    let m=''; if(p.media){ if(p.mediaType==='video') m=`<video controls src="${p.media}" class="w-full mt-2"></video>`; else m=`<img src="${p.media}" class="w-full mt-2">`; }
+    let m=''; if(p.media){ if(p.mediaType==='video') m=`<video controls src="${p.media}" class="w-full mt-2 rounded-xl"></video>`; else m=`<img src="${p.media}" class="w-full mt-2 rounded-xl">`; }
     let init=(p.name||'K').charAt(0).toUpperCase();
-    return `<div class="bg-white p-3 mb-2"><div class="flex items-center gap-2"><div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">${init}</div><div><b>${p.name}</b><p class="text-xs text-gray-400">${p.time||''}</p></div><span class="ml-auto">···</span></div><p class="mt-2">${p.text||''}</p>${m}<div class="flex justify-between border-t mt-3 pt-2 text-gray-500 text-sm"><span>👍 Like</span><span>💬 Comment</span><span>↗️ Share</span></div></div>`;
+    let commentsHtml = p.comments.map(c=>`<div class="bg-gray-100 p-2 rounded-xl mt-1 text-sm"><b>${c.name}</b> ${c.text}</div>`).join('');
+    return `<div class="bg-white p-3 mb-2">
+    <div class="flex items-center gap-2"><div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">${init}</div><div><b>${p.name}</b><p class="text-xs text-gray-400">${p.time||''}</p></div><span class="ml-auto">···</span></div>
+    <p class="mt-2">${p.text||''}</p>${m}
+    <p class="text-sm text-gray-500 mt-2">❤️ ${p.likes} likes · 💬 ${p.comments.length} comments</p>
+    <div class="flex justify-between border-t mt-2 pt-2 text-sm font-bold">
+      <button onclick="toggleLike(${p.id})" class="${p.liked?'text-red-500':'text-gray-500'}">${p.liked?'❤️ Liked':'🤍 Like'}</button>
+      <button onclick="toggleComment(${p.id})" class="text-gray-500">💬 Comment</button>
+      <button onclick="shareWhatsApp(${p.id})" class="text-green-600">🟢 WhatsApp</button>
+    </div>
+    <div id="cbox-${p.id}" class="hidden mt-2">
+      <div>${commentsHtml}</div>
+      <div class="flex gap-2 mt-2"><input id="cinput-${p.id}" type="text" placeholder="Andika comment..." class="flex-1 bg-gray-100 p-2 rounded-full outline-none"><button onclick="addComment(${p.id})" class="bg-blue-600 text-white px-3 rounded-full font-bold">Tuma</button></div>
+    </div>
+    </div>`;
   }).join('');
   if(posts.length===0) html=`<p class="text-center text-gray-400 py-6 bg-white">Hakuna post bado. Anza kuandika!</p>`;
   document.getElementById('feed').innerHTML=html;
-  document.getElementById('myPosts').innerHTML = posts.length? posts.map(p=>`<p class="border p-2 rounded mt-2">${p.text||'Picha / Video'}</p>`).join('') : '<p class="text-gray-400 text-sm">Hakuna post bado</p>';
+  document.getElementById('myPosts').innerHTML = posts.length? posts.map(p=>`<p class="border p-2 rounded mt-2">${p.text||'Picha / Video'} - ❤️ ${p.likes}</p>`).join('') : '<p class="text-gray-400 text-sm">Hakuna post bado</p>';
 }
 if(currentUser) openHome(); else switchAuth('register');
 </script>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KAPAPP - Dunia Yetu</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<style>body{font-family:system-ui} .post-card{border-radius:16px;overflow:hidden}</style>
+<style>body{font-family:system-ui}</style>
 </head>
 <body class="bg-gray-100">
 
@@ -26,7 +26,7 @@
 
 <!-- INGIA -->
 <div id="form-login">
-<input id="loginPhone" type="tel" placeholder="Namba ya simu - mfano 0688472790" class="w-full border p-3 rounded-xl mb-3">
+<input id="loginPhone" type="text" placeholder="Namba ya simu au Email" class="w-full border p-3 rounded-xl mb-3">
 <input id="loginPass" type="password" placeholder="Password" class="w-full border p-3 rounded-xl mb-2">
 <button onclick="doLogin()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">INGIA SASA</button>
 <p onclick="showForgot()" class="text-center text-blue-600 font-bold text-sm mt-3 cursor-pointer">Umesahau Password? Bonyeza hapa</p>
@@ -36,7 +36,7 @@
 <!-- JISAJILI -->
 <div id="form-register" class="hidden">
 <input id="regName" type="text" placeholder="Jina lako kamili" class="w-full border p-3 rounded-xl mb-3">
-<input id="regPhone" type="tel" placeholder="Namba ya simu" class="w-full border p-3 rounded-xl mb-3">
+<input id="regPhone" type="text" placeholder="Namba ya simu au Email" class="w-full border p-3 rounded-xl mb-3">
 <input id="regPass" type="password" placeholder="Weka Password mpya" class="w-full border p-3 rounded-xl mb-3">
 <button onclick="doRegister()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">JISAJILI SASA</button>
 <p id="regMsg" class="text-center text-red-500 text-sm mt-2"></p>
@@ -45,7 +45,7 @@
 <!-- SAHAU PASSWORD -->
 <div id="form-forgot" class="hidden">
 <p class="text-center font-bold mb-3">Badilisha Password</p>
-<input id="forgotPhone" type="tel" placeholder="Weka namba uliyosajili nayo" class="w-full border p-3 rounded-xl mb-3">
+<input id="forgotPhone" type="text" placeholder="Weka namba au Email uliyosajili nayo" class="w-full border p-3 rounded-xl mb-3">
 <input id="forgotPass" type="password" placeholder="Password mpya" class="w-full border p-3 rounded-xl mb-3">
 <input id="forgotPass2" type="password" placeholder="Rudia Password mpya" class="w-full border p-3 rounded-xl mb-3">
 <button onclick="doForgot()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">BADILISHA PASSWORD</button>
@@ -76,6 +76,37 @@ let users = JSON.parse(localStorage.getItem('kapapp_users')||'[]');
 let posts = JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
 let currentUser = JSON.parse(localStorage.getItem('kapapp_current')||'null');
 
+// SAFISHA DATA ZA ZAMANI - Ondoa undefined
+users = users.map(u => {
+  return {
+    name: u.name || u.username || 'Mgeni',
+    phone: u.phone || u.email || u.namba || '',
+    email: u.email || '',
+    pass: u.pass || u.password || ''
+  };
+}).filter(u => u.phone !== '' || u.email !== '');
+localStorage.setItem('kapapp_users', JSON.stringify(users));
+
+// SAFISHA POST ZA ZAMANI
+posts = posts.filter(p => p && (p.text || p.message || p.content)).map(p => {
+  return {
+    name: p.name || p.username || 'Mgeni',
+    phone: p.phone || p.email || '',
+    text: p.text || p.message || p.content || '',
+    time: p.time || p.date || ''
+  };
+});
+localStorage.setItem('kapapp_posts', JSON.stringify(posts));
+
+if(currentUser){
+  currentUser = {
+    name: currentUser.name || 'Said Kapwile',
+    phone: currentUser.phone || currentUser.email || '',
+    email: currentUser.email || '',
+    pass: currentUser.pass || currentUser.password || ''
+  };
+}
+
 function switchAuth(t){
   document.getElementById('form-login').classList.toggle('hidden', t!=='login');
   document.getElementById('form-register').classList.toggle('hidden', t!=='register');
@@ -89,14 +120,20 @@ function showForgot(){
   document.getElementById('form-forgot').classList.remove('hidden');
 }
 function showLoginFromForgot(){ switchAuth('login'); }
-
+function findUser(key){
+  key = key.trim().toLowerCase();
+  return users.find(x => (x.phone && x.phone.toLowerCase()===key) || (x.email && x.email.toLowerCase()===key));
+}
 function doRegister(){
   let n=document.getElementById('regName').value.trim();
   let p=document.getElementById('regPhone').value.trim();
   let pw=document.getElementById('regPass').value.trim();
   if(!n||!p||!pw){ document.getElementById('regMsg').innerText='Jaza kila kitu'; return; }
-  if(users.find(u=>u.phone===p)){ document.getElementById('regMsg').innerText='Namba hii imeshasajiliwa. Ingia au badilisha password.'; return; }
-  let u={name:n,phone:p,pass:pw};
+  if(findUser(p)){ document.getElementById('regMsg').innerText='Hii imeshasajiliwa. Ingia au badilisha password.'; return; }
+  let isEmail = p.includes('@');
+  let u={name:n, phone: isEmail ? '' : p, email: isEmail ? p : '', pass:pw};
+  // Tunaweka phone = p ili isionekane undefined
+  u.phone = p;
   users.push(u); localStorage.setItem('kapapp_users',JSON.stringify(users));
   currentUser=u; localStorage.setItem('kapapp_current',JSON.stringify(u));
   openHome();
@@ -104,8 +141,8 @@ function doRegister(){
 function doLogin(){
   let p=document.getElementById('loginPhone').value.trim();
   let pw=document.getElementById('loginPass').value.trim();
-  let u=users.find(x=>x.phone===p && x.pass===pw);
-  if(!u){ document.getElementById('loginMsg').innerText='Namba au password sio sahihi. Kama umesahau, bonyeza Umesahau Password?'; return; }
+  let u=findUser(p);
+  if(!u || u.pass!==pw){ document.getElementById('loginMsg').innerText='Namba/Email au password sio sahihi. Kama umesahau, bonyeza Umesahau Password?'; return; }
   currentUser=u; localStorage.setItem('kapapp_current',JSON.stringify(u));
   openHome();
 }
@@ -116,8 +153,8 @@ function doForgot(){
   let msg=document.getElementById('forgotMsg');
   if(!p||!pw||!pw2){ msg.style.color='red'; msg.innerText='Jaza kila kitu'; return; }
   if(pw!==pw2){ msg.style.color='red'; msg.innerText='Password mbili hazifanani'; return; }
-  let idx=users.findIndex(x=>x.phone===p);
-  if(idx===-1){ msg.style.color='red'; msg.innerText='Namba hii haijasajiliwa. Tafadhali jisajili kwanza.'; return; }
+  let idx=users.findIndex(x => (x.phone && x.phone.toLowerCase()===p.toLowerCase()) || (x.email && x.email.toLowerCase()===p.toLowerCase()));
+  if(idx===-1){ msg.style.color='red'; msg.innerText='Namba/Email hii haijasajiliwa. Tafadhali jisajili kwanza.'; return; }
   users[idx].pass=pw; localStorage.setItem('kapapp_users',JSON.stringify(users));
   currentUser=users[idx]; localStorage.setItem('kapapp_current',JSON.stringify(currentUser));
   msg.style.color='green'; msg.innerText='Password imebadilika! Unaingia sasa...';
@@ -127,18 +164,28 @@ function doLogout(){ localStorage.removeItem('kapapp_current'); location.reload(
 function openHome(){
   document.getElementById('page-login').classList.add('hidden');
   document.getElementById('page-home').classList.remove('hidden');
-  document.getElementById('userNameShow').innerText = currentUser.name + ' - ' + currentUser.phone;
+  let show = currentUser.name;
+  if(currentUser.phone) show += ' - ' + currentUser.phone;
+  document.getElementById('userNameShow').innerText = show;
   renderFeed();
 }
 function addPost(){
   let t=document.getElementById('postText').value.trim();
   if(!t) return;
-  posts.unshift({name:currentUser.name, phone:currentUser.phone, text:t, time:new Date().toLocaleString()});
+  posts.unshift({name:currentUser.name, phone:currentUser.phone || currentUser.email || '', text:t, time:new Date().toLocaleString()});
   localStorage.setItem('kapapp_posts',JSON.stringify(posts));
   document.getElementById('postText').value=''; renderFeed();
 }
 function renderFeed(){
-  document.getElementById('feed').innerHTML = posts.map(p=>`<div class="bg-white p-3 rounded-xl shadow mb-3"><b>${p.name}</b> <span class="text-gray-400 text-xs">${p.phone}</span><p class="mt-1">${p.text}</p><p class="text-xs text-gray-400">${p.time}</p></div>`).join('');
+  let html = posts.map(p=>{
+    let jina = p.name || 'Mgeni';
+    let namba = p.phone || '';
+    let ujumbe = p.text || '';
+    let muda = p.time || '';
+    return `<div class="bg-white p-3 rounded-xl shadow mb-3"><b>${jina}</b> <span class="text-gray-400 text-xs">${namba}</span><p class="mt-1">${ujumbe}</p><p class="text-xs text-gray-400">${muda}</p></div>`;
+  }).join('');
+  if(posts.length===0) html = `<p class="text-center text-gray-400 text-sm">Hakuna post bado. Anza kuandika!</p>`;
+  document.getElementById('feed').innerHTML = html;
 }
 if(currentUser) openHome(); else switchAuth('register');
 </script>

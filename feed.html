@@ -2,191 +2,170 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kapapp</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kapapp - Dunia Yako</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#f0f2f5;color:#050505;padding-bottom:70px}
-header{position:fixed;top:0;left:0;right:0;background:#fff;padding:8px 10px;z-index:99;display:flex;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
-header .menu{font-size:24px;cursor:pointer}
-header h1{font-size:30px;color:#1877f2;font-weight:900;letter-spacing:-1px}
-header .right{margin-left:auto;display:flex;gap:8px}
-header .right span{width:38px;height:38px;background:#f0f2f5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;cursor:pointer}
-.wrap{margin-top:58px}
-.mind{background:#fff;padding:10px;display:flex;gap:8px;align-items:center}
-.mind img{width:40px;height:40px;border-radius:50%;background:#ddd;object-fit:cover}
-.mind input{flex:1;padding:11px 14px;border-radius:25px;border:0;background:#f0f2f5;font-size:15px}
-.mind .pic{font-size:22px;cursor:pointer}
-.stories-wrap{display:flex;gap:8px;padding:8px;background:#fff}
-.left-create{display:flex;flex-direction:column;gap:8px;min-width:125px}
-.create-story{background:#1877f2;color:#fff;border-radius:12px;height:105px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer}
-.create-story .plus{width:38px;height:38px;border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
-.create-reel{background:linear-gradient(180deg,#f02849,#ff8a00);color:#fff;border-radius:12px;height:105px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer}
-.story{min-width:105px;height:218px;border-radius:12px;position:relative;overflow:hidden;background:#ddd;cursor:pointer}
-.story img{width:100%;height:100%;object-fit:cover}
-.story .lab{position:absolute;bottom:6px;left:6px;color:#fff;font-weight:bold;font-size:13px;text-shadow:0 0 5px #000}
-.story .sugg{font-weight:normal;font-size:11px;opacity:.9}
-.right-stories{display:flex;gap:8px;overflow:auto;flex:1}
-.post{background:#fff;margin:8px 0;padding:12px}
-.head{display:flex;gap:8px;align-items:center}
-.avatar{width:40px;height:40px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;flex-shrink:0}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.head .dots{margin-left:auto;font-size:20px;color:#65676b;cursor:pointer}
-.head .close{font-size:20px;color:#65676b;cursor:pointer;margin-left:10px}
-.post p{margin:8px 0;line-height:1.4;font-size:15px}
-.post img,.post video{width:100%;max-height:450px;object-fit:cover;display:block}
-.counts{display:flex;justify-content:space-between;padding:8px 2px;color:#65676b;font-size:13px}
-.actions{display:flex;justify-content:space-between;border-top:1px solid #eee;padding:8px 0;color:#65676b}
-.actions span{cursor:pointer}
-.comments{font-size:13px;color:#333}
-.comments input{width:76%;padding:9px;border-radius:20px;border:0;background:#f0f2f5}
-.comments button{padding:9px 12px;border-radius:20px;border:0;background:#1877f2;color:#fff;font-weight:bold}
-.box{background:#fff;margin:8px;padding:14px;border-radius:8px}
-.box input,.box textarea,.box select{width:100%;padding:11px;margin:6px 0;border-radius:8px;border:1px solid #ddd;background:#f0f2f5}
-.box button{width:100%;padding:12px;background:#1877f2;color:#fff;border:0;border-radius:8px;font-weight:bold;margin-top:6px}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid #ddd;z-index:99}
-.bottom div{text-align:center;font-size:24px;color:#65676b;cursor:pointer;flex:1}.bottom div.active{color:#1877f2}.bottom img{width:28px;height:28px;border-radius:50%;object-fit:cover}
-.hidden{display:none}
-#authScreen{position:fixed;inset:0;background:#f0f2f5;z-index:999;overflow:auto;padding:20px;text-align:center}
-#authScreen h1{font-size:48px;color:#1877f2;margin-top:30px;font-weight:900}
-.authBox{background:#fff;padding:18px;border-radius:8px;margin:18px auto;max-width:400px;box-shadow:0 2px 8px #ccc;text-align:left}
-.authBox input{width:100%;padding:13px;margin:7px 0;border-radius:6px;border:1px solid #ddd;background:#fff}
-.authBox button{width:100%;padding:12px;border:0;border-radius:6px;font-weight:bold;margin-top:8px}
-.menuItem{background:#fff;padding:14px;margin:6px 8px;border-radius:8px;display:flex;justify-content:space-between;cursor:pointer}
+body{background:#f0f2f5;font-family:system-ui}
+.post-card{background:white;border-radius:16px;overflow:hidden}
+.btn-like.active{color:#e11d48}
 </style>
 </head>
 <body>
-<div id="authScreen"><h1>kapapp</h1><p>Connect with friends and the world around you.</p>
-<div class="authBox" id="loginBox"><input id="loginPhone" placeholder="Namba ya simu"><input id="loginPass" type="password" placeholder="Password"><button style="background:#1877f2;color:#fff" onclick="doLogin()">Log in</button><button style="background:#42b72a;color:#fff" onclick="showRegister()">Create new account</button><p style="text-align:center;font-size:12px;color:#888;margin-top:8px">CEO: 0755CEO / kapapp123</p></div>
-<div class="authBox hidden" id="registerBox"><input id="regName" placeholder="Jina Kamili"><input id="regPhone" placeholder="Namba ya simu"><input id="regPass" type="password" placeholder="Password"><input id="regPass2" type="password" placeholder="Rudia Password"><button style="background:#42b72a;color:#fff" onclick="doRegister()">Sign Up</button><button style="background:#eee;color:#000" onclick="showLogin()">Nina Account - Log in</button></div></div>
 
-<header><span class="menu" onclick="show('menuPage',null)">☰</span><h1>kapapp</h1><div class="right"><span onclick="show('postPage',null)">+</span><span onclick="show('searchPage',null)">🔍</span><span onclick="show('dmPage',null)">💬</span></div></header>
-
-<div class="wrap" id="home">
-<div class="mind"><img id="mindPic" src=""><input placeholder="What's on your mind?" onclick="show('postPage',null)"><span class="pic" onclick="show('postPage',null)">🖼️</span></div>
-
-<div class="stories-wrap">
-<div class="left-create">
-<div class="create-story" onclick="document.getElementById('storyFile').click()"><div class="plus">+</div><span style="font-weight:bold;font-size:14px">Create story</span></div>
-<div class="create-reel" onclick="show('reels',null)"><span style="font-size:26px">▶️</span><span style="font-weight:bold;font-size:14px">Create reel</span></div>
-</div>
-<div class="right-stories">
-<div class="story"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400"><div class="lab">Kapwile<br><span class="sugg">Suggested</span></div></div>
-<div class="story"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400"><div class="lab">Zuchu<br><span class="sugg">Suggested</span></div></div>
-<div class="story"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"><div class="lab">Diamond<br><span class="sugg">Suggested</span></div></div>
-<div class="story"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400"><div class="lab">Presenter Sila<br><span class="sugg">Suggested</span></div></div>
-</div>
-</div>
-<input type="file" id="storyFile" accept="image/*" style="display:none" onchange="alert('Story imewekwa!')">
-
-<div id="feed"></div>
+<!-- HEADER - LOGO IMERUDI -->
+<div class="sticky top-0 z-50 bg-white shadow px-4 py-3 flex justify-between items-center">
+  <div class="flex items-center gap-2">
+    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-black text-xl">K</div>
+    <div><h1 class="font-black text-xl leading-none text-blue-600">KAPAPP</h1><p class="text-[11px] text-gray-500">Dunia Yako, Sauti Yako</p></div>
+  </div>
+  <div class="flex gap-2">
+    <button onclick="showPage('home')" class="bg-blue-100 px-3 py-1 rounded-full text-sm font-bold">🏠 Home</button>
+    <button onclick="showPage('dashboard')" class="bg-gray-100 px-3 py-1 rounded-full text-sm font-bold">📊 Dashboard</button>
+  </div>
 </div>
 
-<div class="wrap hidden" id="postPage"><div class="box"><h3>Create post</h3><input id="pTitle" placeholder="Kichwa..."><textarea id="pDesc" placeholder="What's on your mind?"></textarea><select id="pType"><option value="image">Picha</option><option value="video">Video - Link tu</option></select><input id="pUrl" placeholder="Link ya Picha/Video (hiari)"><input type="file" id="pFile" accept="image/*" onchange="readFile(this)"><button onclick="addPost()">Post</button><button style="background:#eee;color:#000" onclick="show('home',null)">Cancel</button></div></div>
-<div class="wrap hidden" id="searchPage"><div class="box"><h3>Search</h3><input id="searchInput" placeholder="Tafuta..."><button onclick="doSearch()">Search</button></div></div>
-<div class="wrap hidden" id="dmPage"><div class="box"><h3>Chats</h3><select id="dmUser"><option>Kapwile</option><option>Zuchu</option><option>Diamond</option></select><div id="dmBox" style="background:#f0f2f5;height:140px;overflow:auto;padding:10px;border-radius:8px;margin:8px 0"><p><b>Kapwile:</b> Karibu Kapapp!</p></div><input id="dmInput" placeholder="Andika..." style="width:72%"><button onclick="sendDM()" style="width:24%">Send</button></div></div>
+<!-- TABS -->
+<div class="max-w-md mx-auto px-3 mt-3 flex gap-2">
+  <button onclick="filterPosts('all')" class="flex-1 bg-blue-600 text-white py-2 rounded-full font-bold text-sm">Dunia 🌍</button>
+  <button onclick="showAllPosts()" class="flex-1 bg-black text-white py-2 rounded-full font-bold text-sm">See All →</button>
+  <button onclick="showPage('dashboard')" class="flex-1 bg-white py-2 rounded-full font-bold text-sm border">Yangu</button>
+</div>
 
-<div class="wrap hidden" id="profile"><div class="box" style="text-align:center"><img id="profPicShow" style="width:110px;height:110px;border-radius:50%;object-fit:cover;display:none;margin:auto"><div id="profEmojiShow" style="font-size:70px">👤</div><h3 id="profNameShow">Kapwile</h3><p id="profBioShow" style="color:#65676b">CEO wa Kapapp</p><input type="file" accept="image/*" onchange="changeProfilePic(this)"><input id="profName" placeholder="Jina"><button onclick="saveProfile()">Save</button><button style="background:#eee;color:#000" onclick="doLogout()">Log out</button></div><div class="box"><h3>Wallet</h3><p>Pesa: <b id="money">TSh 0</b> | Views: <b id="views">0</b> | Likes: <b id="totalLikes">0</b></p><small>1000 Views = TSh 5,000 • Kila Like = TSh 10</small><select id="withdrawCountry"><option value="TZ">Tanzania - TSh</option><option value="CN">China - Yuan</option><option value="US">Marekani - Dola</option></select><select id="withdrawMethod"><option>M-Pesa</option><option>Tigo Pesa</option><option>PayPal</option><option>WeChat Pay</option></select><input id="withdrawNumber" placeholder="Namba / PayPal / WeChat"><button style="background:#42b72a" onclick="withdraw()">Toa Pesa</button></div><div class="box"><h3>Posts Zangu</h3><div id="myPostsList"></div></div></div>
+<!-- HOME PAGE -->
+<div id="page-home" class="max-w-md mx-auto p-3">
+  <!-- POST BOX -->
+  <div class="bg-white p-4 rounded-2xl shadow mb-4">
+    <input id="userName" placeholder="Jina lako..." class="w-full border rounded-xl p-3 mb-2 font-bold">
+    <input id="userPhone" placeholder="Namba ya WhatsApp (mfano 255...)" class="w-full border rounded-xl p-3 mb-2">
+    <textarea id="postText" placeholder="What's on your mind? KARIBUNI KAPAPP..." class="w-full border rounded-xl p-3 h-20"></textarea>
+    <input type="file" id="postImage" accept="image/*" class="w-full text-sm my-2">
+    <button onclick="createPost()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-black text-lg">POST SASA</button>
+  </div>
 
-<div class="wrap hidden" id="menuPage"><div class="box"><h3>Menu</h3><p style="color:#65676b;font-size:13px">Vitu vyote hapa. Home inabaki safi kama Facebook.</p></div><div class="menuItem" onclick="show('livePage',null)"><span>LIVE</span><span>›</span></div><div class="menuItem" onclick="show('reels',null)"><span>Reels</span><span>›</span></div><div class="menuItem" onclick="show('pages',null)"><span>Pages</span><span>›</span></div><div class="menuItem" onclick="show('profile',null)"><span>Wallet / Pesa</span><span>›</span></div><div class="menuItem" onclick="show('notifPage',null)"><span>Notifications</span><span>›</span></div><div class="menuItem" onclick="show('ceo',null)"><span>CEO Dashboard</span><span>›</span></div></div>
+  <!-- FEED -->
+  <div id="feed"></div>
+  <button onclick="showAllPosts()" class="w-full bg-black text-white py-3 rounded-xl font-bold my-3">SEE ALL POSTS → Ona Zote</button>
+</div>
 
-<div class="wrap hidden" id="livePage"><div class="box"><h3>LIVE</h3><input id="liveTitle" placeholder="Kichwa cha LIVE..."><button style="background:#f02849" onclick="startLive()">Anza LIVE</button><div id="myLiveRoom" class="hidden"><p>LIVE - <span id="liveViewers">1</span> wanaangalia | Zawadi <span id="liveGifts">TSh 0</span></p><div id="liveChat" style="background:#f0f2f5;height:120px;overflow:auto;padding:8px"></div><input id="liveCommentInput" placeholder="Andika..."><button onclick="sendLiveComment()">Tuma</button><button onclick="sendGift('Rose',500)">Rose 500</button><button onclick="endLive()" style="background:#333">Maliza LIVE</button></div></div></div>
-<div class="wrap hidden" id="reels"><div id="reelFeed"></div></div>
-<div class="wrap hidden" id="pages"><div class="box"><h3>Pages</h3><input id="pageName" placeholder="Jina la Page"><button onclick="addPage()">Tengeneza Page</button><div id="pageList"></div></div></div>
-<div class="wrap hidden" id="notifPage"><div class="box"><h3>Notifications</h3><div id="notifList"><p>Diamond amekulike post yako!</p><p>Zuchu amekufollow!</p></div><button onclick="clearNotif()">Futa Zote</button></div></div>
-<div class="wrap hidden" id="ceo"><div class="box"><h3>CEO Dashboard</h3><p>Pesa: <b id="ceoMoney">TSh 0</b> | Views: <b id="ceoViews">0</b> | Watumiaji: <b id="ceoUsers">0</b></p><div id="usersList"></div></div></div>
+<!-- SEE ALL PAGE -->
+<div id="page-all" class="max-w-md mx-auto p-3 hidden">
+  <h2 class="font-black text-xl mb-3">Post Zote 🌍 <button onclick="showPage('home')" class="text-sm bg-gray-200 px-3 py-1 rounded-full float-right">X Funga</button></h2>
+  <input oninput="searchPosts(this.value)" placeholder="🔍 Tafuta post..." class="w-full border p-3 rounded-xl mb-3 bg-white">
+  <div id="allFeed"></div>
+</div>
 
-<div class="bottom">
-<div class="active" onclick="goHome(this)">🏠</div>
-<div onclick="show('reels',this)">📺</div>
-<div onclick="show('postPage',this)">🎬</div>
-<div onclick="show('notifPage',this)">🔔</div>
-<div onclick="show('profile',this)"><img id="bottomPic" src=""></div>
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="max-w-md mx-auto p-3 hidden">
+  <div class="bg-blue-600 text-white p-5 rounded-2xl text-center">
+    <div class="w-20 h-20 bg-white text-blue-600 rounded-full mx-auto flex items-center justify-center text-3xl font-black">K</div>
+    <h2 id="dashName" class="font-black text-xl mt-2">Said Kapwile</h2>
+    <p class="text-blue-100 text-sm">Mwanachama wa Kapapp</p>
+    <div class="flex justify-center gap-4 mt-4">
+      <div class="bg-white/20 rounded-xl px-4 py-2"><b id="dashPosts">0</b><br><span class="text-xs">Post</span></div>
+      <div class="bg-white/20 rounded-xl px-4 py-2"><b id="dashLikes">0</b><br><span class="text-xs">Likes</span></div>
+      <div class="bg-white/20 rounded-xl px-4 py-2"><b id="dashComments">0</b><br><span class="text-xs">Comments</span></div>
+    </div>
+  </div>
+  <div class="bg-white rounded-2xl p-4 mt-3">
+    <h3 class="font-bold mb-2">Post Zangu</h3>
+    <div id="myFeed"></div>
+  </div>
+  <button onclick="logout()" class="w-full bg-red-500 text-white py-3 rounded-xl font-bold mt-3">Toka / Logout</button>
+  <button onclick="showPage('home')" class="w-full bg-gray-200 py-3 rounded-xl font-bold mt-2">← Rudi Home</button>
 </div>
 
 <script>
-let tempFile="";let liveGiftTotal=0;let liveViewerCount=1;let liveInterval=null;
-let defaultPosts=[
-{user:"Anetile Osiah",emoji:"👤",title:"",desc:"Anatajwa kuwa mmoja wa wanachama wanaotarajiwa kuchukua fomu ya kugo... more",type:"image",url:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600",likes:1250,views:25400,comments:["Hongera!"]},
-{user:"Kapwile",emoji:"👤",title:"",desc:"Karibu Kapapp mpya - safi kama Facebook!",type:"image",url:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600",likes:890,views:12000,comments:["Safi sana!"]},
-{user:"Presenter Sila",emoji:"👤",title:"",desc:"Kama muziki wa Bongo ni nyumba, Alikiba ana mafanikio yake bila kulazimisha... more",type:"image",url:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600",likes:2100,views:45000,comments:["Poa sana!"]}
-];
-let posts;try{posts=JSON.parse(localStorage.getItem('kapapp_posts')||'null')||defaultPosts}catch(e){posts=defaultPosts}
-function savePosts(){try{localStorage.setItem('kapapp_posts',JSON.stringify(posts))}catch(e){alert('Hifadhi imejaa');}}
-let defaultPages=[{name:"Kapwile Music",emoji:"🎵",followers:8450},{name:"Tanzania Trending",emoji:"🔥",followers:12300}];
-let pages;try{pages=JSON.parse(localStorage.getItem('kapapp_pages')||'null')||defaultPages}catch(e){pages=defaultPages}
-function savePages(){localStorage.setItem('kapapp_pages',JSON.stringify(pages))}
-function getUsers(){try{return JSON.parse(localStorage.getItem('kapapp_users')||'[]')}catch(e){return[]}}
-function saveUsers(u){localStorage.setItem('kapapp_users',JSON.stringify(u))}
-function getCurrent(){try{return JSON.parse(localStorage.getItem('kapapp_current')||'null')}catch(e){return null}}
-function setCurrent(u){localStorage.setItem('kapapp_current',JSON.stringify(u))}
-if(getUsers().length===0){saveUsers([{name:"Kapwile",phone:"0755CEO",pass:"kapapp123",role:"CEO",date:new Date().toLocaleDateString()}]);}
-function showRegister(){document.getElementById('loginBox').classList.add('hidden');document.getElementById('registerBox').classList.remove('hidden')}
-function showLogin(){document.getElementById('registerBox').classList.add('hidden');document.getElementById('loginBox').classList.remove('hidden')}
-function doRegister(){let name=document.getElementById('regName').value.trim();let phone=document.getElementById('regPhone').value.trim();let p1=document.getElementById('regPass').value;let p2=document.getElementById('regPass2').value;if(!name||!phone||!p1)return alert('Jaza Jina, Namba na Password');if(p1!==p2)return alert('Password hazifanani');let users=getUsers();if(users.find(u=>u.phone===phone))return alert('Namba imesha jiunga');let nu={name:name,phone:phone,pass:p1,role:"User",date:new Date().toLocaleDateString()};users.push(nu);saveUsers(users);setCurrent(nu);alert('Karibu '+name+'!');enterApp();}
-function doLogin(){let phone=document.getElementById('loginPhone').value.trim();let pass=document.getElementById('loginPass').value;let found=getUsers().find(u=>u.phone===phone&&u.pass===pass);if(!found)return alert('Namba au Password sio sahihi');setCurrent(found);alert('Karibu tena '+found.name+'!');enterApp();}
-function doLogout(){if(confirm('Toka?')){localStorage.removeItem('kapapp_current');location.reload();}}
-function changeProfilePic(input){let f=input.files[0];if(!f)return;if(f.size>2000000)return alert('Chagua picha ndogo chini ya 2MB');let r=new FileReader();r.onload=e=>{let img=new Image();img.onload=()=>{let c=document.createElement('canvas');let max=300;let w=img.width,h=img.height;if(w>max){h=h*max/w;w=max;}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);let url=c.toDataURL('image/jpeg',0.7);document.getElementById('profPicShow').src=url;document.getElementById('profPicShow').style.display='block';document.getElementById('profEmojiShow').style.display='none';document.getElementById('mindPic').src=url;document.getElementById('bottomPic').src=url;localStorage.setItem('kapapp_pic',url);alert('Picha imewekwa!');};img.src=e.target.result;};r.readAsDataURL(f);}
-function startLive(){document.getElementById('myLiveRoom').classList.remove('hidden');document.getElementById('liveChat').innerHTML='<p>Uko LIVE!</p>';liveInterval=setInterval(()=>{liveViewerCount+=2;document.getElementById('liveViewers').innerText=liveViewerCount;},6000);alert('Uko LIVE sasa!');}
-function sendLiveComment(){let v=document.getElementById('liveCommentInput').value;if(!v)return;document.getElementById('liveChat').innerHTML+='<p><b>Wewe:</b> '+v+'</p>';document.getElementById('liveCommentInput').value='';}
-function sendGift(n,a){liveGiftTotal+=a;document.getElementById('liveGifts').innerText='TSh '+liveGiftTotal.toLocaleString();alert('Asante! Umetuma '+n);}
-function endLive(){clearInterval(liveInterval);alert('LIVE imemalizika! Zawadi: TSh '+liveGiftTotal);document.getElementById('myLiveRoom').classList.add('hidden');}
-function enterApp(){let cur=getCurrent();if(!cur)return;document.getElementById('authScreen').style.display='none';document.getElementById('profNameShow').innerText=cur.name;document.getElementById('profName').value=cur.name;let pic=localStorage.getItem('kapapp_pic');if(pic){document.getElementById('profPicShow').src=pic;document.getElementById('profPicShow').style.display='block';document.getElementById('profEmojiShow').style.display='none';document.getElementById('mindPic').src=pic;document.getElementById('bottomPic').src=pic;}document.getElementById('ceoUsers').innerText=getUsers().length;document.getElementById('usersList').innerHTML=getUsers().map(u=>'• '+u.name+' - '+u.phone).join('<br>');render();}
-function render(filter=""){let feed=document.getElementById('feed');feed.innerHTML='';let reel=document.getElementById('reelFeed');reel.innerHTML='';let cur=getCurrent();let list=posts.filter(p=>!filter||(p.title+p.desc+p.user).toLowerCase().includes(filter.toLowerCase()));list.forEach((p)=>{let idx=posts.indexOf(p);let html=`<div class="post"><div class="head"><div class="avatar">${p.emoji}</div><div><b>${p.user}</b> <span style="color:#1877f2;font-size:13px">• Follow</span><br><small style="color:#65676b">1d • 🌍</small></div><span class="dots">...</span><span class="close" onclick="this.parentElement.parentElement.style.display='none'">×</span></div><p>${p.desc}</p>${p.type==='video'?`<video controls src="${p.url}"></video>`:`<img src="${p.url}">`}<div class="counts"><span>❤️ ${p.likes}</span><span>${p.comments.length} comments • 👀 ${p.views}</span></div><div class="actions"><span onclick="like(${idx},this)">👍 Like</span><span onclick="document.getElementById('c${idx}').focus()">💬 Comment</span><span onclick="sharePost()">↗️ Share</span></div><div class="comments"><div>${p.comments.map(c=>'<p>'+c+'</p>').join('')}</div><br><input id="c${idx}" placeholder="Write a comment..."><button onclick="comment(${idx})">Send</button></div></div>`;feed.innerHTML+=html;if(p.type==='video')reel.innerHTML+=html;});renderPages();let v=posts.reduce((a,b)=>a+b.views,0);let money=Math.floor(v/1000)*5000+posts.reduce((a,b)=>a+b.likes,0)*10+liveGiftTotal;document.getElementById('views').innerText=v.toLocaleString();document.getElementById('totalLikes').innerText=posts.reduce((a,b)=>a+b.likes,0).toLocaleString();document.getElementById('money').innerText='TSh '+money.toLocaleString();document.getElementById('ceoMoney').innerText='TSh '+money.toLocaleString();document.getElementById('ceoViews').innerText=v.toLocaleString();if(cur){let mine=posts.filter(p=>p.user===cur.name);document.getElementById('myPostsList').innerHTML=mine.length?mine.map(p=>'<p>'+p.desc+' - 👀 '+p.views+'</p>').join(''):'Bado hujapost';}}
-function doSearch(){let v=document.getElementById('searchInput').value;render(v);show('home',null);}
-function renderPages(){let el=document.getElementById('pageList');el.innerHTML='';pages.forEach((pg)=>{el.innerHTML+=`<div style="background:#f0f2f5;padding:10px;border-radius:8px;margin:6px 0;display:flex;justify-content:space-between"><span><b>${pg.name}</b><br><small>${pg.followers} followers</small></span><button style="background:#e7f3ff;color:#1877f2;border:0;padding:6px 12px;border-radius:20px;font-weight:bold" onclick="this.innerText='Following'">Follow</button></div>`})}
-function like(i,el){posts[i].likes++;posts[i].views+=10;savePosts();render();}
-function comment(i){let inp=document.getElementById('c'+i);if(!inp.value)return;let cur=getCurrent();posts[i].comments.push((cur?cur.name:'Wewe')+': '+inp.value);savePosts();render();}
-function sharePost(){alert('Link Imecopiwa!');}
-function clearNotif(){document.getElementById('notifList').innerHTML='<p>Hakuna mpya</p>';}
-function readFile(input){let f=input.files[0];if(!f)return;if(f.size>2000000){alert('Picha ni kubwa - chagua ndogo chini ya 2MB');input.value='';return;}let r=new FileReader();r.onload=e=>{let img=new Image();img.onload=()=>{let c=document.createElement('canvas');let max=600;let w=img.width,h=img.height;if(w>max){h=h*max/w;w=max;}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);tempFile=c.toDataURL('image/jpeg',0.6);alert('Picha imepunguzwa yenyewe!');};img.src=e.target.result;};r.readAsDataURL(f);}
-function addPost(){let cur=getCurrent();let name=cur?cur.name:'Wewe';let t=document.getElementById('pTitle').value;let d=document.getElementById('pDesc').value||t||"What's on your mind?";let ty=document.getElementById('pType').value;let u=document.getElementById('pUrl').value||tempFile||'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600';posts.unshift({user:name,emoji:'👤',title:t,desc:d,type:ty,url:u,likes:0,views:10,comments:[]});savePosts();render();alert('Post imewekwa!');document.getElementById('pTitle').value='';document.getElementById('pDesc').value='';document.getElementById('pUrl').value='';tempFile='';show('home',null);}
-function addPage(){let n=document.getElementById('pageName').value;if(!n)return alert('Andika jina');pages.unshift({name:n,emoji:'📄',followers:1});savePages();renderPages();alert('Page imetengenezwa!');}
-function sendDM(){let v=document.getElementById('dmInput').value;if(!v)return;document.getElementById('dmBox').innerHTML+='<p><b>Wewe:</b> '+v+'</p>';document.getElementById('dmInput').value='';}
-function saveProfile(){let cur=getCurrent();let nn=document.getElementById('profName').value;if(cur){cur.name=nn;let users=getUsers();let idx=users.findIndex(u=>u.phone===cur.phone);if(idx>=0)users[idx]=cur;saveUsers(users);setCurrent(cur);}alert('Profile imehifadhiwa!');enterApp();}
-function withdraw(){let c=document.getElementById('withdrawCountry').value;let m=document.getElementById('withdrawMethod').value;let n=document.getElementById('withdrawNumber').value;if(!n)return alert('Weka Namba');let tsh=parseInt(document.getElementById('money').innerText.replace(/[^0-9]/g,'')||'0');let show=c==='TZ'?'TSh '+tsh.toLocaleString():c==='CN'?'Yuan '+(tsh/360).toFixed(2):'Dola '+(tsh/2600).toFixed(2);alert('Pesa imetumwa! '+show+' kupitia '+m+' kwenda '+n);}
-function show(id,btn){['home','postPage','searchPage','dmPage','profile','menuPage','livePage','reels','pages','notifPage','ceo'].forEach(x=>document.getElementById(x).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.bottom div').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');window.scrollTo(0,0);}
-function goHome(btn){render('');show('home',btn);}
-enterApp();
-</script><!DOCTYPE html>
-<html lang="sw">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kapapp</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#f0f2f5;color:#050505;padding-bottom:70px}
-header{position:fixed;top:0;left:0;right:0;background:#fff;padding:8px 10px;z-index:99;display:flex;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
-header h1{font-size:30px;color:#1877f2;font-weight:900}
-header .right{margin-left:auto;display:flex;gap:8px}
-header .right span{width:38px;height:38px;background:#f0f2f5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;cursor:pointer}
-.wrap{margin-top:58px}
-.mind{background:#fff;padding:10px;display:flex;gap:8px;align-items:center}
-.mind img{width:40px;height:40px;border-radius:50%;background:#ddd;object-fit:cover}
-.mind input{flex:1;padding:11px 14px;border-radius:25px;border:0;background:#f0f2f5}
-.story{min-width:105px;height:218px;border-radius:12px;position:relative;overflow:hidden;background:#ddd}
-.story img{width:100%;height:100%;object-fit:cover}
-.story .lab{position:absolute;bottom:6px;left:6px;color:#fff;font-weight:bold;font-size:13px;text-shadow:0 0 5px #000}
-.post{background:#fff;margin:8px 0;padding:12px}
-.head{display:flex;gap:8px;align-items:center}
-.avatar{width:40px;height:40px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:20px}
-.post img,.post video{width:100%;max-height:450px;object-fit:cover;display:block}
-.actions{display:flex;justify-content:space-between;border-top:1px solid #eee;padding:8px 0;color:#65676b}
-.box{background:#fff;margin:8px;padding:14px;border-radius:8px}
-.box input,.box textarea,.box select{width:100%;padding:11px;margin:6px 0;border-radius:8px;border:1px solid #ddd;background:#f0f2f5}
-.box button{width:100%;padding:12px;background:#1877f2;color:#fff;border:0;border-radius:8px;font-weight:bold}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid #ddd;z-index:99}
-.bottom div{text-align:center;font-size:24px;color:#65676b;flex:1}.bottom div.active{color:#1877f2}
-.hidden{display:none}
-#authScreen{position:fixed;inset:0;background:#f0f2f5;z-index:999;padding:20px;text-align:center}
-#authScreen h1{font-size:48px;color:#1877f2;margin-top:30px}
-.authBox{background:#fff;padding:18px;border-radius:8px;margin:18px auto;max-width:400px}
-.authBox input{width:100%;padding:13px;margin:7px 0;border-radius:6px;border:1px solid #ddd}
-.authBox button{width:100%;padding:12px;border:0;border-radius:6px;font-weight:bold;margin-top:8px}
-.menuItem{background:#fff;padding:14px;margin:6px 8px;border-radius:8px;display:flex;justify-content:space-between}
-</style>
-</head>
-<body>
+// *** BADILISHA HAPA NA CONFIG YAKO YA FIREBASE ***
+const firebaseConfig = {
+  apiKey: "WEKA-APIPO",
+  authDomain: "WEKA-APIPO",
+  projectId: "WEKA-APIPO",
+  storageBucket: "WEKA-APIPO",
+  messagingSenderId: "WEKA-APIPO",
+  appId: "WEKA-APIPO"
+};
+let db=null;
+try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); }catch(e){ console.log("Local mode"); }
+
+let posts = JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+if(posts.length===0){
+  posts=[{id:Date.now(), name:"Said Kapwile", phone:"255000000000", text:"KARIBUNI HUMU JAMANI KAPAPP NDO HII", img:"", likes:12, comments:[{name:"Kapapp",text:"Karibu sana!"}], time:new Date().toLocaleString()}];
+}
+
+function save(){ localStorage.setItem('kapapp_posts', JSON.stringify(posts)); render(); }
+
+function createPost(){
+  let text=document.getElementById('postText').value;
+  let name=document.getElementById('userName').value||"Mgeni";
+  let phone=document.getElementById('userPhone').value||"255000000000";
+  if(!text) return alert("Andika kitu kwanza!");
+  let file=document.getElementById('postImage').files[0];
+  if(file){
+    let r=new FileReader(); r.onload=e=>{ posts.unshift({id:Date.now(),name,phone,text,img:e.target.result,likes:0,comments:[],time:new Date().toLocaleString()}); save(); document.getElementById('postText').value=""; }; r.readAsDataURL(file);
+  } else {
+    posts.unshift({id:Date.now(),name,phone,text,img:"",likes:0,comments:[],time:new Date().toLocaleString()}); save(); document.getElementById('postText').value="";
+  }
+}
+
+function likePost(id,btn){
+  let p=posts.find(x=>x.id==id); p.likes++; save(); btn.classList.add('active');
+}
+function toggleComments(id){ document.getElementById('c-'+id).classList.toggle('hidden'); }
+function addComment(id){
+  let inp=document.getElementById('inp-'+id); if(!inp.value) return;
+  let p=posts.find(x=>x.id==id); p.comments.push({name:"Wewe",text:inp.value}); inp.value=""; save(); toggleComments(id); toggleComments(id);
+}
+function deletePost(id){ if(confirm("Futa hii post?")){ posts=posts.filter(x=>x.id!=id); save(); } }
+function sharePost(text){ let u="https://wa.me/?text="+encodeURIComponent(text+" - kupitia Kapapp"); window.open(u); }
+function whatsappUser(phone,text){
+  let msg="Habari! Nimeona post yako Kapapp: "+text;
+  window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(msg));
+}
+
+function postHTML(p){
+  let comments = p.comments.map(c=>`<div class="bg-gray-100 rounded-lg p-2 mb-1 text-sm"><b>${c.name}:</b> ${c.text}</div>`).join('');
+  return `<div class="post-card shadow mb-4">
+    <div class="p-3 flex justify-between"><div><b>${p.name}</b><p class="text-xs text-gray-400">${p.time}</p></div><button onclick="deletePost(${p.id})" class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm font-bold">❌ Futa Hii</button></div>
+    <p class="px-3 pb-2">${p.text}</p>
+    ${p.img?`<img src="${p.img}" class="w-full">`:''}
+    <div class="p-3 flex gap-2">
+      <button onclick="likePost(${p.id},this)" class="btn-like flex-1 bg-gray-100 py-2 rounded-full font-bold text-sm">❤️ Like (${p.likes})</button>
+      <button onclick="toggleComments(${p.id})" class="flex-1 bg-gray-100 py-2 rounded-full font-bold text-sm">💬 Comment (${p.comments.length})</button>
+      <button onclick="whatsappUser('${p.phone}','${p.text.replace(/'/g,"")}')" class="flex-1 bg-green-500 text-white py-2 rounded-full font-bold text-sm">🟢 WhatsApp</button>
+    </div>
+    <div class="px-3 pb-2 flex gap-2"><button onclick="sharePost('${p.text.replace(/'/g,"")}')" class="flex-1 border py-1 rounded-full text-sm">↗️ Share</button></div>
+    <div id="c-${p.id}" class="px-3 pb-3 hidden"><div class="mb-2">${comments||'<p class="text-sm text-gray-400">Hakuna comment bado. Kuwa wa kwanza!</p>'}</div><div class="flex gap-2"><input id="inp-${p.id}" placeholder="Andika comment..." class="flex-1 border rounded-full px-3 py-2 text-sm"><button onclick="addComment(${p.id})" class="bg-blue-600 text-white px-4 rounded-full font-bold">Tuma</button></div></div>
+  </div>`;
+}
+
+function render(){
+  document.getElementById('feed').innerHTML = posts.slice(0,5).map(postHTML).join('');
+  document.getElementById('allFeed').innerHTML = posts.map(postHTML).join('');
+  let my = posts.filter(p=>p.name===document.getElementById('userName').value || p.name==="Said Kapwile");
+  document.getElementById('myFeed').innerHTML = my.length? my.map(postHTML).join('') : '<p class="text-sm text-gray-500">Bado huna post. Post sasa!</p>';
+  document.getElementById('dashPosts').innerText = posts.length;
+  document.getElementById('dashLikes').innerText = posts.reduce((a,b)=>a+b.likes,0);
+  document.getElementById('dashComments').innerText = posts.reduce((a,b)=>a+b.comments.length,0);
+}
+function showPage(p){
+  document.getElementById('page-home').classList.add('hidden');
+  document.getElementById('page-all').classList.add('hidden');
+  document.getElementById('page-dashboard').classList.add('hidden');
+  document.getElementById('page-'+p).classList.remove('hidden');
+  render(); window.scrollTo(0,0);
+}
+function showAllPosts(){ showPage('all'); }
+function filterPosts(){ showPage('home'); }
+function searchPosts(q){
+  let f=posts.filter(p=>p.text.toLowerCase().includes(q.toLowerCase())||p.name.toLowerCase().includes(q.toLowerCase()));
+  document.getElementById('allFeed').innerHTML=f.map(postHTML).join('')||'<p class="text-center py-5">Hakuna kilichopatikana</p>';
+}
+function logout(){ alert("Umetoka. Asante kutumia Kapapp!"); showPage('home'); }
+render();
+</script>
 </body>
 </html>

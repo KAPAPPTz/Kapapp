@@ -3,26 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAPAPP</title>
+<title>KAPAPP - MPYA</title>
 <style>
 body{margin:0;font-family:Arial;background:#f0f2f5}
-.top{background:#1877f2;color:white;padding:12px;text-align:center;font-size:22px;font-weight:bold;position:sticky;top:0}
-.box,.post{background:white;margin:10px;padding:12px;border-radius:10px}
+.top{background:#1877f2;color:white;padding:12px;text-align:center;font-size:22px;font-weight:bold;position:sticky;top:0;z-index:10}
+.top small{display:block;font-size:11px;font-weight:normal;opacity:.9}
+.box,.post{background:white;margin:10px;padding:12px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:5px 0;box-sizing:border-box}
-button{background:#1877f2;color:white;border:0;padding:10px 20px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer}
+button{background:#1877f2;color:white;border:0;padding:11px 20px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;font-size:16px}
+button:disabled{opacity:.6}
 .post img{width:100%;border-radius:10px;margin-top:8px}
 .actions{display:flex;justify-content:space-between;margin-top:10px;border-top:1px solid #eee;padding-top:8px}
-.actions span{cursor:pointer}
+.actions span{cursor:pointer;font-size:14px}
+.time{font-size:11px;color:#888}
 </style>
 </head>
 <body>
-<div class="top">KAPAPP</div>
+<div class="top">KAPAPP<small>🌍 LIVE - Dunia nzima inaona</small></div>
 
 <div class="box">
 <input id="jina" placeholder="Jina lako...">
 <textarea id="wazo" rows="3" placeholder="Una wazo gani leo?"></textarea>
 <input type="file" id="picha" accept="image/*">
-<button onclick="tuma()">Post</button>
+<button id="btnTuma" onclick="tuma()">Post</button>
 </div>
 
 <div id="feed"></div>
@@ -30,7 +33,7 @@ button{background:#1877f2;color:white;border:0;padding:10px 20px;border-radius:8
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getDatabase, ref, push, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wElVXS9mBZKyw",
@@ -43,19 +46,24 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const postsRef = collection(db, "posts");
+const db = getDatabase(app);
+const postsRef = ref(db, "posts");
 
-const q = query(postsRef, orderBy("time", "desc"));
-onSnapshot(q, (snap) => {
-  document.getElementById('status').innerText = snap.empty ? 'Hakuna post bado. Kuwa wa kwanza!' : '';
+// Soma LIVE kutoka Server
+onValue(postsRef, (snap) => {
   let feed = document.getElementById('feed');
   feed.innerHTML = '';
-  snap.forEach((d) => {
-    let p = d.data();
+  let data = snap.val();
+  if(!data){
+    document.getElementById('status').innerText = 'Hakuna post bado. Kuwa wa kwanza!';
+    return;
+  }
+  document.getElementById('status').innerText = '';
+  let arr = Object.entries(data).reverse();
+  arr.forEach(([id, p]) => {
     let div = document.createElement('div');
     div.className = 'post';
-    div.innerHTML = '<b>'+(p.jina||'KAPAPP')+'</b><p>'+(p.wazo||'')+'</p>' + (p.img ? '<img src="'+p.img+'">' : '') + '<div class="actions"><span onclick="likePost(\''+d.id+'\', this)">👍 Like (<b>'+(p.likes||0)+'</b>)</span><span>💬 Comment</span><span>↗️ Share</span></div>';
+    div.innerHTML = '<b>'+(p.jina||'KAPAPP')+'</b> <span class="time">'+new Date(p.time||Date.now()).toLocaleString('sw-TZ')+'</span><p>'+(p.wazo||'')+'</p>' + (p.img ? '<img src="'+p.img+'">' : '') + '<div class="actions"><span onclick="likePost(\''+id+'\')">👍 Like (<b>'+(p.likes||0)+'</b>)</span><span>💬 Comment</span><span>↗️ Share</span></div>';
     feed.appendChild(div);
   });
 });
@@ -65,7 +73,8 @@ window.tuma = async function(){
   let wazo = document.getElementById('wazo').value;
   let file = document.getElementById('picha').files[0];
   if(!wazo && !file){ alert('Andika kitu kwanza!'); return; }
-  document.getElementById('status').innerText = 'Inatuma...';
+  document.getElementById('btnTuma').innerText = 'Inatuma...';
+  document.getElementById('btnTuma').disabled = true;
   let imgData = '';
   if(file){
     imgData = await new Promise(res => {
@@ -73,15 +82,3 @@ window.tuma = async function(){
       r.onload = e => res(e.target.result);
       r.readAsDataURL(file);
     });
-  }
-  await addDoc(postsRef, { jina, wazo, img: imgData, likes: 0, time: serverTimestamp() });
-  document.getElementById('wazo').value = '';
-  document.getElementById('picha').value = '';
-}
-
-window.likePost = async function(id, el){
-  await updateDoc(doc(db, "posts", id), { likes: increment(1) });
-}
-</script>
-</body>
-</html>

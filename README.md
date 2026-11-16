@@ -2,29 +2,37 @@
 
 **Every Language. Every Currency. Every Country.**
 
-KAPAPP is the business app for the WORLD.
-Sell anything - food, clothes, shoes, phones, art - and sell LIVE!
+KAPAPP is the business app for the WORLD. Sell anything - food, clothes, shoes, phones, art - and sell LIVE!
 
-### 🔗 Try KAPAPP Now
+---
+
+## 🔗 Try KAPAPP Now
 👉 https://kapapptz.github.io/Kapapp/
 
-### ✨ What KAPAPP Does
-- 📸 Post Photo / Video of your product
-- 💬 DM - Chat with buyer, no number shown
-- 📡 LIVE - Sell LIVE, people watch and buy
-- 🌍 All Languages - Swahili, English, Français, العربية, हिन्दी, Português
-- 💰 All Money - TSh, USD, KES, NGN, EUR, ZAR, GHC
-- 🔍 Search - Find products by name or hashtag
-- 👑 CEO Profile
+## ✨ Features
+- 🛍️ **Bidhaa** - Uza bidhaa zako
+- 📰 **Feed** - Post na uone za wengine
+- 🔐 **Login / Register** - Ingia salama
+- 🌍 **Lugha Nyingi** - Kiswahili, English & zaidi
+- 💱 **Sarafu Zote** - TZS, USD, KES, NGN & zaidi
+- 📱 **PWA** - Inafanya kazi kama App ya simu, hata bila internet
 
-### 👑 Founder
-**KAPAPPTz** - CEO of KAPAPP
-From the World 🌍, For the World 🌍
+## 🚀 Jinsi ya Kuitumia
+1. Fungua link: https://kapapptz.github.io/Kapapp/
+2. Jisajili kwenye Register
+3. Ingia kwenye Login
+4. Post bidhaa yako kwenye Feed / Bidhaa
 
-### 🚀 How To Use
-1. Open the link above
-2. Register / Login
-3. Post your product
-4. Sell!
+## 🛠️ Teknolojia
+- HTML, CSS, JavaScript
+- PWA - Manifest.json
+- GitHub Pages - Hosting Bure
 
-**KAPAPP - Business Without Borders!**
+## 👨‍💻 Mmiliki
+**KAPAPPTz** - Tanzania 🇹🇿
+
+## 📄 License
+MIT License - Tazama faili la LICENSE
+
+---
+⭐ Kama unapenda KAPAPP, bonyeza Star juu!

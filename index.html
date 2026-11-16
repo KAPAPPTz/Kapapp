@@ -136,7 +136,7 @@ let notifs=safeLoad('kapapp_notifs');
 let selectedMedia=null,selectedMediaType=null,selectedVideoId=null,selectedVideoBlob=null;
 let selectedMedias=[];
 function isCEO(u){if(!u)return false;return u.isCEO===true||(u.name||'').toLowerCase().includes('said kapwile')||(u.name||'').toLowerCase().includes('kapw lightPosts=posts.slice(0,30).map(p=>{let np={...p};if(np.media&&np.media.length>800000&&np.mediaType==='image'){np.media=null}if(np.mediaType==='video'){np.media=null}return np});localStorage.setItem('kapapp_posts',JSON.stringify(lightPosts));localStorage.setItem('kapapp_ads',JSON.stringify(ads));localStorage.setItem('kapapp_notifs',JSON.stringify(notifs));if(currentUser)localStorage.setItem('kapapp_current',JSON.stringify(currentUser));}catch(e){}}
-function changeLang(l){localStorage.setItem('kapapp_lang',l)}https://github.com/KAPAPPTz/Kapapp/blob/91c88e08a77ccbc854eb9910bc385642d40d5669/index.html#L139
+  github.com/KAPAPP...
 function switchAuth(t){document.getElementById('form-login').classList.toggle('hidden',t!=='login');document.getElementById('form-register').classList.toggle('hidden',t!=='register');document.getElementById('form-forgot').classList.add('hidden');document.getElementById('btnLoginTab').className=t==='login'?'active':'inactive';document.getElementById('btnRegTab').className=t==='register'?'active':'inactive';}
 function showForgot(){document.getElementById('form-login').classList.add('hidden');document.getElementById('form-register').classList.add('hidden');document.getElementById('form-forgot').classList.remove('hidden');}
 function showLoginFromForgot(){switchAuth('login')}

@@ -5,80 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KAPAPP - MPYA</title>
 <style>
-body{margin:0;font-family:Arial;background:#f0f2f5}
-.top{background:#1877f2;color:white;padding:12px;text-align:center;font-size:22px;font-weight:bold;position:sticky;top:0;z-index:10}
-.top small{display:block;font-size:11px;font-weight:normal;opacity:.9}
-.box,.post{background:white;margin:10px;padding:12px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:5px 0;box-sizing:border-box}
-button{background:#1877f2;color:white;border:0;padding:11px 20px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;font-size:16px}
-button:disabled{opacity:.6}
-.post img{width:100%;border-radius:10px;margin-top:8px}
-.actions{display:flex;justify-content:space-between;margin-top:10px;border-top:1px solid #eee;padding-top:8px}
-.actions span{cursor:pointer;font-size:14px}
-.time{font-size:11px;color:#888}
+body{font-family:Arial;background:#f0f2f5;margin:0;padding:0}
+.header{background:#1877f2;color:white;text-align:center;padding:15px;font-size:22px;font-weight:bold}
+.box{background:white;margin:10px;padding:12px;border-radius:10px}
+input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
+button{width:100%;background:#1877f2;color:white;border:none;padding:12px;border-radius:8px;font-size:16px;font-weight:bold}
+.post{background:white;margin:10px;padding:12px;border-radius:10px}
+.post b{color:#1877f2}
+.post img{max-width:100%;border-radius:8px;margin-top:8px}
+.small{font-size:12px;color:#888;text-align:center;margin:10px}
 </style>
 </head>
 <body>
-<div class="top">KAPAPP<small>🌍 LIVE - Dunia nzima inaona</small></div>
+<div class="header">KAPAPP<br><span style="font-size:13px">🌍 LIVE - Dunia nzima inaona</span></div>
 
 <div class="box">
 <input id="jina" placeholder="Jina lako...">
-<textarea id="wazo" rows="3" placeholder="Una wazo gani leo?"></textarea>
+<textarea id="wazo" placeholder="Una wazo gani leo?"></textarea>
 <input type="file" id="picha" accept="image/*">
-<button id="btnTuma" onclick="tuma()">Post</button>
+<button onclick="postSasa()">Post</button>
 </div>
 
 <div id="feed"></div>
-<p style="text-align:center;color:#888" id="status">Inapakia post...</p>
+<div class="small"><a href="#" onclick="futaYote();return false;">Futa post zote</a></div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, push, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+<script>
+let posts = [];
+try{ posts = JSON.parse(localStorage.getItem('kapapp_posts')||'[]'); }catch(e){ posts=[]; }
+onyesha();
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBbC9HurKX3bX2Zu1EdX2wElVXS9mBZKyw",
-  authDomain: "kapapp-97bed.firebaseapp.com",
-  databaseURL: "https://kapapp-97bed-default-rtdb.firebaseio.com",
-  projectId: "kapapp-97bed",
-  storageBucket: "kapapp-97bed.firebasestorage.app",
-  messagingSenderId: "497811742831",
-  appId: "1:497811742831:web:9cf03078065ceb0805ed9a"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const postsRef = ref(db, "posts");
-
-// Soma LIVE kutoka Server
-onValue(postsRef, (snap) => {
-  let feed = document.getElementById('feed');
-  feed.innerHTML = '';
-  let data = snap.val();
-  if(!data){
-    document.getElementById('status').innerText = 'Hakuna post bado. Kuwa wa kwanza!';
-    return;
-  }
-  document.getElementById('status').innerText = '';
-  let arr = Object.entries(data).reverse();
-  arr.forEach(([id, p]) => {
-    let div = document.createElement('div');
-    div.className = 'post';
-    div.innerHTML = '<b>'+(p.jina||'KAPAPP')+'</b> <span class="time">'+new Date(p.time||Date.now()).toLocaleString('sw-TZ')+'</span><p>'+(p.wazo||'')+'</p>' + (p.img ? '<img src="'+p.img+'">' : '') + '<div class="actions"><span onclick="likePost(\''+id+'\')">👍 Like (<b>'+(p.likes||0)+'</b>)</span><span>💬 Comment</span><span>↗️ Share</span></div>';
-    feed.appendChild(div);
-  });
-});
-
-window.tuma = async function(){
-  let jina = document.getElementById('jina').value || 'KAPAPP';
-  let wazo = document.getElementById('wazo').value;
+function postSasa(){
+  let jina = document.getElementById('jina').value.trim() || 'Mgeni';
+  let wazo = document.getElementById('wazo').value.trim();
+  if(!wazo){ alert('Andika wazo kwanza!'); return; }
   let file = document.getElementById('picha').files[0];
-  if(!wazo && !file){ alert('Andika kitu kwanza!'); return; }
-  document.getElementById('btnTuma').innerText = 'Inatuma...';
-  document.getElementById('btnTuma').disabled = true;
-  let imgData = '';
   if(file){
-    imgData = await new Promise(res => {
-      let r = new FileReader();
-      r.onload = e => res(e.target.result);
-      r.readAsDataURL(file);
-    });
+    let r = new FileReader();
+    r.onload = function(e){ hifadhi(jina,wazo,e.target.result); };
+    r.readAsDataURL(file);
+  } else {
+    hifadhi(jina,wazo,'');
+  }
+}
+function hifadhi(jina,wazo,picha){
+  posts.unshift({jina:jina,wazo:wazo,picha:picha,tarehe:new Date().toLocaleString()});
+  // Tunahifadhi post 10 tu ili simu isijae
+  posts = posts.slice(0,10);
+  try{ localStorage.setItem('kapapp_posts', JSON.stringify(posts)); }catch(e){ alert('Kumbukumbu imejaa, post za zamani zimefutwa'); posts=posts.slice(0,5); localStorage.setItem('kapapp_posts', JSON.stringify(posts)); }
+  document.getElementById('wazo').value='';
+  document.getElementById('picha').value='';
+  onyesha();
+}
+function onyesha(){
+  let f = document.getElementById('feed');
+  if(posts.length==0){ f.innerHTML='<p style="text-align:center;color:#888">Hakuna post bado. Kuwa wa kwanza!</p>'; return; }
+  f.innerHTML = posts.map(p=>'<div class="post"><b>'+p.jina+'</b><br><small>'+p.tarehe+'</small><p>'+p.wazo+'</p>'+(p.picha?'<img src="'+p.picha+'">':'')+'</div>').join('');
+}
+function futaYote(){ if(confirm('Futa post zote?')){ posts=[]; localStorage.removeItem('kapapp_posts'); onyesha(); } }
+</script>
+</body>
+</html>

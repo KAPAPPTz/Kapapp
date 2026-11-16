@@ -3,65 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAPAPP - MPYA</title>
+<title>KAPAPP - KAMILI</title>
 <style>
-body{font-family:Arial;background:#f0f2f5;margin:0;padding:0}
-.header{background:#1877f2;color:white;text-align:center;padding:15px;font-size:22px;font-weight:bold}
-.box{background:white;margin:10px;padding:12px;border-radius:10px}
-input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
-button{width:100%;background:#1877f2;color:white;border:none;padding:12px;border-radius:8px;font-size:16px;font-weight:bold}
-.post{background:white;margin:10px;padding:12px;border-radius:10px}
-.post b{color:#1877f2}
-.post img{max-width:100%;border-radius:8px;margin-top:8px}
-.small{font-size:12px;color:#888;text-align:center;margin:10px}
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f0f2f5;padding-bottom:30px}
+.header{background:#0a4db3;color:#fff;text-align:center;padding:20px 10px;position:sticky;top:0;z-index:10}
+.header h1{margin:0;font-size:30px;letter-spacing:3px}.header p{margin:5px 0 0;font-size:13px}
+.box{max-width:520px;margin:14px auto;background:#fff;padding:15px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+input,textarea,select{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:9px;font-size:15px}
+button{padding:12px;border:none;border-radius:9px;background:#0a4db3;color:#fff;font-size:15px;font-weight:bold;cursor:pointer}
+.btn-full{width:100%}.btn-green{background:#16a34a}.btn-red{background:#e11d48}.btn-gray{background:#64748b}.btn-light{background:#eef2ff;color:#0a4db3}
+.small{font-size:13px;color:#666;text-align:center}.hidden{display:none}
+.ceo{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#0a4db3,#1e90ff);color:#fff;padding:15px;border-radius:12px}
+.ceo img{width:70px;height:70px;border-radius:50%;border:3px solid #fff;object-fit:cover;background:#fff}
+.dash{display:flex;gap:8px;text-align:center}.dash div{flex:1;background:#eff6ff;padding:12px;border-radius:10px}.dash b{font-size:20px;display:block;color:#0a4db3}
+.post{border-top:1px solid #eee;padding:14px 0}
+.post-top{display:flex;justify-content:space-between;align-items:center}
+.post-top b{color:#0a4db3}.time{font-size:12px;color:#888}
+.post img,.post video{width:100%;border-radius:10px;margin-top:10px;max-height:420px;object-fit:cover}
+.actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.actions button{flex:1;padding:9px;font-size:13px}
+.actions button.active{background:#e11d48}
+.comment-box{background:#f8fafc;padding:10px;border-radius:10px;margin-top:10px}
+.comment{font-size:13px;padding:5px 0;border-bottom:1px solid #eee}.comment b{color:#0a4db3}
+.follow-btn{padding:6px 12px!important;font-size:12px!important}
+.user-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee;font-size:14px}
+.link{color:#0a4db3;text-align:center;display:block;margin-top:10px;cursor:pointer;font-weight:bold}
+.wa{background:#25D366!important}
 </style>
 </head>
 <body>
-<div class="header">KAPAPP<br><span style="font-size:13px">🌍 LIVE - Dunia nzima inaona</span></div>
+<div class="header"><h1>KAPAPP</h1><p>🔒 Wanachama Pekee • CEO: Said Kapwile • LIVE</p></div>
 
-<div class="box">
-<input id="jina" placeholder="Jina lako...">
-<textarea id="wazo" placeholder="Una wazo gani leo?"></textarea>
-<input type="file" id="picha" accept="image/*">
-<button onclick="postSasa()">Post</button>
+<!-- AUTH -->
+<div class="box" id="authBox">
+<h2 id="authTitle" style="text-align:center;margin:0">Ingia KAPAPP</h2>
+<p class="small">Lazima uji-sajili. Hakuna Mgeni. Kila mtu ana akaunti yake.</p>
+<input id="uName" placeholder="Jina lako kamili...">
+<input id="uPhone" placeholder="Namba ya WhatsApp (mf: 255... )">
+<input id="uPass" type="password" placeholder="Password (angalau 4)...">
+<button class="btn-full" onclick="doAuth()" id="authBtn">INGIA</button>
+<span class="link" onclick="toggleAuth()" id="toggleLink">Huna akaunti? Jisajili hapa</span>
+<p class="small" id="authMsg"></p>
 </div>
 
-<div id="feed"></div>
-<div class="small"><a href="#" onclick="futaYote();return false;">Futa post zote</a></div>
+<!-- APP -->
+<div id="appBox" class="hidden">
+<!-- CEO SECTION -->
+<div class="box"><div class="ceo">
+<img src="https://via.placeholder.com/150/ffffff/0a4db3?text=SK" id="ceoImg">
+<div style="flex:1"><b style="font-size:18px">Said Kapwile 👑</b><div style="font-size:13px">CEO & Muanzilishi wa KAPAPP</div><div style="font-size:12px;margin-top:4px">📍 Dar es Salaam, Tanzania • <span id="ceoFollowers">0</span> Followers</div></div>
+<button onclick="followCEO()" id="ceoFollowBtn" class="follow-btn btn-green">Follow</button>
+</div>
+<p class="small" style="margin-top:10px">Karibu KAPAPP! Hapa ndipo kila mtu anapost mawazo, video na habari zake. Jiunge nasi!</p>
+<button class="btn-full wa" onclick="shareWA()">📲 Jiunge KAPAPP kupitia WhatsApp</button>
+</div>
+
+<!-- DASHBOARD -->
+<div class="box" id="dashBox">
+<p style="margin:0">Karibu, <b id="myName"></b> 👋 <button onclick="logout()" style="float:right;padding:6px 12px" class="btn-gray">Toka</button></p>
+<div class="dash" style="margin-top:12px"><div><b id="cUsers">0</b>Watumiaji</div><div><b id="cPosts">0</b>Post</div><div><b id="cLikes">0</b>Likes</div></div>
+<div style="margin-top:12px"><b>👥 Watu Waliojiunga:</b><div id="userList"></div></div>
+</div>
+
+<!-- POST BOX -->
+<div class="box">
+<h3 style="margin:0">Post kitu kipya</h3>
+<textarea id="wazo" rows="3" placeholder="Una wazo gani leo? Andika hapa..."></textarea>
+<label style="font-size:13px;font-weight:bold">📹 Weka Video (ndogo au kubwa zote zinakubalika):</label>
+<input type="file" id="videoFile" accept="video/*">
+<label style="font-size:13px;font-weight:bold">🖼️ Weka Picha (hiari):</label>
+<input type="file" id="imgFile" accept="image/*">
+<p class="small" id="uploadMsg"></p>
+<button class="btn-full btn-green" onclick="postWazo()">📤 POST SASA</button>
+</div>
+
+<!-- FEED -->
+<div class="box"><h3 style="margin:0">🔥 Post za Wanachama</h3><div id="feed"></div>
+<button class="btn-full btn-red" style="margin-top:15px" onclick="clearPosts()">Futa post zote</button>
+</div>
+</div>
 
 <script>
-let posts = [];
-try{ posts = JSON.parse(localStorage.getItem('kapapp_posts')||'[]'); }catch(e){ posts=[]; }
-onyesha();
+let mode='login';
+let users=JSON.parse(localStorage.getItem('kapapp_users')||'[]');
+let posts=JSON.parse(localStorage.getItem('kapapp_posts')||'[]');
+let current=localStorage.getItem('kapapp_session');
+let follows=JSON.parse(localStorage.getItem('kapapp_follows')||'{}');
 
-function postSasa(){
-  let jina = document.getElementById('jina').value.trim() || 'Mgeni';
-  let wazo = document.getElementById('wazo').value.trim();
-  if(!wazo){ alert('Andika wazo kwanza!'); return; }
-  let file = document.getElementById('picha').files[0];
-  if(file){
-    let r = new FileReader();
-    r.onload = function(e){ hifadhi(jina,wazo,e.target.result); };
-    r.readAsDataURL(file);
-  } else {
-    hifadhi(jina,wazo,'');
-  }
+function toggleAuth(){mode=mode=='login'?'register':'login';document.getElementById('authTitle').innerText=mode=='login'?'Ingia KAPAPP':'Jisajili KAPAPP';document.getElementById('authBtn').innerText=mode=='login'?'INGIA':'JISAJILI BURE';document.getElementById('toggleLink').innerText=mode=='login'?'Huna akaunti? Jisajili hapa':'Una akaunti? Ingia hapa';}
+function doAuth(){
+let n=document.getElementById('uName').value.trim();let ph=document.getElementById('uPhone').value.trim();let p=document.getElementById('uPass').value.trim();
+if(!n||!p) return alert('Andika jina na password!');
+if(p.length<4) return alert('Password iwe angalau 4!');
+if(mode=='register'){
+ if(users.find(u=>u.name.toLowerCase()==n.toLowerCase())) return alert('Jina hilo limeshatumika!');
+ users.push({name:n,phone:ph,pass:p,date:new Date().toLocaleDateString()});localStorage.setItem('kapapp_users',JSON.stringify(users));alert('Hongera '+n+'! Umejiunga na KAPAPP! Sasa ingia.');toggleAuth();return;
+}else{
+ let u=users.find(u=>u.name.toLowerCase()==n.toLowerCase()&&u.pass==p);if(!u) return alert('Jina au password sio sahihi! Jisajili kwanza kama huna akaunti.');
+ current=n;localStorage.setItem('kapapp_session',n);showApp();
+}}
+function showApp(){document.getElementById('authBox').classList.add('hidden');document.getElementById('appBox').classList.remove('hidden');document.getElementById('myName').innerText=current;render();}
+function logout(){localStorage.removeItem('kapapp_session');location.reload();}
+function shareWA(){let txt=encodeURIComponent('Karibu KAPAPP! Jiunge nasi hapa: https://kapapptz.github.io/Kapapp/feed.html');window.open('https://wa.me/?text='+txt,'_blank');}
+function sharePost(i){let p=posts[i];let txt=encodeURIComponent(p.name+' - KAPAPP: '+p.text+'\nJiunge: https://kapapptz.github.io/Kapapp/feed.html');window.open('https://wa.me/?text='+txt,'_blank');}
+function followCEO(){
+ if(!follows[current]) follows[current]=[];
+ let idx=follows[current].indexOf('CEO');
+ if(idx>=0){follows[current].splice(idx,1);}else{follows[current].push('CEO');}
+ localStorage.setItem('kapapp_follows',JSON.stringify(follows));render();
 }
-function hifadhi(jina,wazo,picha){
-  posts.unshift({jina:jina,wazo:wazo,picha:picha,tarehe:new Date().toLocaleString()});
-  // Tunahifadhi post 10 tu ili simu isijae
-  posts = posts.slice(0,10);
-  try{ localStorage.setItem('kapapp_posts', JSON.stringify(posts)); }catch(e){ alert('Kumbukumbu imejaa, post za zamani zimefutwa'); posts=posts.slice(0,5); localStorage.setItem('kapapp_posts', JSON.stringify(posts)); }
-  document.getElementById('wazo').value='';
-  document.getElementById('picha').value='';
-  onyesha();
+function followUser(name){
+ if(name==current) return alert('Huwezi kujifollow mwenyewe!');
+ if(!follows[current]) follows[current]=[];
+ let idx=follows[current].indexOf(name);
+ if(idx>=0) follows[current].splice(idx,1); else follows[current].push(name);
+ localStorage.setItem('kapapp_follows',JSON.stringify(follows));render();
 }
-function onyesha(){
-  let f = document.getElementById('feed');
-  if(posts.length==0){ f.innerHTML='<p style="text-align:center;color:#888">Hakuna post bado. Kuwa wa kwanza!</p>'; return; }
-  f.innerHTML = posts.map(p=>'<div class="post"><b>'+p.jina+'</b><br><small>'+p.tarehe+'</small><p>'+p.wazo+'</p>'+(p.picha?'<img src="'+p.picha+'">':'')+'</div>').join('');
+function isFollowing(name){return follows[current]&&follows[current].includes(name);}
+function likePost(i){
+ if(!posts[i].likes) posts[i].likes=[];
+ if(!posts[i].likedBy) posts[i].likedBy=[];
+ let idx=posts[i].likedBy.indexOf(current);
+ if(idx>=0){posts[i].likedBy.splice(idx,1);}else{posts[i].likedBy.push(current);}
+ posts[i].likes=posts[i].likedBy;localStorage.setItem('kapapp_posts',JSON.stringify(posts));render();
 }
-function futaYote(){ if(confirm('Futa post zote?')){ posts=[]; localStorage.removeItem('kapapp_posts'); onyesha(); } }
+function addComment(i){
+ let inp=document.getElementById('cmt'+i);let t=inp.value.trim();if(!t) return alert('Andika comment kwanza!');
+ if(!posts[i].comments) posts[i].comments=[];
+ posts[i].comments.push({name:current,text:t,time:new Date().toLocaleString()});
+ localStorage.setItem('kapapp_posts',JSON.stringify(posts));render();
+}
+function postWazo(){
+ let t=document.getElementById('wazo').value.trim();
+ let vf=document.getElementById('videoFile').files[0];
+ let imf=document.getElementById('imgFile').files[0];
+ if(!t&&!vf&&!imf) return alert('Andika wazo au weka video/picha kwanza!');
+ document.getElementById('uploadMsg').innerText='⏳ Inapakia... subiri kidogo (video kubwa inachukua muda)...';
+ let done=(vid,img)=>{
+  posts.unshift({name:current,text:t,video:vid,image:img,time:new Date().toLocaleString(),likedBy:[],comments:[]});
+  if(posts.length>100) posts=posts.slice(0,100);
+  localStorage.setItem('kapapp_posts',JSON.stringify(posts));
+  document.getElementById('wazo').value='';document.getElementById('videoFile').value='';document.getElementById('imgFile').value='';document.getElementById('uploadMsg').innerText='✅ Imepostwa!';
+  render();
+ };
+ let vidData=null,imgData=null,pending=0;
+ if(vf) pending++; if(imf) pending++;
+ if(pending==0) done(null,null);
+ if(vf){let r=new FileReader();r.onload=e=>{vidData=e.target.result;pending--;if(pending==0)done(vidData,imgData);};r.readAsDataURL(vf);}
+ if(imf){let r2=new FileReader();r2.onload=e=>{imgData=e.target.result;pending--;if(pending==0)done(vidData,imgData);};r2.readAsDataURL(imf);}
+}
+function clearPosts(){if(confirm('Futa post zote?')){posts=[];localStorage.setItem('kapapp_posts',JSON.stringify(posts));render();}}
+function render(){
+ let f=document.getElementById('feed');
+ if(posts.length==0) f.innerHTML='<p class="small">Hakuna post bado. Kuwa wa kwanza kupost!</p>';
+ else f.innerHTML=posts.map((p,i)=>{
+  let liked=p.likedBy&&p.likedBy.includes(current);
+  let cmts=(p.comments||[]).map(c=>`<div class="comment"><b>${c.name}:</b> ${c.text}</div>`).join('');
+  let followBtn=p.name==current?'':`<button class="follow-btn ${isFollowing(p.name)?'btn-red':'btn-green'}" onclick="followUser('${p.name}')">${isFollowing(p.name)?'Unfollow':'Follow'}</button>`;
+  return `<div class="post"><div class="post-top"><div><b>${p.name}</b> ${p.name=='Said Kapwile'?'👑':''}<div class="time">${p.time}</div></div>${followBtn}</div><div style="margin-top:8px">${p.text||''}</div>${p.image?`<img src="${p.image}">`:''}${p.video?`<video src="${p.video}" controls playsinline></video>`:''}<div class="actions"><button onclick="likePost(${i})" class="${liked?'active':''}">❤️ Like (${(p.likedBy||[]).length})</button><button onclick="document.getElementById('cmt${i}').focus()">💬 Comment (${(p.comments||[]).length})</button><button class="wa" onclick="sharePost(${i})">📲 WhatsApp</button></div><div class="comment-box">${cmts}<input id="cmt${i}" placeholder="Andika comment..."><button class="btn-full" style="margin-top:5px;padding:9px" onclick="addComment(${i})">Tuma Comment</button></div></div>`;
+ }).join('');
+ document.getElementById('cUsers').innerText=users.length;
+ document.getElementById('cPosts').innerText=posts.length;
+ let totalLikes=posts.reduce((a,p)=>a+(p.likedBy?p.likedBy.length:0),0);document.getElementById('cLikes').innerText=totalLikes;
+ let ceoCount=0;Object.values(follows).forEach(arr=>{if(arr.includes('CEO'))ceoCount++;});document.getElementById('ceoFollowers').innerText=ceoCount;
+ document.getElementById('ceoFollowBtn').innerText=isFollowing('CEO')?'Unfollow':'Follow';
+ document.getElementById('ceoFollowBtn').className='follow-btn '+(isFollowing('CEO')?'btn-red':'btn-green');
+ document.getElementById('userList').innerHTML=users.length==0?'<p class="small">Hakuna mtu bado</p>':users.map(u=>{
+  let fl = u.name==current?' (Wewe)':`<button class="follow-btn ${isFollowing(u.name)?'btn-red':'btn-green'}" onclick="followUser('${u.name}')">${isFollowing(u.name)?'Unfollow':'Follow'}</button>`;
+  return `<div class="user-row"><span>👤 ${u.name} ${u.name=='Said Kapwile'?'👑 CEO':''}</span>${fl}</div>`;
+ }).join('');
+}
+if(current&&users.find(u=>u.name==current)) showApp();
 </script>
 </body>
 </html>
